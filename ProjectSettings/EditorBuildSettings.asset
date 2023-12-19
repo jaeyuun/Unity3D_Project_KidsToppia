@@ -4,8 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 0
-    path: Assets/Resources/Vivox_Samples/Vivox/16.0.1/Chat Channel Sample/Assets/ChatChannelSample/Scenes/MainScene.unity
-    guid: dbc457e6df4234749aff8bd5ffa028ef
+  m_Scenes: []
   m_configObjects: {}
