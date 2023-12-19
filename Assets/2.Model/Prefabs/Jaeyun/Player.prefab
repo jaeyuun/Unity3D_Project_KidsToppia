@@ -30551,12 +30551,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6723573748887761506}
-  - component: {fileID: 6723573748887761507}
   - component: {fileID: 6723573748887761504}
   - component: {fileID: 7519013284797641234}
   - component: {fileID: 6723573748887761510}
   - component: {fileID: 6723573748887761511}
   - component: {fileID: 6723573748887761508}
+  - component: {fileID: 5705984813629288765}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -30586,21 +30586,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6723573748887761507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6723573748887761517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35b8bffd1f618f41a8b05e6dda922bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerSpeed: 2
-  jumpHeight: 1
-  gravityValue: -9.81
 --- !u!143 &6723573748887761504
 CharacterController:
   m_ObjectHideFlags: 0
@@ -30704,3 +30689,18 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
+--- !u!114 &5705984813629288765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6723573748887761517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9ed71fb95ec8341a6b18da52ad4aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpeed: 2
+  jumpHeight: 1
+  gravityValue: -9.81
