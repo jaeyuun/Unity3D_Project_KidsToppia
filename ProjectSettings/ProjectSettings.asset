@@ -675,7 +675,14 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
     UNet: 1
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -689,11 +696,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 2
-  cloudProjectId: fba0a5b8-ca73-4c89-b317-4201b39d2930
+  cloudProjectId: cc045427-2fdc-452c-bd99-6ec511819861
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Kidstopia
-  organizationId: hansiban
+  projectName: Unity3D_Project_Kidstopia (2)
+  organizationId: ghghwodbs
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   virtualTexturingSupportEnabled: 0

@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/Jaeyun/Client/MainGame_J.unity
     guid: 678dc9db0f92f1a459d8a6b13073d458
+  - enabled: 1
+    path: Assets/1.Scene/Jaeyun/Client/LoadingScene.unity
+    guid: c80cfd2de69a7a24ab2ea878ebc694ec
+  - enabled: 1
+    path: Assets/1.Scene/Jaeyun/Server/IntroScene_Server.unity
+    guid: ad9362b58c19d5446a536fb52c753892
   m_configObjects: {}

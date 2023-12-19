@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 /* Network namespace */
 using Mirror;
 using kcp2k;
@@ -85,7 +86,11 @@ public class ServerChecker : MonoBehaviour
 
     private void Start()
     {
-        
+        type = LicenseType();
+        if (type.Equals(ServerType.Server))
+        {
+            StartServer();
+        }
     }
 
     private ServerType LicenseType()
@@ -124,8 +129,9 @@ public class ServerChecker : MonoBehaviour
         }
         else
         {
-            manager.StartServer();
             Debug.Log($"{manager.networkAddress} StartServer...");
+            manager.StartServer();
+            
             NetworkServer.OnConnectedEvent += (NetworkConnectionToClient) =>
             {
                 Debug.Log($"New Client Connect : {NetworkConnectionToClient.address}");
@@ -161,12 +167,10 @@ public class ServerChecker : MonoBehaviour
         if (type.Equals(ServerType.Server))
         {
             StartServer();
-            Debug.Log("Server");
         }
         else
         {
             StartClient();
-            Debug.Log("Client");
         }
     }
 }
