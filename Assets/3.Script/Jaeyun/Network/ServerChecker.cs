@@ -36,7 +36,7 @@ public class ServerChecker : MonoBehaviour
 
     public ServerType type;
 
-    private NetworkManager manager;
+    public NetworkManager manager;
     private KcpTransport kcp;
 
     private string path = string.Empty;
@@ -60,30 +60,54 @@ public class ServerChecker : MonoBehaviour
             return;
         }
 
-        if (path.Equals(string.Empty))
-        {
-            path = Application.dataPath + "/License";
-        }
-        if (!File.Exists(path))
-        { // folder 검사
-            Directory.CreateDirectory(path);
-        }
-        if (!File.Exists(path + "/License.json"))
-        { // file 검사
-            DefaultData(path);
-        }
+        FileSetting();
+
         manager = GetComponent<NetworkManager>();
         kcp = (KcpTransport)manager.transport;
+    }
+    #region FileSetting
+    private void FileSetting()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (path.Equals(string.Empty))
+            {
+                path = Application.persistentDataPath + "/License";
+            }
+            if (!File.Exists(path))
+            { // folder 검사
+                Directory.CreateDirectory(path);
+            }
+            if (!File.Exists(path + "/License.json"))
+            { // file 검사
+                DefaultData(path);
+            }
+        }
+        else
+        { // Window
+            if (path.Equals(string.Empty))
+            {
+                path = Application.dataPath + "/License";
+            }
+            if (!File.Exists(path))
+            { // folder 검사
+                Directory.CreateDirectory(path);
+            }
+            if (!File.Exists(path + "/License.json"))
+            { // file 검사
+                DefaultData(path);
+            }
+        }
     }
 
     private void DefaultData(string path)
     {
         List<ServerItem> items = new List<ServerItem>();
-        items.Add(new ServerItem("1", "127.0.0.1", "7777"));
+        items.Add(new ServerItem("1", "13.124.181.154", "7777"));
         JsonData data = JsonMapper.ToJson(items); // 반드시 자료구조로 넣어야 함
         File.WriteAllText(path + "/License.json", data.ToString());
     }
-
+    #endregion
     private void Start()
     {
         type = LicenseType();
@@ -158,19 +182,6 @@ public class ServerChecker : MonoBehaviour
         if (NetworkServer.active)
         {
             manager.StopServer();
-        }
-    }
-
-    public void StartButton()
-    {
-        type = LicenseType();
-        if (type.Equals(ServerType.Server))
-        {
-            StartServer();
-        }
-        else
-        {
-            StartClient();
         }
     }
 }
