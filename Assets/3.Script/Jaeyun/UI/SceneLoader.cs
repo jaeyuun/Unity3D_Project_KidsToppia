@@ -2,27 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro; // TMP
 
 public class SceneLoader : MonoBehaviour
 {
     public GameObject loadingScreen;
-    public TextMeshProUGUI loadingText;
+    public Text loadingText;
 
-    public void IntroLoading(string scene)
+    // Fake Time
+    private float loadingTime = 3f;
+    private float currentTime = 0;
+
+    private void Awake()
     {
-        StartCoroutine(IntroLoading_Co(scene));
+        StartCoroutine(IntroLoading_Co());
     }
 
-    private IEnumerator IntroLoading_Co(string scene)
+    private IEnumerator IntroLoading_Co()
     {
         loadingScreen.SetActive(true);
-        AsyncOperation asyncOper = SceneManager.LoadSceneAsync(scene);
-        while (!asyncOper.isDone)
+        while (currentTime < loadingTime)
         {
+            if (Mathf.RoundToInt(currentTime / loadingTime * 100f) > 100) break;
+            currentTime += Time.deltaTime;
+            loadingText.text = $"{Mathf.RoundToInt(currentTime / loadingTime * 100f)}%";
             yield return null;
-            loadingText.text = $"{Mathf.RoundToInt(asyncOper.progress * 100f)}%"; // loading 진행 정도 백분율
         }
+        yield return new WaitForSeconds(0.5f);
+        loadingScreen.SetActive(false);
     }
 }

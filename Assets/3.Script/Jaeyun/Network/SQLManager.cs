@@ -70,9 +70,8 @@ public class SQLManager : MonoBehaviour
             return;
         }
         // Application.dataPath는 Asset 폴더까지를 뜻함
-        dbPath = Application.dataPath + "/Database"; // 경로를 string에 저장
 
-        string serverInfo = ServerSet(dbPath);
+        string serverInfo = ServerSet();
         try
         {
             if (serverInfo.Equals(string.Empty))
@@ -90,18 +89,40 @@ public class SQLManager : MonoBehaviour
         }
     }
 
-    private string ServerSet(string path)
+    private string ServerSet()
     {
-        if (!File.Exists(dbPath)) // 해당 경로에 파일이 없다면
-        { // folder 검사
-            Directory.CreateDirectory(dbPath); // Directory 생성
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (dbPath.Equals(string.Empty))
+            {
+                dbPath = Application.persistentDataPath + "/Database"; // 경로를 string에 저장
+            }
+            if (!File.Exists(dbPath)) // 해당 경로에 파일이 없다면
+            { // folder 검사
+                Directory.CreateDirectory(dbPath); // Directory 생성
+            }
+            if (!File.Exists(dbPath + "/config.json"))
+            { // file 검사
+                DefaultData(dbPath);
+            }
         }
-        if (!File.Exists(dbPath + "/config.json"))
-        { // file 검사
-            DefaultData(dbPath);
+        else
+        { // window
+            if (dbPath.Equals(string.Empty))
+            {
+                dbPath = Application.dataPath + "/Database"; // 경로를 string에 저장
+            }
+            if (!File.Exists(dbPath)) // 해당 경로에 파일이 없다면
+            { // folder 검사
+                Directory.CreateDirectory(dbPath); // Directory 생성
+            }
+            if (!File.Exists(dbPath + "/config.json"))
+            { // file 검사
+                DefaultData(dbPath);
+            }
         }
 
-        string jsonString = File.ReadAllText(path + "/config.json"); // json file을 string으로 받아옴
+        string jsonString = File.ReadAllText(dbPath + "/config.json"); // json file을 string으로 받아옴
         JsonData ItemData = JsonMapper.ToObject(jsonString); // string 형태를 json 형태로 바꿔줌
 
         if (serverIp == string.Empty)
@@ -120,7 +141,7 @@ public class SQLManager : MonoBehaviour
     private void DefaultData(string path)
     {
         List<ConfigItem> items = new List<ConfigItem>();
-        items.Add(new ConfigItem("127.0.0.1", "kidstopia_player", "root", "1234", "3306")); // serverIP, tableName, id, pw, port
+        items.Add(new ConfigItem("13.124.181.154", "kidstopia_player", "root", "1234", "3306")); // serverIP, tableName, id, pw, port
         JsonData data = JsonMapper.ToJson(items); // 반드시 자료구조로 넣어야 함
         File.WriteAllText(path + "/config.json", data.ToString());
     }
