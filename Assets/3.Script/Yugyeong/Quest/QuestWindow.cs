@@ -6,7 +6,7 @@ public class QuestWindow : MonoBehaviour
     //questwindow 요소
     [SerializeField] private Text title_text;
     //[SerializeField] private Text description_text;
-    [SerializeField] private QuestGoal_YG goal_prefab;
+    [SerializeField] private Goal_YG goal_prefab;
     [SerializeField] private Transform goal_content;
     //[SerializeField] private Text xp_text;
     //[SerializeField] private Text coin_text;
@@ -15,7 +15,7 @@ public class QuestWindow : MonoBehaviour
     {
         //title_text.text = quest.information.name;
         //description_text.text = quest.information.description;
-        QuestGoal_YG goal_obj = Instantiate(goal_prefab, goal_content);
+        Goal_YG goal_obj = Instantiate(goal_prefab, goal_content);
         //카운트 불러오는 방법 생각하기
         //GameObject count_obj = goal_obj.gameObject.transform.Find("Count").gameObject;
 

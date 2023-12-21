@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class QuestManager : MonoBehaviour
 {
     [SerializeField] private GameObject quest_prefab;
+    [SerializeField] private List<Quest_YG> quest_YGs = new List<Quest_YG>();
     [SerializeField] private Transform quest_content;
     [SerializeField] private GameObject quest_holder;
 
