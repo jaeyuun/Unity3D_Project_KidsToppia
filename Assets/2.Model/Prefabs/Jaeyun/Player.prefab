@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 8586356222653542402}
   - component: {fileID: 7009853835793981867}
   - component: {fileID: 7644939535169235710}
+  - component: {fileID: 4389312257400599953}
   - component: {fileID: 8586356222653542453}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,6 +161,23 @@ MonoBehaviour:
   compressRotation: 0
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!114 &4389312257400599953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8586356222653542409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  clientAuthority: 1
+  animator: {fileID: 8536981203600859605}
 --- !u!114 &8586356222653542453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,9 +194,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   joystick: {fileID: 0}
-  playerRigid_net: {fileID: 0}
-  playerTrans_net: {fileID: 0}
-  animator: {fileID: 1035961940538824161}
+  rigid_net: {fileID: 0}
+  trans_net: {fileID: 0}
   playerRigid: {fileID: 0}
   moveSpeed: 3
   jumpForce: 3
@@ -20742,7 +20759,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8585665387378759959}
   - component: {fileID: 8536981203600859605}
-  - component: {fileID: 1035961940538824161}
   m_Layer: 0
   m_Name: KidHighRes
   m_TagString: Untagged
@@ -20789,23 +20805,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1035961940538824161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8587819125036354355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 1
-  syncMode: 0
-  syncInterval: 0
-  clientAuthority: 1
-  animator: {fileID: 8536981203600859605}
 --- !u!1 &8587819179480300800
 GameObject:
   m_ObjectHideFlags: 0

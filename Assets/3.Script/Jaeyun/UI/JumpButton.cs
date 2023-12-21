@@ -12,10 +12,6 @@ public class JumpButton : MonoBehaviour
         {
             player = FindObjectOfType<PlayerControll>();
         }
-
-        if (player.isGround)
-        {
-            player.playerRigid.AddForce(new Vector3(0f, 2f, 0f) * player.jumpForce, ForceMode.Impulse);
-        }
+        player.PlayerJump();
     }
 }
