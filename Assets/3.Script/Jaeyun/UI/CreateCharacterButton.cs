@@ -24,8 +24,18 @@ public class CreateCharacterButton : MonoBehaviour
         player.select = (Select)index;
     }
 
+    public void RidingSelectButton(int index)
+    {
+        player.ride = (Ride)index;
+    }
+
     public void PlayerChange()
     {
         player.MenuSelect();
+    }
+
+    public void PlayerRiding()
+    {
+        player.RidingSelect();
     }
 }
