@@ -66,9 +66,14 @@ public enum NPC_state
 
 }
 
-public class NPC_Movement_YG : MonoBehaviour
+public enum Test_state
 {
-    //[SerializeField] private Rigidbody rigid;
+    mobile = 0,
+    pc
+}
+
+public class NPC_YG : MonoBehaviour
+{
     [SerializeField] private Transform trans;
     [SerializeField] private Animator ani;
 
@@ -76,6 +81,13 @@ public class NPC_Movement_YG : MonoBehaviour
     [SerializeField] private Transform goal;
     [SerializeField] private int index;
     [SerializeField] private float speed = 0.1f;
+
+    [SerializeField] private Test_state test_state;
+    [SerializeField] private Touch touch;
+    [SerializeField] private Vector3 touched_pos;
+    [SerializeField] private Vector3 mouse_pos;
+    [SerializeField] private bool touch_on;
+    [SerializeField] private LayerMask layer;
 
     private void Awake()
     {
@@ -91,6 +103,11 @@ public class NPC_Movement_YG : MonoBehaviour
         StartCoroutine(Set_position());
     }
 
+    private void Update()
+    {
+        Input_touch();
+    }
+
     IEnumerator Find_posttion()
     {
         index = 0;
@@ -100,8 +117,8 @@ public class NPC_Movement_YG : MonoBehaviour
             if (goals[index] != goal)
             {
                 index = Random.Range(0, goals.Length);
-                Debug.Log($"이번 목표 / {goal.name}");
-                Debug.Log($"목표 위치 / {goal.position}");
+                //Debug.Log($"이번 목표 / {goal.name}");
+                //Debug.Log($"목표 위치 / {goal.position}");
                 break;
             }
             yield return null;
@@ -113,7 +130,7 @@ public class NPC_Movement_YG : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(Vector3.Distance(trans.position, goal.position));
+            //Debug.Log(Vector3.Distance(trans.position, goal.position));
 
             if (Vector3.Distance(trans.position, goal.position) >= 0.75f)
             {
@@ -137,4 +154,53 @@ public class NPC_Movement_YG : MonoBehaviour
         }
         StartCoroutine(Set_position());
     }
+
+    private void Input_touch()
+    {
+        switch (test_state)
+        {
+            case Test_state.mobile:
+                if (Input.touchCount > 0)
+                {
+                    touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        touch_on = true;
+                        touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
+                        Try_raycast(touch.position);
+                    }
+                }
+                break;
+
+            case Test_state.pc:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("Input.GetMouseButtonDown(0)");
+                    mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    touch_on = true;
+                    Try_raycast(Input.mousePosition);
+                }
+                break;
+        }
+    }
+
+    private void Try_raycast(Vector3 pos)
+    {
+        Debug.Log("Try_raycast");
+        Ray ray;
+        RaycastHit hit;
+        ray = Camera.main.ScreenPointToRay(pos);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
+        {
+            Debug.Log("레이 쏨");
+            if (hit.collider.CompareTag("NPC"))
+            {
+                Debug.Log("NPC찾음");
+                TalkManager.instance.Print();
+            }
+        }
+
+
+    }
+
 }
