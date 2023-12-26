@@ -670,7 +670,7 @@ GameObject:
   m_Layer: 0
   m_Name: transform
   m_TagString: tran
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1117,7 +1117,7 @@ GameObject:
   m_Layer: 0
   m_Name: transform (4)
   m_TagString: tran
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1161,7 +1161,7 @@ GameObject:
   m_Layer: 0
   m_Name: transform (2)
   m_TagString: tran
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2505,7 +2505,7 @@ GameObject:
   m_Layer: 0
   m_Name: transform (1)
   m_TagString: tran
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2630,7 +2630,7 @@ GameObject:
   m_Layer: 0
   m_Name: NPC_transform
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2642,7 +2642,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1184972793}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 403874725}
@@ -3438,7 +3438,7 @@ GameObject:
   m_Layer: 0
   m_Name: transform (3)
   m_TagString: tran
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4015,7 +4015,7 @@ GameObject:
   m_Layer: 0
   m_Name: transform (5)
   m_TagString: tran
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -35940,6 +35940,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6328343217063662195}
+  - component: {fileID: 6664798373359663456}
   m_Layer: 0
   m_Name: Leg02_R_end
   m_TagString: Untagged
@@ -35947,6 +35948,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!136 &6664798373359663456
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6664798373359663455}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.03
+  m_Height: 0.03
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.03, z: 0}
 --- !u!65 &6784943374269247592
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36181,6 +36196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6539817358750394404}
+  - component: {fileID: 8135667519637358575}
   m_Layer: 0
   m_Name: Leg02_L
   m_TagString: Untagged
@@ -36188,6 +36204,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!136 &8135667519637358575
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8135667519637358574}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.03
+  m_Height: 0.03
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8276767328798517838
 GameObject:
   m_ObjectHideFlags: 0
@@ -36299,7 +36329,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9045390032301337037}
   - component: {fileID: 3127612072076243895}
-  - component: {fileID: 8560356508512973692}
   - component: {fileID: 8560356508512973691}
   - component: {fileID: 8560356508512973690}
   m_Layer: 0
@@ -36331,8 +36360,8 @@ MonoBehaviour:
   - {fileID: 687009231}
   - {fileID: 1865424404}
   goal: {fileID: 0}
-  speed: 0
-  is_: 0
+  speed: 0.1
+  is_arrive: 0
 --- !u!54 &8560356508512973691
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -36349,20 +36378,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!136 &8560356508512973692
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8560356508512973687}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.15
-  m_Height: 0.52
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!4 &8761546985701037014
 Transform:
   m_ObjectHideFlags: 0

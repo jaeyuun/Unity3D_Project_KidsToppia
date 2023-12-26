@@ -65,63 +65,76 @@ public enum NPC_state
 {
 
 }
+
 public class NPC_Movement_YG : MonoBehaviour
 {
-    [SerializeField] private Rigidbody rigid;
+    //[SerializeField] private Rigidbody rigid;
     [SerializeField] private Transform trans;
+    [SerializeField] private Animator ani;
 
     [SerializeField] private Transform[] goals;
     [SerializeField] private Transform goal;
-    [SerializeField] private float speed;
-    [SerializeField] private bool is_;
+    [SerializeField] private int index;
+    [SerializeField] private float speed = 0.1f;
 
     private void Awake()
     {
         //컴포넌트 가져오기
-        TryGetComponent(out rigid);
+        TryGetComponent(out ani);
         TryGetComponent(out trans);
-        goal = trans;
+        goal = goals[0];
     }
 
-    private void Update()
+    private void Start()
     {
-        if (trans.position == goal.position)
-        {
-            Debug.Log("목표지점 도달");
-            StartCoroutine(Find_posttion());
-        }
-
-        Debug.Log("목표로 가는중");
-        trans.position = Vector3.MoveTowards(trans.position, goal.position, Time.deltaTime);
+        StartCoroutine(Find_posttion());
+        StartCoroutine(Set_position());
     }
 
     IEnumerator Find_posttion()
     {
+        index = 0;
         while (true)
         {
-            int index = Random.Range(0, goals.Length);
+            index = Random.Range(0, goals.Length);
             if (goals[index] != goal)
             {
-                goal = goals[index];
+                index = Random.Range(0, goals.Length);
                 Debug.Log($"이번 목표 / {goal.name}");
+                Debug.Log($"목표 위치 / {goal.position}");
                 break;
             }
+            yield return null;
         }
-        Debug.Log("코루틴 끝");
         yield return null;
     }
 
-    private void OnTriggerEnter(Collider other)
+    IEnumerator Set_position()
     {
-        Debug.Log("OnTriggerEnter");
-        if (other.CompareTag("tran"))
+        while (true)
         {
-            rigid.velocity = Vector3.zero;
+            Debug.Log(Vector3.Distance(trans.position, goal.position));
 
-            StartCoroutine(Find_posttion());
+            if (Vector3.Distance(trans.position, goal.position) >= 0.75f)
+            {
+                ani.SetBool("is_walk", true);
+                Vector3 tmprot = goal.position - transform.position;
+                tmprot.y = 0;
+                tmprot.Normalize();
+                transform.rotation = Quaternion.LookRotation(tmprot);
+                transform.position = Vector3.MoveTowards(transform.position, goal.position, Time.deltaTime);
+            }
+
+            else
+            {
+                ani.SetBool("is_walk", false);
+                yield return new WaitForSeconds(3f);
+                index = Random.Range(0, goals.Length);
+                goal = goals[index];
+                break;
+            }
+            yield return null;
         }
+        StartCoroutine(Set_position());
     }
-
 }
-
-
