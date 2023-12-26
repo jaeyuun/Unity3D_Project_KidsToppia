@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 
 public enum SelectMenu
 {
@@ -12,7 +10,6 @@ public enum SelectMenu
     Trunks,
     Skin,
     Hat,
-    Paw,
     Riding,
     HairStyle
 }
@@ -26,8 +23,7 @@ public enum Select
     Frog,
     Panther,
     Sloth,
-    Panda,
-    None
+    Panda
 }
 
 public enum Ride
@@ -36,27 +32,31 @@ public enum Ride
     BoxCart,
     BoxPickUp,
     BoxScooter,
-    BoxTruck,
-    None
+    BoxTruck
 }
 
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
     private PlayerControll player;
-    [SerializeField] private GameObject[] changeObject;
-    [SyncVar(hook = nameof(SetPlayer))]
-    private GameObject selectObject;
 
+    [SerializeField] private GameObject[] changeObject;
+    //[SyncVar(hook = nameof(SetPlayer))]
+    [SerializeField] private GameObject selectObject = null;
+
+    //[SyncVar(hook = nameof(SetSelectMenu))]
     public SelectMenu selectMenu;
+    //[SyncVar(hook = nameof(SetSelect))]
     public Select select;
+    //[SyncVar(hook = nameof(SetRide))]
     public Ride ride;
 
     public Material[] materials; // Eyes, Jumper, Runners, TShirts, Trunks, Skin
     public Mesh[] hatMeshs; // Hat
-    public Mesh[] pawMeshs; // Paw
 
     public GameObject[] hairStyles; // Hair
     public GameObject[] rides; // Riding
+
+    public bool isRiding = false;
 
     #region Unity CallBack Method
     private void Awake()
@@ -65,22 +65,15 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
     }
     #endregion
     #region Client
-    [Client]
+    //[Client]
     public void MenuSelect()
     { // Eyes, Jumpper, Runners, TShirts, Trunks, Skin, Hat, Paw
-        if (!isLocalPlayer) return;
-        selectObject = changeObject[(int)selectMenu];
+        //if (!isLocalPlayer) return;
         ListSelect_CM();
-    }
-    [Client]
-    public void RidingSelect()
-    {
-        if (!isLocalPlayer) return;
-        RidingSelect_CM();
     }
     #endregion
     #region Command
-    [Command]
+    //[Command]
     private void ListSelect_CM()
     {
         switch (selectMenu)
@@ -91,10 +84,11 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             case SelectMenu.TShirts:
             case SelectMenu.Trunks:
             case SelectMenu.Skin:
+                selectObject = changeObject[(int)selectMenu];
                 Material_Change();
                 break;
             case SelectMenu.Hat:
-            case SelectMenu.Paw:
+                selectObject = changeObject[(int)selectMenu];
                 MeshAndMaterial_Change();
                 break;
             case SelectMenu.Riding:
@@ -103,41 +97,40 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
                 break;
         }
     }
-    [Command]
-    private void RidingSelect_CM()
-    {
-        GameObject_Change();
-    }
     #endregion
     #region ClientRPC
-    [ClientRpc]
+    //[ClientRpc]
     public void Material_Change()
     {
-        SkinnedMeshRenderer skinnedMeshRenderer = selectObject.GetComponent<SkinnedMeshRenderer>();
-        skinnedMeshRenderer.materials[0] = this.materials[(int)select];
+        if (selectMenu == SelectMenu.Eyes)
+        {
+            MeshRenderer meshRenderer = selectObject.GetComponent<MeshRenderer>();
+            Material[] newMaterial = meshRenderer.materials;
+            newMaterial[0] = this.materials[(int)select];
+            meshRenderer.materials = newMaterial;
+        }
+        else
+        {
+            SkinnedMeshRenderer meshRenderer = selectObject.GetComponent<SkinnedMeshRenderer>();
+            Material[] newMaterial = meshRenderer.materials;
+            newMaterial[0] = this.materials[(int)select];
+            meshRenderer.materials = newMaterial;
+        }
     }
-    [ClientRpc]
+    //[ClientRpc]
     public void MeshAndMaterial_Change()
-    { // Shark Paw는 없음
-        selectObject.SetActive(true);
-        SkinnedMeshRenderer skinnedMeshRenderer = selectObject.GetComponent<SkinnedMeshRenderer>();
+    { // Hat
+      // MeshRenderer 
+        MeshRenderer meshRenderer = selectObject.GetComponent<MeshRenderer>();
+        Material[] newMaterial = meshRenderer.materials;
+        newMaterial[0] = this.materials[(int)select];
+        meshRenderer.materials = newMaterial;
+
         MeshFilter meshFilter = selectObject.GetComponent<MeshFilter>();
-        skinnedMeshRenderer.materials[0] = this.materials[(int)select];
-        if (selectMenu == SelectMenu.Hat)
-        {
-            meshFilter.mesh = this.hatMeshs[(int)select];
-        }
-        else if (selectMenu == SelectMenu.Paw)
-        {
-            meshFilter.mesh = this.pawMeshs[(int)select];
-        }
-        // Hat, Paw 밖에 없음
-        if (select == Select.None)
-        {
-            selectObject.SetActive(false);
-        }
+        meshFilter.mesh = this.hatMeshs[(int)select];
+
     }
-    [ClientRpc]
+    //[ClientRpc]
     public void GameObject_Change()
     {
         if (selectMenu == SelectMenu.HairStyle)
@@ -154,7 +147,8 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             {
                 rides[i].SetActive(false);
             }
-            if (ride == Ride.None)
+
+            if (!isRiding)
             {
                 player.ani_net.animator.SetBool("isDriving", false);
             }
@@ -166,8 +160,25 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
         }
     }
     #endregion
-    private void SetPlayer(GameObject oldPlayer, GameObject newPlayer)
+    #region Hook Method
+    /*private void SetPlayer(GameObject oldPlayer, GameObject newPlayer)
     {
         selectObject = newPlayer;
     }
+
+    private void SetSelectMenu(SelectMenu oldSelect, SelectMenu newSelect)
+    {
+        selectMenu = newSelect;
+    }
+
+    private void SetSelect(Select oldSelect, Select newSelect)
+    {
+        select = newSelect;
+    }
+
+    private void SetRide(Ride oldRide, Ride newRide)
+    {
+        ride = newRide;
+    }*/
+    #endregion
 }

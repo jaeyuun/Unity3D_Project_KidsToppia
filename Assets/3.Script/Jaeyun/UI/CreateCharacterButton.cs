@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CreateCharacterButton : MonoBehaviour
 {
-    private PlayerCreate player;
+    [SerializeField] private PlayerCreate player;
 
     private void OnEnable()
     {
@@ -14,28 +14,26 @@ public class CreateCharacterButton : MonoBehaviour
         }
     }
 
-    public void MenuSelectButton(int index)
+    public void SelectMenuButton(int index)
     {
         player.selectMenu = (SelectMenu)index;
+        Debug.Log(player.selectMenu);
 }
 
     public void SelectButton(int index)
     {
         player.select = (Select)index;
+        Debug.Log(player.select);
     }
 
     public void RidingSelectButton(int index)
     {
         player.ride = (Ride)index;
+        player.isRiding = !player.isRiding;
     }
 
     public void PlayerChange()
     {
         player.MenuSelect();
-    }
-
-    public void PlayerRiding()
-    {
-        player.RidingSelect();
     }
 }
