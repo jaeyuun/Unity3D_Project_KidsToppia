@@ -7,6 +7,7 @@ using Mirror;
 public class PlayerControll : NetworkBehaviour
 {
     [SerializeField] private FixedJoystick joystick;
+    [SerializeField] private GameObject lenderCamera;
 
     // Network Component
     public NetworkRigidbodyReliable rigid_net;
@@ -35,6 +36,10 @@ public class PlayerControll : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!isLocalPlayer) return;
+        if (isClient && !lenderCamera.activeSelf)
+        {
+            lenderCamera.SetActive(true);
+        }
         PlayerMovement();
     }
 

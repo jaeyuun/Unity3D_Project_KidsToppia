@@ -1,4 +1,5 @@
 using Mirror;
+using System.Collections;
 using UnityEngine;
 
 public enum SelectMenu
@@ -38,16 +39,16 @@ public enum Ride
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
     private PlayerControll player;
+    public NetworkAnimator ani_net;
 
     [SerializeField] private GameObject[] changeObject;
-    //[SyncVar(hook = nameof(SetPlayer))]
-    [SerializeField] private GameObject selectObject = null;
+    private GameObject selectObject;
 
-    //[SyncVar(hook = nameof(SetSelectMenu))]
+    [SyncVar]
     public SelectMenu selectMenu;
-    //[SyncVar(hook = nameof(SetSelect))]
+    [SyncVar]
     public Select select;
-    //[SyncVar(hook = nameof(SetRide))]
+    [SyncVar]
     public Ride ride;
 
     public Material[] materials; // Eyes, Jumper, Runners, TShirts, Trunks, Skin
@@ -56,27 +57,40 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
     public GameObject[] hairStyles; // Hair
     public GameObject[] rides; // Riding
 
-    public bool isRiding = false;
+    [SyncVar]
+    public bool isRiding = false; // 라이딩 착용한지 안한지 확인
+    // Command를 통해 바꿔줄 변수
+    [SyncVar]
+    private bool isMaterial = false;
+    [SyncVar]
+    private bool isMeshAndMaterial = false;
+    [SyncVar]
+    private bool isGameObject = false;
 
     #region Unity CallBack Method
-    private void Awake()
+    private void OnEnable()
     {
-        TryGetComponent(out player);
+        if (!isLocalPlayer) return;
+        TryGetComponent(out ani_net);
     }
+    
     #endregion
     #region Client
-    //[Client]
     public void MenuSelect()
     { // Eyes, Jumpper, Runners, TShirts, Trunks, Skin, Hat, Paw
-        //if (!isLocalPlayer) return;
-        ListSelect_CM();
+        if (!isLocalPlayer) return;
+        ListSelect_CM(selectMenu, select, ride);
     }
     #endregion
     #region Command
-    //[Command]
-    private void ListSelect_CM()
+    [Command(requiresAuthority = false)]
+    private void ListSelect_CM(SelectMenu _selectMenu, Select _select, Ride _ride)
     {
-        switch (selectMenu)
+        selectMenu = _selectMenu;
+        select = _select;
+        ride = _ride;
+
+        switch (_selectMenu)
         {
             case SelectMenu.Eyes:
             case SelectMenu.Jummper:
@@ -84,24 +98,46 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             case SelectMenu.TShirts:
             case SelectMenu.Trunks:
             case SelectMenu.Skin:
-                selectObject = changeObject[(int)selectMenu];
-                Material_Change();
+                isMaterial = true;
                 break;
             case SelectMenu.Hat:
-                selectObject = changeObject[(int)selectMenu];
-                MeshAndMaterial_Change();
+                isMeshAndMaterial = true;
                 break;
             case SelectMenu.Riding:
-            case SelectMenu.HairStyle:
-                GameObject_Change();
+                isRiding = !isRiding;
+                isGameObject = true;
                 break;
+            case SelectMenu.HairStyle:
+                isGameObject = true;
+                break;
+        }
+        StartCoroutine(perform());
+    }
+    private IEnumerator perform() {
+        yield return null;
+        if (isMaterial)
+        {
+            Material_Change();
+            isMaterial = false;
+        }
+        if (isMeshAndMaterial)
+        {
+            MeshAndMaterial_Change();
+            isMeshAndMaterial = false;
+        }
+        if (isGameObject)
+        {
+            GameObject_Change();
+            // RidingAnimaition();
+            isGameObject = false;
         }
     }
     #endregion
     #region ClientRPC
-    //[ClientRpc]
+    [ClientRpc]
     public void Material_Change()
     {
+        selectObject = changeObject[(int)selectMenu];
         if (selectMenu == SelectMenu.Eyes)
         {
             MeshRenderer meshRenderer = selectObject.GetComponent<MeshRenderer>();
@@ -117,10 +153,12 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             meshRenderer.materials = newMaterial;
         }
     }
-    //[ClientRpc]
+    [ClientRpc]
     public void MeshAndMaterial_Change()
     { // Hat
-      // MeshRenderer 
+      // MeshRenderer
+        selectObject = changeObject[(int)selectMenu];
+        Debug.Log(selectObject);
         MeshRenderer meshRenderer = selectObject.GetComponent<MeshRenderer>();
         Material[] newMaterial = meshRenderer.materials;
         newMaterial[0] = this.materials[(int)select];
@@ -130,7 +168,7 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
         meshFilter.mesh = this.hatMeshs[(int)select];
 
     }
-    //[ClientRpc]
+    [ClientRpc]
     public void GameObject_Change()
     {
         if (selectMenu == SelectMenu.HairStyle)
@@ -147,38 +185,22 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             {
                 rides[i].SetActive(false);
             }
-
-            if (!isRiding)
+            if (isRiding)
             {
-                player.ani_net.animator.SetBool("isDriving", false);
-            }
-            else
-            {
-                player.ani_net.animator.SetBool("isDriving", true);
                 rides[(int)ride].SetActive(true);
+            }
+            if (isLocalPlayer)
+            {
+                if (!isRiding)
+                {
+                    ani_net.animator.SetBool("isDriving", false);
+                }
+                else
+                {
+                    ani_net.animator.SetBool("isDriving", true);
+                }
             }
         }
     }
-    #endregion
-    #region Hook Method
-    /*private void SetPlayer(GameObject oldPlayer, GameObject newPlayer)
-    {
-        selectObject = newPlayer;
-    }
-
-    private void SetSelectMenu(SelectMenu oldSelect, SelectMenu newSelect)
-    {
-        selectMenu = newSelect;
-    }
-
-    private void SetSelect(Select oldSelect, Select newSelect)
-    {
-        select = newSelect;
-    }
-
-    private void SetRide(Ride oldRide, Ride newRide)
-    {
-        ride = newRide;
-    }*/
     #endregion
 }

@@ -10,26 +10,32 @@ public class CreateCharacterButton : MonoBehaviour
     {
         if (player == null)
         {
-            player = FindObjectOfType<PlayerCreate>();
+            PlayerCreate[] players = FindObjectsOfType<PlayerCreate>();
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].isLocalPlayer)
+                {
+                    player = players[i];
+                    break;
+                }
+            }
         }
+        //player.gameObject.transform.position;
     }
 
     public void SelectMenuButton(int index)
     {
         player.selectMenu = (SelectMenu)index;
-        Debug.Log(player.selectMenu);
 }
 
     public void SelectButton(int index)
     {
         player.select = (Select)index;
-        Debug.Log(player.select);
     }
 
     public void RidingSelectButton(int index)
     {
         player.ride = (Ride)index;
-        player.isRiding = !player.isRiding;
     }
 
     public void PlayerChange()
