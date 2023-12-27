@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3dde7af0f39077b40965a03325e3d4bf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 95d30ea4e9515254f8818c1d4bf0c14d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 4711464035760514306}
   - component: {fileID: 4711464035760514309}
   - component: {fileID: 4711464035760514308}
-  - component: {fileID: 4711464035760514311}
   - component: {fileID: 4711464035760514310}
   m_Layer: 5
   m_Name: Gobbi_btn
@@ -144,7 +143,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0292bb946198207e9b17503e15966465, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 38dab8b0e2e73a14295a480be8c20074, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -167,20 +166,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ControlPath: <Gamepad>/buttonSouth
---- !u!114 &4711464035760514311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4711464035760514360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed2f7e1ca694477a5a5f9f0d35c6d395, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationLimit: 40
-  rotationSpeed: 15
 --- !u!225 &4711464035760514310
 CanvasGroup:
   m_ObjectHideFlags: 0
