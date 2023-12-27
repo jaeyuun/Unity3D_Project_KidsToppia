@@ -25,7 +25,7 @@ public class TalkManager : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
     private void Start()
