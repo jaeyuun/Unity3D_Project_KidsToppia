@@ -35,7 +35,7 @@ public class Nonplayer_YG : MonoBehaviour
     {
         Vector3 moveDirection = trans.forward;
         rigid.velocity = Vector3.forward * pos_speed;
-        Debug.Log($"rigid.velocity: {rigid.velocity} / pos_speed : {pos_speed}");
+        //Debug.Log($"rigid.velocity: {rigid.velocity} / pos_speed : {pos_speed}");
     }
 
     IEnumerator Random_Movement()
@@ -45,15 +45,15 @@ public class Nonplayer_YG : MonoBehaviour
             //pos_speed = 1f; //처음에 가만히 있기
             float rot_angle = Random.Range(0, 360); //0~360도까지 방향 지정
             float wait_num = Random.Range(min_time, max_time);
-            Debug.Log("rot_angle :" + rot_angle + "/ wait_num : " + wait_num);
+            //Debug.Log("rot_angle :" + rot_angle + "/ wait_num : " + wait_num);
             trans.Rotate(new Vector3(0, rot_angle, 0));
 
             yield return new WaitForSeconds(1f);
-            Debug.Log("1초 기다림 완료");
+            //Debug.Log("1초 기다림 완료");
 
             pos_speed = Random.Range(min_force, max_force); //움직임 값 설정
             yield return new WaitForSeconds(wait_num);
-            Debug.Log($"{wait_num}초 기다림 완료");
+            //Debug.Log($"{wait_num}초 기다림 완료");
 
             //rigid.velocity = Vector3.forward * pos_speed;
         }
@@ -190,7 +190,7 @@ public class NPC_YG : MonoBehaviour
             case Test_state.pc:
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("Input.GetMouseButtonDown(0)");
+                    //Debug.Log("Input.GetMouseButtonDown(0)");
                     mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     touch_on = true;
                     Try_raycast(Input.mousePosition);
@@ -201,13 +201,13 @@ public class NPC_YG : MonoBehaviour
 
     private void Try_raycast(Vector3 pos)
     {
-        Debug.Log("Try_raycast");
+        //Debug.Log("Try_raycast");
         Ray ray;
         RaycastHit hit;
         ray = Camera.main.ScreenPointToRay(pos);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
         {
-            Debug.Log("레이 쏨");
+            //Debug.Log("레이 쏨");
             if (hit.collider.CompareTag("NPC"))
             {
                 Interactive_NPC();
@@ -217,7 +217,7 @@ public class NPC_YG : MonoBehaviour
 
     private void Interactive_NPC()
     {
-        Debug.Log("NPC찾음");
+        //Debug.Log("NPC찾음");
         TalkManager.instance.Print();
     }
 
