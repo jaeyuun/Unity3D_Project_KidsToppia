@@ -5,6 +5,5 @@ using UnityEngine;
 public interface IState_Select
 {
     void Material_Change();
-    void MeshAndMaterial_Change();
     void GameObject_Change();
 }

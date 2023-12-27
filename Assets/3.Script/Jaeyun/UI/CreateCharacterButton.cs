@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CreateCharacterButton : MonoBehaviour
 {
     [SerializeField] private PlayerCreate player;
+    [SerializeField] private PlayerCreate_Scene player_scene;
 
     private void OnEnable()
     {
-        if (player == null)
+        if (player == null && SceneManager.GetActiveScene().name.Equals("MainGame_J"))
         {
             PlayerCreate[] players = FindObjectsOfType<PlayerCreate>();
             for (int i = 0; i < players.Length; i++)
@@ -20,17 +22,30 @@ public class CreateCharacterButton : MonoBehaviour
                 }
             }
         }
-        //player.gameObject.transform.position;
     }
 
     public void SelectMenuButton(int index)
     {
-        player.selectMenu = (SelectMenu)index;
-}
+        if (SceneManager.GetActiveScene().name.Equals("MainGame_J")) // todo... SceneName 바뀌었을 때 변경 필수!
+        {
+            player.selectMenu = (SelectMenu)index;
+        }
+        else if (SceneManager.GetActiveScene().name.Equals("CreateScene"))
+        {
+            player_scene.selectMenu = (SelectMenu)index;
+        }
+    }
 
     public void SelectButton(int index)
     {
-        player.select = (Select)index;
+        if (SceneManager.GetActiveScene().name.Equals("MainGame_J")) // todo... SceneName 바뀌었을 때 변경 필수!
+        {
+            player.select = (Select)index;
+        }
+        else if (SceneManager.GetActiveScene().name.Equals("CreateScene"))
+        {
+            player_scene.select = (Select)index;
+        }
     }
 
     public void RidingSelectButton(int index)
@@ -40,6 +55,13 @@ public class CreateCharacterButton : MonoBehaviour
 
     public void PlayerChange()
     {
-        player.MenuSelect();
+        if (SceneManager.GetActiveScene().name.Equals("MainGame_J")) // todo... SceneName 바뀌었을 때 변경 필수!
+        {
+            player.MenuSelect();
+        }
+        else if (SceneManager.GetActiveScene().name.Equals("CreateScene"))
+        {
+            player_scene.MenuSelect();
+        }
     }
 }
