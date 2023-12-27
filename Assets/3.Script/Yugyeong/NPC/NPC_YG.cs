@@ -88,12 +88,19 @@ public class NPC_YG : MonoBehaviour
     [SerializeField] private Vector3 mouse_pos;
     [SerializeField] private bool touch_on;
     [SerializeField] private LayerMask layer;
+    [SerializeField] private bool can_move;
+
 
     private void Awake()
     {
         //컴포넌트 가져오기
         TryGetComponent(out ani);
         TryGetComponent(out trans);
+
+        //델리게이트 등록하기
+        TalkManager.event_talkend += turn_canmove;
+
+        can_move = false;
         goal = goals[0];
     }
 
@@ -106,6 +113,11 @@ public class NPC_YG : MonoBehaviour
     private void Update()
     {
         Input_touch();
+    }
+
+    private void turn_canmove()
+    {
+        can_move = !can_move;
     }
 
     IEnumerator Find_posttion()
@@ -139,7 +151,10 @@ public class NPC_YG : MonoBehaviour
                 tmprot.y = 0;
                 tmprot.Normalize();
                 transform.rotation = Quaternion.LookRotation(tmprot);
+                if (can_move)
+                {
                 transform.position = Vector3.MoveTowards(transform.position, goal.position, Time.deltaTime);
+                }
             }
 
             else
@@ -195,12 +210,15 @@ public class NPC_YG : MonoBehaviour
             Debug.Log("레이 쏨");
             if (hit.collider.CompareTag("NPC"))
             {
-                Debug.Log("NPC찾음");
-                TalkManager.instance.Print();
+                Interactive_NPC();
             }
         }
+    }
 
-
+    private void Interactive_NPC()
+    {
+        Debug.Log("NPC찾음");
+        TalkManager.instance.Print();
     }
 
 }

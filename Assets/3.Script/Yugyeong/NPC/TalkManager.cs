@@ -10,6 +10,8 @@ public class TalkManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI dialog_text;
     [SerializeField] int dialog_index;
     [SerializeField] TextMeshProUGUI name_text;
+    public delegate void del_talkend();
+    public static event del_talkend event_talkend;
 
     [Header("data")]
     List<Dictionary<string, object>> data_Dialog;
@@ -48,11 +50,19 @@ public class TalkManager : MonoBehaviour
     public void Open_dialog()
     {
         talk_pannel.SetActive(true);
+        if (event_talkend != null)
+        {
+            event_talkend();
+        }
     }
 
     public void Close_dialog()
     {
         talk_pannel.SetActive(false);
+        if (event_talkend != null)
+        {
+            event_talkend();
+        }
     }
 
     public void Print()
