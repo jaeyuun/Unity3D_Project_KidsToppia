@@ -103,7 +103,7 @@ public class ServerChecker : MonoBehaviour
     private void DefaultData(string path)
     {
         List<ServerItem> items = new List<ServerItem>();
-        items.Add(new ServerItem("1", "13.124.181.154", "7777"));
+        items.Add(new ServerItem("2", "13.124.181.154", "7777"));
         JsonData data = JsonMapper.ToJson(items); // 반드시 자료구조로 넣어야 함
         File.WriteAllText(path + "/License.json", data.ToString());
     }

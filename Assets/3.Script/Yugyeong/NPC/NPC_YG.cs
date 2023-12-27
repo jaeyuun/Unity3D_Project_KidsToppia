@@ -172,30 +172,28 @@ public class NPC_YG : MonoBehaviour
 
     private void Input_touch()
     {
-        switch (test_state)
+        if (Application.platform == RuntimePlatform.Android)
         {
-            case Test_state.mobile:
-                if (Input.touchCount > 0)
+            if (Input.touchCount > 0)
+            {
+                touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
                 {
-                    touch = Input.GetTouch(0);
-                    if (touch.phase == TouchPhase.Began)
-                    {
-                        touch_on = true;
-                        touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
-                        Try_raycast(touch.position);
-                    }
-                }
-                break;
-
-            case Test_state.pc:
-                if (Input.GetMouseButtonDown(0))
-                {
-                    //Debug.Log("Input.GetMouseButtonDown(0)");
-                    mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     touch_on = true;
-                    Try_raycast(Input.mousePosition);
+                    touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
+                    Try_raycast(touch.position);
                 }
-                break;
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //Debug.Log("Input.GetMouseButtonDown(0)");
+                mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                touch_on = true;
+                Try_raycast(Input.mousePosition);
+            }
         }
     }
 

@@ -8,17 +8,17 @@ using LitJson;
 using System;
 using System.IO;
 
-public class user_info
+public class User_info
 { // Database table info
-    public string id { get; private set; }
-    public string pw { get; private set; }
-    public string nickName { get; private set; }
+    public string User_Id { get; private set; }
+    public string User_Pw { get; private set; }
+    public string User_Nickname { get; set; }
 
-    public user_info(string userId, string password, string userName)
+    public User_info(string userId, string password, string userName)
     { // 생성자 호출될 때만 설정됨
-        id = userId;
-        pw = password;
-        nickName = userName;
+        User_Id = userId;
+        User_Pw = password;
+        User_Nickname = userName;
     }
 }
 
@@ -42,7 +42,7 @@ public class ConfigItem
 
 public class SQLManager : MonoBehaviour
 {
-    public user_info info;
+    public User_info info;
 
     public MySqlConnection connection;
     public MySqlDataReader reader;
@@ -160,7 +160,7 @@ public class SQLManager : MonoBehaviour
         return true;
     }
 
-    public bool Login(string id, string password)
+    public bool Login(string id, string password, string nick)
     {
         // 직접적으로 DB에서 데이터를 가지고 오는 메소드
         // 조회되는 데이터가 없다면 false, 조회가 되는 데이터가 있다면 true
@@ -177,7 +177,7 @@ public class SQLManager : MonoBehaviour
             {
                 return false;
             }
-            string sqlCommand = string.Format(@"SELECT User_name, User_Password FROM user_info WHERE User_Name = '{0}' AND User_Password = '{1}';", id, password); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            string sqlCommand = string.Format(@"SELECT id, pw, nickname FROM user_info WHERE id = '{0}' AND pw = '{1}' AND nickname = '{2}';", id, password, nick); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
             MySqlCommand cmd = new MySqlCommand(sqlCommand, connection);
             reader = cmd.ExecuteReader();
             if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
@@ -190,7 +190,7 @@ public class SQLManager : MonoBehaviour
                     string nickName = (reader.IsDBNull(0)) ? string.Empty : (string)reader["nickname"].ToString();
                     if (!name.Equals(string.Empty) || !pw.Equals(string.Empty))
                     { // 정상적으로 Data를 불러온 상황
-                        info = new user_info(name, pw, nickName);
+                        info = new User_info(name, pw, nickName);
                         if (!reader.IsClosed)
                         {
                             reader.Close();
