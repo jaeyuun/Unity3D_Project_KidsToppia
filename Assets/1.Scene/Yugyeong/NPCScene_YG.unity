@@ -11481,8 +11481,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   joystick: {fileID: 0}
+  lenderCamera: {fileID: 0}
   rigid_net: {fileID: 0}
   trans_net: {fileID: 0}
+  ani_net: {fileID: 0}
   playerRigid: {fileID: 0}
   moveSpeed: 3
   jumpForce: 3
@@ -37064,6 +37066,7 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 65536
+  can_move: 0
 --- !u!54 &8560356508512973691
 Rigidbody:
   m_ObjectHideFlags: 0
