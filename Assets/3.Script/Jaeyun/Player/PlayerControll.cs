@@ -4,11 +4,12 @@ using UnityEngine;
 public class PlayerControll : NetworkBehaviour
 {
     [SerializeField] private FixedJoystick joystick;
+    [SerializeField] private GameObject lenderCamera;
 
     // Network Component
     public NetworkRigidbodyReliable rigid_net;
     public NetworkTransformReliable trans_net;
-    private NetworkAnimator ani_net;
+    public NetworkAnimator ani_net;
 
     public Rigidbody playerRigid;
     private Transform playerTrans;
@@ -32,6 +33,10 @@ public class PlayerControll : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!isLocalPlayer) return;
+        if (isClient && !lenderCamera.activeSelf)
+        {
+            lenderCamera.SetActive(true);
+        }
         PlayerMovement();
     }
 
@@ -42,11 +47,11 @@ public class PlayerControll : NetworkBehaviour
         if (joystick.Horizontal != 0 || joystick.Vertical != 0)
         {
             playerTrans.rotation = Quaternion.LookRotation(new Vector3(playerRigid.velocity.x, 0f, playerRigid.velocity.z)); // jump 했을 때 앞으로 넘어지지 않게 만듦
-            ani_net.animator.SetBool("isWalk", true);
+            ani_net.animator.SetBool("isWalking", true);
         }
         else
         {
-            ani_net.animator.SetBool("isWalk", false);
+            ani_net.animator.SetBool("isWalking", false);
         }
     }
 
