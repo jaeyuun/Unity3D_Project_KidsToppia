@@ -37,7 +37,7 @@ public class CreateCharacterButton : MonoBehaviour
 
     public void SelectButton(int index)
     {
-        if (player != null) // todo... SceneName 바뀌었을 때 변경 필수!
+        if (player != null)
         {
             player.select = (Select)index;
         }
@@ -54,7 +54,7 @@ public class CreateCharacterButton : MonoBehaviour
 
     public void PlayerChange()
     {
-        if (player != null) // todo... SceneName 바뀌었을 때 변경 필수!
+        if (player != null)
         {
             player.MenuSelect();
         }
@@ -62,5 +62,10 @@ public class CreateCharacterButton : MonoBehaviour
         {
             player_scene.MenuSelect();
         }
+    }
+
+    public void CreateButton()
+    {
+
     }
 }

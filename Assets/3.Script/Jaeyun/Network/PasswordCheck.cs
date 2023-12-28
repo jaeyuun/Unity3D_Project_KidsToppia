@@ -14,7 +14,7 @@ public class PasswordCheck : MonoBehaviour
         }
         else
         {
-            Input.imeCompositionMode = IMECompositionMode.Auto;
+            Input.imeCompositionMode = IMECompositionMode.On;
         }
     }
 }
