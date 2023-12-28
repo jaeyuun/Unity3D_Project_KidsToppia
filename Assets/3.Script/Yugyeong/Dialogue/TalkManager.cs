@@ -10,8 +10,14 @@ public class TalkManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI dialog_text;
     [SerializeField] int dialog_index;
     [SerializeField] TextMeshProUGUI name_text;
+
     public delegate void del_talkend();
     public static event del_talkend event_talkend;
+
+    [SerializeField]private Touch touch;
+    private Vector3 touched_pos;
+    private Vector3 mouse_pos;
+    [SerializeField] private LayerMask layer;
 
     [Header("data")]
     List<Dictionary<string, object>> data_Dialog;
@@ -37,6 +43,7 @@ public class TalkManager : MonoBehaviour
     private void Update()
     {
         Test();
+        Input_touch();
     }
 
     private void Test()
@@ -81,9 +88,63 @@ public class TalkManager : MonoBehaviour
 
         else
         {
-            dialog_index = 0;
-            Close_dialog();
+            Stop_talk();
         }
+    }
+
+    public void Stop_talk()
+    {
+        dialog_index = 0;
+        Close_dialog();
+    }
+
+    private void Input_touch()
+    {
+        //Debug.Log("Input_touch");
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.touchCount > 0)
+            {
+                touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
+                {
+                    touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
+                    Try_raycast(touch.position);
+                }
+            }
+        }
+
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //Debug.Log("Input.GetMouseButtonDown(0)");
+                mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Try_raycast(Input.mousePosition);
+            }
+        }
+    }
+
+    private void Try_raycast(Vector3 pos)
+    {
+        //Debug.Log("Try_raycast");
+        Ray ray;
+        RaycastHit hit;
+        ray = Camera.main.ScreenPointToRay(pos);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
+        {
+           // Debug.Log("∑π¿Ã ΩÙ");
+            if (hit.collider.CompareTag("NPC"))
+            {
+                Interactive_NPC();
+            }
+        }
+    }
+
+    private void Interactive_NPC()
+    {
+        //Debug.Log("NPC√£¿Ω");
+        Print();
     }
 }
 

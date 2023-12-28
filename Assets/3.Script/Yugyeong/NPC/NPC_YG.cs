@@ -9,11 +9,6 @@ public abstract class NPC_YG : MonoBehaviour
     public Transform goal;
     public bool can_move;
 
-    private Touch touch;
-    private Vector3 touched_pos;
-    private Vector3 mouse_pos;
-    private LayerMask layer;
-
     virtual public void Awake()
     {
         //컴포넌트 가져오기
@@ -30,10 +25,6 @@ public abstract class NPC_YG : MonoBehaviour
         StartCoroutine(Set_position());
     }
 
-    private void Update()
-    {
-        Input_touch();
-    }
     private void Turn_canmove()
     {
         can_move = !can_move;
@@ -49,54 +40,6 @@ public abstract class NPC_YG : MonoBehaviour
         yield return null;
     }
 
-    private void Input_touch()
-    {
-        Debug.Log("Input_touch");
-
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.touchCount > 0)
-            {
-                touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Began)
-                {
-                    touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
-                    Try_raycast(touch.position);
-                }
-            }
-        }
-
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                //Debug.Log("Input.GetMouseButtonDown(0)");
-                mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Try_raycast(Input.mousePosition);
-            }
-        }
-    }
-
-    private void Try_raycast(Vector3 pos)
-    {
-        //Debug.Log("Try_raycast");
-        Ray ray;
-        RaycastHit hit;
-        ray = Camera.main.ScreenPointToRay(pos);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
-        {
-            Debug.Log("레이 쏨");
-            if (hit.collider.CompareTag("NPC"))
-            {
-                Interactive_NPC();
-            }
-        }
-    }
-
-    private void Interactive_NPC()
-    {
-        Debug.Log("NPC찾음");
-        TalkManager.instance.Print();
-    }
+   
 
 }

@@ -2,6 +2,18 @@
 using UnityEngine;
 using Mirror;
 
+enum Animal
+{
+    none = 0,
+    white_goat,
+    black_goat,
+    chicken,
+    black_sheep,
+    yellow_sheep,
+    white_sheep,
+    whale
+}
+
 public class Nonplayer_YG : NetworkBehaviour
 {
     // Nonplayer : 랜덤으로 움직이게 하기
@@ -15,6 +27,7 @@ public class Nonplayer_YG : NetworkBehaviour
     
     [SerializeField] private Vector3 goal;
     [SerializeField] private bool can_move;
+    [SerializeField] private Animal animal;
 
     private void Awake()
     {
@@ -58,6 +71,7 @@ public class Nonplayer_YG : NetworkBehaviour
             else
             {
                 ani.SetBool("is_walk", false);
+                Play_ani();
                 yield return new WaitForSeconds(3f);
                 StartCoroutine(Find_posttion());
                 break;
@@ -65,5 +79,18 @@ public class Nonplayer_YG : NetworkBehaviour
             yield return null;
         }
         StartCoroutine(Set_position());
+    }
+
+    private void Play_ani()
+    {
+        int ran = Random.Range(1, 2);
+        if (ran == 1)
+        {
+            ani.SetTrigger("State1");
+        }
+        else
+        {
+            return;
+        }
     }
 }
