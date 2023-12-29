@@ -11,7 +11,7 @@ interface IGoal_item
 {
     void Item();
 }
-[CreateAssetMenu(fileName = "Goal_YG", menuName = "Goal_YG", order = 3)]
+[CreateAssetMenu(fileName = "Goal_YG"  , menuName = "YG/Quest_YG/Goal_YG", order = 3)]
 public class Goal_YG : ScriptableObject, IGoal_action
 {
     [SerializeField] private int current_amount;
@@ -52,7 +52,7 @@ public class Goal_YG : ScriptableObject, IGoal_action
     }
 }
 
-[CreateAssetMenu(fileName = "Goal_action_YG", menuName = "Goal_action_YG", order = 1)]
+[CreateAssetMenu(fileName = "Goal_action_YG", menuName = "YG/Quest_YG/Goal_action_YG", order = 1)]
 public class Goal_action_YG : Goal_YG, IGoal_action
 {
     //public void Action()
@@ -61,7 +61,7 @@ public class Goal_action_YG : Goal_YG, IGoal_action
     //}
 }
 
-[CreateAssetMenu(fileName = "Goal_item_YG", menuName = "Goal_item_YG", order = 2)]
+[CreateAssetMenu(fileName = "Goal_item_YG", menuName = "YG/Quest_YG/Goal_item_YG", order = 2)]
 public class Goal_item_YG : Goal_YG, IGoal_item
 {
     public void Item()

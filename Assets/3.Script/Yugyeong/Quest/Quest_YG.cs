@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "Quest_YG", menuName = "Quest_data", order = 0)]
+[CreateAssetMenu(fileName = "Quest_YG", menuName = "YG/Quest_YG/quest_data", order = 0)]
 public class Quest_YG : ScriptableObject
 {
     [Header("Info")]

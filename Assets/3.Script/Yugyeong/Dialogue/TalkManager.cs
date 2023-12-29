@@ -110,7 +110,8 @@ public class TalkManager : MonoBehaviour
                 {
                     touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
                     Try_raycast(touch.position);
-                }
+                    StudyManager.instance.Try_raycast(touch.position);
+}
             }
         }
 
@@ -121,6 +122,7 @@ public class TalkManager : MonoBehaviour
                 //Debug.Log("Input.GetMouseButtonDown(0)");
                 mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Try_raycast(Input.mousePosition);
+                StudyManager.instance.Try_raycast(Input.mousePosition);
             }
         }
     }

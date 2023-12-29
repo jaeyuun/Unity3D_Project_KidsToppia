@@ -2,19 +2,7 @@
 using UnityEngine;
 using Mirror;
 
-enum Animal
-{
-    none = 0,
-    white_goat,
-    black_goat,
-    chicken,
-    black_sheep,
-    yellow_sheep,
-    white_sheep,
-    whale
-}
-
-public class Nonplayer_YG : NetworkBehaviour
+public class Nonplayer_YG : MonoBehaviour
 {
     // Nonplayer : 랜덤으로 움직이게 하기
 
@@ -27,7 +15,7 @@ public class Nonplayer_YG : NetworkBehaviour
     
     [SerializeField] private Vector3 goal;
     [SerializeField] private bool can_move;
-    [SerializeField] private Animal animal;
+    [SerializeField] public Study_YG data;
 
     private void Awake()
     {
