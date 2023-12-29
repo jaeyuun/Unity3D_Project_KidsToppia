@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-/* SQL namespace */
-using MySql.Data;
-using MySql.Data.MySqlClient;
 using LitJson;
+/* SQL namespace */
+using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class User_info
 { // Database table info
@@ -15,16 +13,14 @@ public class User_info
     public string User_NickName { get; set; }
     public char FirstConnect { get; set; }
     public char Connecting { get; set; }
-    public char Is_Create { get; set; }
 
-    public User_info(string userId, string password, string nickname, char firstConnect, char conn, char isCreate)
+    public User_info(string userId, string password, string nickname, char firstConnect, char conn)
     {
         User_Id = userId;
         User_Pw = password;
         User_NickName = nickname;
         FirstConnect = firstConnect;
         Connecting = conn;
-        Is_Create = isCreate;
     }
 }
 
@@ -196,6 +192,34 @@ public class SQLManager : MonoBehaviour
         return true;
     }
 
+    public void UpdateUserInfo(string column, char content, string userId)
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+            string selectCommand = string.Format(@"UPDATE user_info SET {0} = '{1}' WHERE id = '{2}';", column, content, userId);
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
+
     public void UpdateData(string selectMenu, int select)
     {
         try
@@ -204,7 +228,7 @@ public class SQLManager : MonoBehaviour
             {
                 return;
             }
-            string selectCommand = string.Format(@"UPDATE user_character_info SET {0} = {1} WHERE user_id = '{2}';", selectMenu, select, info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            string selectCommand = string.Format(@"UPDATE user_character_info SET {0} = '{1}' WHERE user_id = '{2}';", selectMenu, select, info.User_Id);
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed)
@@ -252,6 +276,118 @@ public class SQLManager : MonoBehaviour
         }
     }
 
+    public User_info PlayerInfo(string user_id)
+    {
+        try
+        {
+            if (ConnectionCheck(connection))
+            {
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN user_character_info B ON A.id = B.user_id WHERE A.id = '{0}';", user_id);
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+                {
+                    // 읽은 데이터를 하나씩 나열
+                    while (reader.Read())
+                    {
+                        // user_info
+                        string id = (reader.IsDBNull(0)) ? string.Empty : reader["id"].ToString();
+                        string pw = (reader.IsDBNull(0)) ? string.Empty : reader["pw"].ToString();
+                        string nickName = reader["nickname"].ToString();
+                        char firstConnect = reader["firstConnect"].ToString()[0];
+                        char connecting = reader["connecting"].ToString()[0];
+                        if (!id.Equals(string.Empty))
+                        { // 정상적으로 Data를 불러온 상황
+                            User_info user_Info = new User_info(id, pw, nickName, firstConnect, connecting);
+                            if (!reader.IsClosed)
+                            {
+                                reader.Close();
+                            }
+                            return user_Info;
+                        }
+                        else
+                        { // 로그인 실패
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+
+    }
+
+    public User_Character CharacterInfo(string user_id)
+    {
+        try
+        {
+            if (ConnectionCheck(connection))
+            {
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN user_character_info B ON A.id = B.user_id WHERE A.id = '{0}';", user_id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+                {
+                    // 읽은 데이터를 하나씩 나열
+                    while (reader.Read())
+                    {
+                        string id_c = reader["user_id"].ToString();
+                        int eyes = reader["Eyes"].ToString()[0] - '0';
+                        int jummper = reader["Jummper"].ToString()[0] - '0';
+                        int runners = reader["Runners"].ToString()[0] - '0';
+                        int tshirt = reader["TShirts"].ToString()[0] - '0';
+                        int trunk = reader["Trunks"].ToString()[0] - '0';
+                        int skin = reader["Skin"].ToString()[0] - '0';
+                        int hat = reader["Hat"].ToString()[0] - '0';
+                        int ride = reader["Riding"].ToString()[0] - '0';
+                        int hair = reader["HairStyle"].ToString()[0] - '0';
+                        char riding = reader["Ride"].ToString()[0];
+                        if (!id_c.Equals(string.Empty))
+                        { // 정상적으로 Data를 불러온 상황
+                            User_Character character_info = new User_Character(id_c, eyes, jummper, runners, tshirt, trunk, skin, hat, hair, ride, riding);
+                            if (!reader.IsClosed)
+                            {
+                                reader.Close();
+                            }
+                            return character_info;
+                        }
+                        else
+                        { // 로그인 실패
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+    }
+
     public bool SignIn(string user_id, string user_pw)
     { // 로그인
         // 조회되는 데이터가 없다면 false, 조회가 되는 데이터가 있다면 true
@@ -282,23 +418,22 @@ public class SQLManager : MonoBehaviour
                     string nickName = reader["nickname"].ToString();
                     char firstConnect = reader["firstConnect"].ToString()[0];
                     char connecting = reader["connecting"].ToString()[0];
-                    char isCreate = reader["create"].ToString()[0];
                     // user_character_info
                     string id_c = reader["user_id"].ToString();
-                    int eyes = int.Parse(reader["Eyes"].ToString());
-                    int jummper = int.Parse(reader["Jummper"].ToString());
-                    int runners = int.Parse(reader["Runners"].ToString());
-                    int tshirt = int.Parse(reader["TShirts"].ToString());
-                    int trunk = int.Parse(reader["Trunks"].ToString());
-                    int skin = int.Parse(reader["Skin"].ToString());
-                    int hat = int.Parse(reader["Hat"].ToString());
-                    int ride = int.Parse(reader["Riding"].ToString());
-                    int hair = int.Parse(reader["HairStyle"].ToString());
+                    int eyes = reader["Eyes"].ToString()[0] - '0';
+                    Debug.Log(id_c);
+                    int jummper = reader["Jummper"].ToString()[0] - '0';
+                    int runners = reader["Runners"].ToString()[0] - '0';
+                    int tshirt = reader["TShirts"].ToString()[0] - '0';
+                    int trunk = reader["Trunks"].ToString()[0] - '0';
+                    int skin = reader["Skin"].ToString()[0] - '0';
+                    int hat = reader["Hat"].ToString()[0] - '0';
+                    int ride = reader["Riding"].ToString()[0] - '0';
+                    int hair = reader["HairStyle"].ToString()[0] - '0';
                     char riding = reader["Ride"].ToString()[0];
-
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     { // 정상적으로 Data를 불러온 상황
-                        info = new User_info(id, pw, nickName, firstConnect, connecting, isCreate);
+                        info = new User_info(id, pw, nickName, firstConnect, connecting);
                         character_info = new User_Character(id_c, eyes, jummper, runners, tshirt, trunk, skin, hat, hair, ride, riding);
                         if (!reader.IsClosed)
                         {

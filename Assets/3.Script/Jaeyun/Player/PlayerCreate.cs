@@ -1,6 +1,6 @@
+using Mirror;
 using System.Collections;
 using UnityEngine;
-using Mirror;
 
 public enum SelectMenu
 {
@@ -38,7 +38,11 @@ public enum Ride
 
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
+    [SerializeField] private PlayerName playerName;
+
     public NetworkAnimator ani_net;
+    public User_info info;
+    public User_Character character;
 
     [SerializeField] private GameObject[] changeObject;
     private GameObject selectObject;
@@ -49,6 +53,8 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
     public Select select;
     [SyncVar]
     public Ride ride;
+    [SyncVar]
+    public string playerId = string.Empty;
 
     public Material[] materials; // Eyes, Jumper, Runners, TShirts, Trunks, Skin
     public GameObject[] hatObjects; // Hat
@@ -65,29 +71,78 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
     private char updateRiding = 'F'; // Database에 들어있는 라이딩 탔는지 안탔는지 유무
 
     #region Unity CallBack Method
-    private void Start()
+    public override void OnStartClient()
     {
-        SetPlayer();
-        ChangeLayer(this.gameObject, 7);
+        base.OnStartClient();
+        if (isLocalPlayer)
+        {
+            playerId = SQLManager.instance.info.User_Id;
+            ChangeLayer(this.gameObject, 7);
+        }
+
+        StartCoroutine(SetPlayer());
     }
 
-    private void SetPlayer()
+    private IEnumerator SetPlayer()
     {
-        // eyes
-        MeshRenderer meshRenderer = changeObject[0].GetComponent<MeshRenderer>();
-        Material[] newMaterial = meshRenderer.materials;
-        newMaterial[0] = this.materials[(int)select];
-        meshRenderer.materials = newMaterial;
+        if (isLocalPlayer)
+        {
+            PlayerIDSet_CM(playerId);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+        // SQLManager        
+        info = SQLManager.instance.PlayerInfo(playerId);
+        character = SQLManager.instance.CharacterInfo(playerId);
+        playerName.PlayerNameSet();
+        // Eyes
+        EyesChange(changeObject[0], character.User_Eyes);
         // Jumper, Runners, TShirts, Trunks, Skin
-        SkinnedMeshRenderer skinnedMeshRenderer = changeObject[0].GetComponent<SkinnedMeshRenderer>();
-        Material[] newSkinnedMaterial = meshRenderer.materials;
-        newMaterial[0] = this.materials[(int)select];
+        OtherChange(changeObject[1], character.User_Jummper);
+        OtherChange(changeObject[2], character.User_Runners);
+        OtherChange(changeObject[3], character.User_TShirt);
+        OtherChange(changeObject[4], character.User_Trunk);
+        OtherChange(changeObject[5], character.User_Skin);
+        // Hat
+        for (int i = 0; i < hatObjects.Length; i++)
+        {
+            hatObjects[i].SetActive(false);
+        }
+        hatObjects[character.User_Hat].SetActive(true);
+        // Ride
+        for (int i = 0; i < rides.Length; i++)
+        {
+            rides[i].SetActive(false);
+        }
+        ani_net.animator.SetBool("isDriving", false);
+        // HairStyles
+        for (int i = 0; i < hairStyles.Length; i++)
+        {
+            hairStyles[i].SetActive(false);
+        }
+        hairStyles[character.User_HairStyle].SetActive(true);
+    }
+
+    private void EyesChange(GameObject obj, int index)
+    {
+        MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+        Material[] newMaterial = meshRenderer.materials;
+        newMaterial[0] = this.materials[index];
         meshRenderer.materials = newMaterial;
+    }
+
+    private void OtherChange(GameObject obj, int index)
+    {
+        SkinnedMeshRenderer skinnedMeshRenderer = obj.GetComponent<SkinnedMeshRenderer>();
+        Material[] newSkinnedMaterial = skinnedMeshRenderer.materials;
+        newSkinnedMaterial[0] = this.materials[index];
+        skinnedMeshRenderer.materials = newSkinnedMaterial;
     }
 
     private void ChangeLayer(GameObject obj, int layer)
-    {
-        if (!isLocalPlayer) return;
+    { // RawImage에 나올 플레이어에 레이어 적용하기
         obj.layer = layer;
         foreach (Transform child in obj.transform)
         {
@@ -147,25 +202,36 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             isGameObject = false;
         }
     }
+
+    [Command]
+    private void PlayerIDSet_CM(string playerID)
+    {
+        playerId = playerID;
+        PlayerIDSet_RPC(playerId);
+    }
+
     #endregion
     #region ClientRPC
+    [ClientRpc]
+    private void PlayerIDSet_RPC(string playerID)
+    {
+        playerId = playerID;
+        info = SQLManager.instance.PlayerInfo(playerId);
+        character = SQLManager.instance.CharacterInfo(playerId);
+        playerName.PlayerNameSet();
+    }
+
     [ClientRpc]
     public void Material_Change()
     {
         selectObject = changeObject[(int)selectMenu];
         if (selectMenu == SelectMenu.Eyes)
         {
-            MeshRenderer meshRenderer = selectObject.GetComponent<MeshRenderer>();
-            Material[] newMaterial = meshRenderer.materials;
-            newMaterial[0] = this.materials[(int)select];
-            meshRenderer.materials = newMaterial;
+            EyesChange(selectObject, (int)select);
         }
         else
         {
-            SkinnedMeshRenderer meshRenderer = selectObject.GetComponent<SkinnedMeshRenderer>();
-            Material[] newMaterial = meshRenderer.materials;
-            newMaterial[0] = this.materials[(int)select];
-            meshRenderer.materials = newMaterial;
+            OtherChange(selectObject, (int)select);
         }
         switch (selectMenu)
         {

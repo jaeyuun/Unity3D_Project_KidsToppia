@@ -33,7 +33,17 @@ public class LoginChecker : MonoBehaviour
             User_info info = SQLManager.instance.info;
             SQLManager.instance.isLogin = true;
             Debug.Log(info.User_Id + " | " + info.User_Pw);
-            SceneManager.LoadScene("CreateScene");
+            // 처음 접속이 아닌 경우 CreateScene이 아니라 Start로 넘어감
+            if (info.FirstConnect.Equals('T'))
+            {
+                info.Connecting = 'T';
+                SQLManager.instance.UpdateUserInfo("firstConnect", 'T', info.User_Id);
+                ServerChecker.instance.StartClient();
+            }
+            else
+            { // 처음 접속인 경우
+                SceneManager.LoadScene("CreateScene");
+            }
         }
         else
         {

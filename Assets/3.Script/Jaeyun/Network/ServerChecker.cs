@@ -177,6 +177,8 @@ public class ServerChecker : MonoBehaviour
     {
         if (NetworkClient.isConnected)
         {
+            User_info info = SQLManager.instance.info;
+            SQLManager.instance.UpdateUserInfo("connecting", 'F', info.User_Id);
             manager.StopClient();
         }
         if (NetworkServer.active)
