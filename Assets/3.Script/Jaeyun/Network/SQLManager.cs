@@ -327,7 +327,6 @@ public class SQLManager : MonoBehaviour
             }
             return null;
         }
-
     }
 
     public User_Character CharacterInfo(string user_id)

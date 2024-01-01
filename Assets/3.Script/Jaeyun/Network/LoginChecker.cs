@@ -34,11 +34,17 @@ public class LoginChecker : MonoBehaviour
             SQLManager.instance.isLogin = true;
             Debug.Log(info.User_Id + " | " + info.User_Pw);
             // 처음 접속이 아닌 경우 CreateScene이 아니라 Start로 넘어감
-            if (info.FirstConnect.Equals('T'))
+            if (info.FirstConnect.Equals('F'))
             {
-                info.Connecting = 'T';
-                SQLManager.instance.UpdateUserInfo("firstConnect", 'T', info.User_Id);
-                ServerChecker.instance.StartClient();
+                if (info.Connecting.Equals('F')) {
+                    ServerChecker.instance.StartClient();
+                }
+                else
+                { // 접속 중인 경우
+                    checkButton.SetActive(true);
+                    log.text = "다른 기기에서 접속 중입니다.";
+                    return;
+                }
             }
             else
             { // 처음 접속인 경우
