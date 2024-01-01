@@ -39,6 +39,7 @@ public enum Ride
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
     [SerializeField] private PlayerName playerName;
+    private Transform startPos;
 
     public NetworkAnimator ani_net;
     public User_info info;
@@ -94,9 +95,12 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             yield return new WaitForSeconds(0.2f);
         }
         // SQLManager        
+        startPos = GameObject.FindGameObjectWithTag("StartPos").transform;
+        this.transform.position = startPos.position;
         info = SQLManager.instance.PlayerInfo(playerId);
         character = SQLManager.instance.CharacterInfo(playerId);
         playerName.PlayerNameSet();
+        
         // Eyes
         EyesChange(changeObject[0], character.User_Eyes);
         // Jumper, Runners, TShirts, Trunks, Skin
@@ -150,7 +154,6 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
         }
     }
     #endregion
-
     #region Client
     public void MenuSelect()
     { // Eyes, Jumpper, Runners, TShirts, Trunks, Skin, Hat, Paw
