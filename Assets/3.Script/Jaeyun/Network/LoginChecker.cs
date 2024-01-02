@@ -67,7 +67,6 @@ public class LoginChecker : MonoBehaviour
         else
         { // window
             dbPath = Application.dataPath + "/Database"; // 경로를 string에 저장
-            Debug.Log(dbPath);
             if (!File.Exists(dbPath + "/UserInfo.json"))
             { // file 검사
                 isLogin = false;
@@ -109,7 +108,6 @@ public class LoginChecker : MonoBehaviour
             User_info info = SQLManager.instance.info;
             SQLManager.instance.isLogin = true;
             DefaultData(dbPath, info);
-            Debug.Log(info.User_Id + " | " + info.User_Pw);
             // 처음 접속이 아닌 경우 CreateScene이 아니라 Start로 넘어감
             if (info.FirstConnect.Equals('F'))
             {
@@ -182,12 +180,10 @@ public class LoginChecker : MonoBehaviour
         {
             string jsonString = File.ReadAllText(dbPath + "/UserInfo.json", Encoding.UTF8);
             JsonData ItemData = JsonMapper.ToObject(jsonString);
-
-            if (SQLManager.instance.SignIn(ItemData[0]["ID"].ToString(), ItemData[0]["NickName"].ToString()))
+            if (SQLManager.instance.SignIn(ItemData[0]["ID"].ToString(), ItemData[0]["PW"].ToString()))
             {
                 User_info info = SQLManager.instance.info;
                 SQLManager.instance.isLogin = true;
-                Debug.Log(info.User_Id + " | " + info.User_Pw);
                 ServerChecker.instance.StartClient();
             }
         }

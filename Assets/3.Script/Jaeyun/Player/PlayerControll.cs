@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerControll : NetworkBehaviour
 {
     private FixedJoystick joystick;
+    private GameObject joystickPanel;
     [SerializeField] private GameObject lenderCamera;
 
     // Network Component
@@ -21,13 +22,14 @@ public class PlayerControll : NetworkBehaviour
     private void OnEnable()
     {
         joystick = FindObjectOfType<FixedJoystick>();
-
+        joystickPanel = GameObject.FindGameObjectWithTag("JoystickPanel");
         TryGetComponent(out rigid_net);
         TryGetComponent(out trans_net);
         TryGetComponent(out ani_net);
 
         playerRigid = rigid_net.target.GetComponent<Rigidbody>();
         playerTrans = trans_net.target.transform;
+        joystickPanel.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -46,11 +48,13 @@ public class PlayerControll : NetworkBehaviour
 
         if (joystick.Horizontal != 0 || joystick.Vertical != 0)
         {
+            joystickPanel.SetActive(true);
             playerTrans.rotation = Quaternion.LookRotation(new Vector3(playerRigid.velocity.x, 0f, playerRigid.velocity.z)); // jump 했을 때 앞으로 넘어지지 않게 만듦
             ani_net.animator.SetBool("isWalking", true);
         }
         else
         {
+            joystickPanel.SetActive(false);
             ani_net.animator.SetBool("isWalking", false);
         }
     }

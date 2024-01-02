@@ -1,10 +1,10 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : NetworkBehaviour
 {
     private FixedJoystick joystick;
-
 
     // camera
     [SerializeField] private Transform target = null; // player
@@ -16,16 +16,10 @@ public class CameraController : NetworkBehaviour
     private float disY = 1.5f;
     private float rotationMin = -10f;
     private float rotationMax = 80f;
-    private float smoothTime = 0.12f;
+    private float smoothTime = 0.0012f;
 
     private Vector3 targetRotation;
     private Vector3 currentVel;
-
-    // moblie touch
-    private Touch tempTouchs;
-    private Vector3 firstPos;
-    private Vector3 secondPos;
-    private bool touchOn;
 
     // PC
     private bool isRotate = false;
@@ -59,7 +53,7 @@ public class CameraController : NetworkBehaviour
             {
                 x = Input.touches[0].deltaPosition.x;
                 y = Input.touches[0].deltaPosition.y;
-                if (Input.GetTouch(0).phase.Equals(TouchPhase.Moved))
+                if (Input.GetTouch(0).phase.Equals(TouchPhase.Moved) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     Rotate(x, y);
                 }
@@ -67,7 +61,7 @@ public class CameraController : NetworkBehaviour
         }
         else
         { // window
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 Rotate(x, y);
             }
@@ -76,6 +70,7 @@ public class CameraController : NetworkBehaviour
 
     private void Rotate(float x, float y)
     {
+        Debug.Log("Rotate");
         axisY = axisY + x * rotSensitive; // 좌우 움직임 제어
         axisX = axisX - y * rotSensitive; // 상하 움직임 제어
         axisX = Mathf.Clamp(axisX, rotationMin, rotationMax); // Y축 제한
