@@ -10,11 +10,13 @@ using UnityEngine.UI;
 public class SignInItem
 { // Database login.json
     public string ID;
+    public string PW;
     public string NickName;
 
-    public SignInItem(string id, string nickName)
+    public SignInItem(string id, string pw, string nickName)
     {
         ID = id;
+        PW = pw;
         NickName = nickName;
     }
 }
@@ -88,7 +90,7 @@ public class LoginChecker : MonoBehaviour
     private void DefaultData(string path, User_info info)
     {
         List<SignInItem> items = new List<SignInItem>();
-        items.Add(new SignInItem($"{info.User_Id}", $"{info.User_NickName}")); // id, nickName
+        items.Add(new SignInItem($"{info.User_Id}", $"{info.User_Pw}", $"{info.User_NickName}")); // id, pw, nickName
         JsonData data = JsonMapper.ToJson(items);
         File.WriteAllText(path + "/UserInfo.json", data.ToString(), Encoding.UTF8);
     }
@@ -175,10 +177,19 @@ public class LoginChecker : MonoBehaviour
     }
 
     public void StartButton()
-    {
+    { // 이미 로그인 되어있는 경우
         if (isLogin)
         {
-            ServerChecker.instance.StartClient();
+            string jsonString = File.ReadAllText(dbPath + "/UserInfo.json", Encoding.UTF8);
+            JsonData ItemData = JsonMapper.ToObject(jsonString);
+
+            if (SQLManager.instance.SignIn(ItemData[0]["ID"].ToString(), ItemData[0]["NickName"].ToString()))
+            {
+                User_info info = SQLManager.instance.info;
+                SQLManager.instance.isLogin = true;
+                Debug.Log(info.User_Id + " | " + info.User_Pw);
+                ServerChecker.instance.StartClient();
+            }
         }
         else
         {

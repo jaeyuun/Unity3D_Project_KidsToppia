@@ -77,7 +77,6 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
         base.OnStartClient();
         if (isLocalPlayer)
         {
-            playerId = SQLManager.instance.info.User_Id;
             ChangeLayer(this.gameObject, 7);
         }
 
@@ -88,6 +87,7 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
     {
         if (isLocalPlayer)
         {
+            playerId = SQLManager.instance.info.User_Id;
             PlayerIDSet_CM(playerId);
         }
         else

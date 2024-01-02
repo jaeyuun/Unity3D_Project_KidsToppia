@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerControll : NetworkBehaviour
 {
-    [SerializeField] private FixedJoystick joystick;
+    private FixedJoystick joystick;
     [SerializeField] private GameObject lenderCamera;
 
     // Network Component
