@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 public class CSVReader
 {
@@ -14,7 +12,6 @@ public class CSVReader
     {
         var list = new List<Dictionary<string, object>>();
         TextAsset data = Resources.Load(file) as TextAsset;
-
         var lines = Regex.Split(data.text, LINE_SPLIT_RE);
 
         if (lines.Length <= 1) return list;
@@ -31,17 +28,21 @@ public class CSVReader
             {
                 string value = values[j];
                 value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
+
                 object finalvalue = value;
                 int n;
                 float f;
+
                 if (int.TryParse(value, out n))
                 {
                     finalvalue = n;
                 }
+
                 else if (float.TryParse(value, out f))
                 {
                     finalvalue = f;
                 }
+
                 entry[header[j]] = finalvalue;
             }
             list.Add(entry);

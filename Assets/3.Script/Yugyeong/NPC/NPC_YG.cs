@@ -1,107 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class Nonplayer_YG : MonoBehaviour
+public abstract class NPC_YG : MonoBehaviour
 {
-    // Nonplayer : ·£´ýÀ¸·Î ¿òÁ÷ÀÌ°Ô ÇÏ±â
+    [Header("NPC")]
+    public Transform trans;
+    public Animator ani;
+    public Transform goal;
+    public bool can_move;
 
-    [SerializeField] private Rigidbody rigid;
-    [SerializeField] private Transform trans;
-    [SerializeField] private Animation ani;
-
-    [SerializeField] private float pos_speed = 1;
-
-    [SerializeField] private float max_force = 5;
-    [SerializeField] private float min_force = 0;
-
-    [SerializeField] private float max_time = 2;
-    [SerializeField] private float min_time = 1;
-
-
-    private void Awake()
+    virtual public void Awake()
     {
-        //ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
-        TryGetComponent(out rigid);
-        TryGetComponent(out trans);
-        TryGetComponent(out ani);
-    }
-
-    private void Start()
-    {
-        StartCoroutine(Random_Movement());
-    }
-
-    private void FixedUpdate()
-    {
-        Vector3 moveDirection = trans.forward;
-        rigid.velocity = Vector3.forward * pos_speed;
-        //Debug.Log($"rigid.velocity: {rigid.velocity} / pos_speed : {pos_speed}");
-    }
-
-    IEnumerator Random_Movement()
-    {
-        while (true)
-        {
-            //pos_speed = 1f; //Ã³À½¿¡ °¡¸¸È÷ ÀÖ±â
-            float rot_angle = Random.Range(0, 360); //0~360µµ±îÁö ¹æÇâ ÁöÁ¤
-            float wait_num = Random.Range(min_time, max_time);
-            //Debug.Log("rot_angle :" + rot_angle + "/ wait_num : " + wait_num);
-            trans.Rotate(new Vector3(0, rot_angle, 0));
-
-            yield return new WaitForSeconds(1f);
-            //Debug.Log("1ÃÊ ±â´Ù¸² ¿Ï·á");
-
-            pos_speed = Random.Range(min_force, max_force); //¿òÁ÷ÀÓ °ª ¼³Á¤
-            yield return new WaitForSeconds(wait_num);
-            //Debug.Log($"{wait_num}ÃÊ ±â´Ù¸² ¿Ï·á");
-
-            //rigid.velocity = Vector3.forward * pos_speed;
-        }
-    }
-
-}
-
-public enum NPC_state
-{
-
-}
-
-public enum Test_state
-{
-    mobile = 0,
-    pc
-}
-
-public class NPC_YG : MonoBehaviour
-{
-    [SerializeField] private Transform trans;
-    [SerializeField] private Animator ani;
-
-    [SerializeField] private Transform[] goals;
-    [SerializeField] private Transform goal;
-    [SerializeField] private int index;
-    [SerializeField] private float speed = 0.1f;
-
-    [SerializeField] private Test_state test_state;
-    [SerializeField] private Touch touch;
-    [SerializeField] private Vector3 touched_pos;
-    [SerializeField] private Vector3 mouse_pos;
-    [SerializeField] private bool touch_on;
-    [SerializeField] private LayerMask layer;
-    [SerializeField] private bool can_move;
-
-
-    private void Awake()
-    {
-        //ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         TryGetComponent(out ani);
         TryGetComponent(out trans);
 
-        //µ¨¸®°ÔÀÌÆ® µî·ÏÇÏ±â
-        TalkManager.event_talkend += turn_canmove;
-
-        can_move = false;
-        goal = goals[0];
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+        TalkManager.event_talkend += Turn_canmove;
     }
 
     private void Start()
@@ -110,66 +25,21 @@ public class NPC_YG : MonoBehaviour
         StartCoroutine(Set_position());
     }
 
-    private void Update()
-    {
-        Input_touch();
-    }
-
-    private void turn_canmove()
+    private void Turn_canmove()
     {
         can_move = !can_move;
     }
 
-    IEnumerator Find_posttion()
+    virtual public IEnumerator Find_posttion()
     {
-        index = 0;
-        while (true)
-        {
-            index = Random.Range(0, goals.Length);
-            if (goals[index] != goal)
-            {
-                index = Random.Range(0, goals.Length);
-                //Debug.Log($"ÀÌ¹ø ¸ñÇ¥ / {goal.name}");
-                //Debug.Log($"¸ñÇ¥ À§Ä¡ / {goal.position}");
-                break;
-            }
-            yield return null;
-        }
         yield return null;
     }
 
-    IEnumerator Set_position()
+    virtual public IEnumerator Set_position()
     {
-        while (true)
-        {
-            //Debug.Log(Vector3.Distance(trans.position, goal.position));
-
-            if (Vector3.Distance(trans.position, goal.position) >= 0.75f)
-            {
-                ani.SetBool("is_walk", true);
-                Vector3 tmprot = goal.position - transform.position;
-                tmprot.y = 0;
-                tmprot.Normalize();
-                transform.rotation = Quaternion.LookRotation(tmprot);
-                if (can_move)
-                {
-                transform.position = Vector3.MoveTowards(transform.position, goal.position, Time.deltaTime);
-                }
-            }
-
-            else
-            {
-                ani.SetBool("is_walk", false);
-                yield return new WaitForSeconds(3f);
-                index = Random.Range(0, goals.Length);
-                goal = goals[index];
-                break;
-            }
-            yield return null;
-        }
-        StartCoroutine(Set_position());
+        yield return null;
     }
-
+    
     private void Input_touch()
     {
         if (Application.platform == RuntimePlatform.Android)
@@ -205,7 +75,7 @@ public class NPC_YG : MonoBehaviour
         ray = Camera.main.ScreenPointToRay(pos);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
         {
-            //Debug.Log("·¹ÀÌ ½ô");
+            //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½");
             if (hit.collider.CompareTag("NPC"))
             {
                 Interactive_NPC();
@@ -215,8 +85,7 @@ public class NPC_YG : MonoBehaviour
 
     private void Interactive_NPC()
     {
-        //Debug.Log("NPCÃ£À½");
+        //Debug.Log("NPCÃ£ï¿½ï¿½");
         TalkManager.instance.Print();
     }
-
 }
