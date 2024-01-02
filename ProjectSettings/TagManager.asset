@@ -6,6 +6,7 @@ TagManager:
   tags:
   - tran
   - NPC
+  - Animal
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - 
   - 
   - 
-  - NPC
+  - NonPlayer
   - 
   - 
   - 
