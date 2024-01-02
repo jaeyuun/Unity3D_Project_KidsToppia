@@ -132,7 +132,8 @@ public class StudyManager : MonoBehaviour
         //개행 문자 제거
         tts_info = Regex.Replace(tts_info, "<br>", "");
         tts_info = Regex.Replace(tts_info, ",", "");
-        string url = "https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=SampleText&tl=Ko-gb";
+
+        //string url = "https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=SampleText&tl=Ko-gb";
         url = "https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=" + $"{tts_info}" + "&tl=Ko-gb";
         
         WWW www = new WWW(url);

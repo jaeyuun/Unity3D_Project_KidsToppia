@@ -2,7 +2,7 @@
 using UnityEngine;
 using Mirror;
 
-public class Nonplayer_YG : MonoBehaviour
+public class Nonplayer_YG : NetworkBehaviour
 {
     // Nonplayer : 랜덤으로 움직이게 하기
 
