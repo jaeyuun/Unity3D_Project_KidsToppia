@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCreate_Scene : MonoBehaviour, IState_Select
@@ -57,6 +55,30 @@ public class PlayerCreate_Scene : MonoBehaviour, IState_Select
             newMaterial[0] = this.materials[(int)select];
             meshRenderer.materials = newMaterial;
         }
+        switch (selectMenu)
+        {
+            case SelectMenu.Eyes:
+                SQLManager.instance.character_info.User_Eyes = (int)select;
+                break;
+            case SelectMenu.Jummper:
+                SQLManager.instance.character_info.User_Jummper = (int)select;
+                break;
+            case SelectMenu.Runners:
+                SQLManager.instance.character_info.User_Runners = (int)select;
+                break;
+            case SelectMenu.TShirts:
+                SQLManager.instance.character_info.User_TShirt = (int)select;
+                break;
+            case SelectMenu.Trunks:
+                SQLManager.instance.character_info.User_Trunk = (int)select;
+                break;
+            case SelectMenu.Skin:
+                SQLManager.instance.character_info.User_Skin = (int)select;
+                break;
+        }
+        string updateMenu = selectMenu.ToString();
+        int updateSelect = (int)select;
+        SQLManager.instance.UpdateData(updateMenu, updateSelect);
     }
     public void GameObject_Change()
     {
@@ -76,5 +98,19 @@ public class PlayerCreate_Scene : MonoBehaviour, IState_Select
             }
             hatObjects[(int)select].SetActive(true);
         }
+        switch (selectMenu)
+        {
+            case SelectMenu.Hat:
+                SQLManager.instance.character_info.User_Hat = (int)select;
+                break;
+            case SelectMenu.HairStyle:
+                SQLManager.instance.character_info.User_HairStyle = (int)select;
+                break;
+            default:
+                break;
+        }
+        string updateMenu = selectMenu.ToString();
+        int updateSelect = (int)select;
+        SQLManager.instance.UpdateData(updateMenu, updateSelect);
     }
 }

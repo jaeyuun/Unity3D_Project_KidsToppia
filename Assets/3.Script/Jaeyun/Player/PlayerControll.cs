@@ -16,7 +16,7 @@ public class PlayerControll : NetworkBehaviour
 
     [SerializeField] private float moveSpeed = 3f;
     public float jumpForce = 3f;
-    public bool isGround;
+    public bool isGround = true;
 
     private void OnEnable()
     {

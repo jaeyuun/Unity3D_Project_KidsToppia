@@ -11,11 +11,11 @@ public abstract class NPC_YG : MonoBehaviour
 
     virtual public void Awake()
     {
-        //ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         TryGetComponent(out ani);
         TryGetComponent(out trans);
 
-        //µ¨¸®°ÔÀÌÆ® µî·ÏÇÏ±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
         TalkManager.event_talkend += Turn_canmove;
     }
 
@@ -39,7 +39,53 @@ public abstract class NPC_YG : MonoBehaviour
     {
         yield return null;
     }
+    
+    private void Input_touch()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.touchCount > 0)
+            {
+                touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
+                {
+                    touch_on = true;
+                    touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
+                    Try_raycast(touch.position);
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //Debug.Log("Input.GetMouseButtonDown(0)");
+                mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                touch_on = true;
+                Try_raycast(Input.mousePosition);
+            }
+        }
+    }
 
-   
+    private void Try_raycast(Vector3 pos)
+    {
+        //Debug.Log("Try_raycast");
+        Ray ray;
+        RaycastHit hit;
+        ray = Camera.main.ScreenPointToRay(pos);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
+        {
+            //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½");
+            if (hit.collider.CompareTag("NPC"))
+            {
+                Interactive_NPC();
+            }
+        }
+    }
 
+    private void Interactive_NPC()
+    {
+        //Debug.Log("NPCÃ£ï¿½ï¿½");
+        TalkManager.instance.Print();
+    }
 }
