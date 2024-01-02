@@ -89,6 +89,8 @@ public class SQLManager : MonoBehaviour
 
     public bool isLogin = false;
 
+    private string[] animal_data = { "black_goat", "black_sheep", "chicken", "whale", "white_goat", "white_sheep", "yellow_sheep" };
+
     private void Awake()
     {
         if (instance == null)
@@ -120,7 +122,7 @@ public class SQLManager : MonoBehaviour
             Debug.Log(e.Message);
         }
     }
-
+    #region SQL Server Connect
     private string ServerSet()
     {
         if (Application.platform == RuntimePlatform.Android)
@@ -191,7 +193,8 @@ public class SQLManager : MonoBehaviour
         }
         return true;
     }
-
+    #endregion
+    #region Player Info Alter (UPDATE)
     public void UpdateUserInfo(string column, char content, string userId)
     {
         try
@@ -276,6 +279,35 @@ public class SQLManager : MonoBehaviour
         }
     }
 
+    public void Updateitem(string name, int num)
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+            string selectCommand = string.Format(@"UPDATE item SET {0} = '{1}' WHERE player_id = '{2}';", name, num, info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
+    #endregion
+    #region Table Search (SELECT)
     public User_info PlayerInfo(string user_id)
     {
         try
@@ -328,7 +360,6 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
-
     public User_Character CharacterInfo(string user_id)
     {
         try
@@ -386,7 +417,107 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
-
+    public item_data Item(string user_id)
+    {
+        try
+        {
+            if (ConnectionCheck(connection))
+            {
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN item B ON A.id = B.player_id WHERE A.id = '{0}';", user_id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+                {
+                    // 읽은 데이터를 하나씩 나열
+                    while (reader.Read())
+                    {
+                        string player_id = reader["player_id"].ToString();
+                        int key_num = reader["key_num"].ToString()[0] - '0';
+                        int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
+                        int food_num = reader["food_num"].ToString()[0] - '0';
+                        if (!player_id.Equals(string.Empty))
+                        { // 정상적으로 Data를 불러온 상황
+                            item_data itemdata = new item_data(player_id, key_num, have_fisingrod, food_num);
+                            if (!reader.IsClosed)
+                            {
+                                reader.Close();
+                            }
+                            return itemdata;
+                        }
+                        else
+                        { // 로그인 실패
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+    }
+    public Nonplayer_data Collection(string user_id, string table_name)
+    {
+        try
+        {
+            if (ConnectionCheck(connection))
+            {
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN {1} B ON A.id = B.player_id WHERE A.id = '{0}';", user_id,table_name); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+                {
+                    // 읽은 데이터를 하나씩 나열
+                    while (reader.Read())
+                    {
+                        string player_id = reader["player_id"].ToString();
+                        char is_open = reader["is_open"].ToString()[0];
+                        char give_food = reader["give_food"].ToString()[0];
+                        char is_solved = reader["is_solved"].ToString()[0];
+                        if (!player_id.Equals(string.Empty))
+                        { // 정상적으로 Data를 불러온 상황
+                            if (!reader.IsClosed)
+                            {
+                                reader.Close();
+                            }
+                            return new Nonplayer_data(player_id, is_open, give_food, is_solved);
+                        }
+                        else
+                        { // 로그인 실패
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+    }
+    #endregion
+    #region Sign In, Up
     public bool SignIn(string user_id, string user_pw)
     { // 로그인
         // 조회되는 데이터가 없다면 false, 조회가 되는 데이터가 있다면 true
@@ -420,7 +551,6 @@ public class SQLManager : MonoBehaviour
                     // user_character_info
                     string id_c = reader["user_id"].ToString();
                     int eyes = reader["Eyes"].ToString()[0] - '0';
-                    Debug.Log(id_c);
                     int jummper = reader["Jummper"].ToString()[0] - '0';
                     int runners = reader["Runners"].ToString()[0] - '0';
                     int tshirt = reader["TShirts"].ToString()[0] - '0';
@@ -430,6 +560,19 @@ public class SQLManager : MonoBehaviour
                     int ride = reader["Riding"].ToString()[0] - '0';
                     int hair = reader["HairStyle"].ToString()[0] - '0';
                     char riding = reader["Ride"].ToString()[0];
+                    // item_data
+                    string player_id = reader["player_id"].ToString();
+                    int key_num = reader["key_num"].ToString()[0] - '0';
+                    int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
+                    int food_num = reader["food_num"].ToString()[0] - '0';
+                    // collection_data
+                    for (int i = 0; i < animal_data.Length; i++)
+                    {
+                        char is_open = reader["is_open"].ToString()[0];
+                        char give_food = reader["give_food"].ToString()[0];
+                        char is_solved = reader["is_solved"].ToString()[0];
+                    }
+
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     { // 정상적으로 Data를 불러온 상황
                         info = new User_info(id, pw, nickName, firstConnect, connecting);
@@ -489,7 +632,16 @@ public class SQLManager : MonoBehaviour
                     reader.Close();
                 }
                 string insertCommand = string.Format(@"INSERT INTO user_info (id, pw, nickname) VALUES ('{0}', '{1}', '{2}');
-                                                       INSERT INTO user_character_info (user_id) VALUES ('{0}');", user_id, user_pw, user_nick);
+                                                       INSERT INTO user_character_info (user_id) VALUES ('{0}');
+                                                       INSERT INTO item (player_id) VALUES('{0}');
+                                                       INSERT INTO black_goat (player_id) VALUES('{0}');
+                                                       INSERT INTO black_sheep (player_id) VALUES('{0}');
+                                                       INSERT INTO chicken (player_id) VALUES('{0}');
+                                                       INSERT INTO whale (player_id) VALUES('{0}');
+                                                       INSERT INTO white_goat (player_id) VALUES('{0}');
+                                                       INSERT INTO white_sheep (player_id) VALUES('{0}');
+                                                       INSERT INTO yellow_sheep (player_id) VALUES('{0}');",
+                                                       user_id, user_pw, user_nick);
                 MySqlCommand insertCmd = new MySqlCommand(insertCommand, connection);
                 reader = insertCmd.ExecuteReader();
                 if (!reader.IsClosed)
@@ -509,4 +661,7 @@ public class SQLManager : MonoBehaviour
             return false;
         }
     }
+    #endregion
+
+
 }

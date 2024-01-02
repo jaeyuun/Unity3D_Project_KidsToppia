@@ -26,4 +26,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/Yugyeong/Client_YG/NPCScene_YG.unity
     guid: d37280fc19f1afa49909a05db4f46acf
+  - enabled: 1
+    path: Assets/1.Scene/Yugyeong/J_test/Client/CreateScene 1.unity
+    guid: f868a67cc3b4dfc42b676b46530da4dd
+  - enabled: 1
+    path: Assets/1.Scene/Yugyeong/J_test/Client/IntroScene 1.unity
+    guid: 00da89995bb52024d9d7c35b27262c51
+  - enabled: 1
+    path: Assets/1.Scene/Yugyeong/J_test/Client/MainGame_J 1.unity
+    guid: 989f7c6949acccb4a9466a07e4a1e5b2
+  - enabled: 1
+    path: Assets/1.Scene/Yugyeong/J_test/Client/OfflineScene 1.unity
+    guid: da7f23d8237957a4fb778d10f569b2ea
+  - enabled: 1
+    path: Assets/1.Scene/Yugyeong/J_test/Server/IntroScene_Server 1.unity
+    guid: c9b7b9e0d9b993c4b862b41855b5fd1a
   m_configObjects: {}

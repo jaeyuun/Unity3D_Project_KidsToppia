@@ -1,18 +1,19 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item_data : MonoBehaviour
+[CreateAssetMenu(fileName = "Item_data", menuName = "YG/Quest_YG/quest_data", order = 0)]
+public class Item_data : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private string item_Name;
+    public string itemName => item_Name;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private int num_;
+    public int num => num_;
+
+    [SerializeField] private int maxnum;
+    public int max_num => maxnum;
+
+    [SerializeField] private Sprite sprite_;
+    public Sprite sprite => sprite_;
 }
