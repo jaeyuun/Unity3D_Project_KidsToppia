@@ -11,11 +11,11 @@ public abstract class NPC_YG : MonoBehaviour
 
     virtual public void Awake()
     {
-        //������Ʈ ��������
+        // 컴포넌트 가져오기
         TryGetComponent(out ani);
         TryGetComponent(out trans);
 
-        //��������Ʈ ����ϱ�
+        // 이벤트 등록
         TalkManager.event_talkend += Turn_canmove;
     }
 
@@ -38,54 +38,5 @@ public abstract class NPC_YG : MonoBehaviour
     virtual public IEnumerator Set_position()
     {
         yield return null;
-    }
-    
-    private void Input_touch()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.touchCount > 0)
-            {
-                touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Began)
-                {
-                    touch_on = true;
-                    touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
-                    Try_raycast(touch.position);
-                }
-            }
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                //Debug.Log("Input.GetMouseButtonDown(0)");
-                mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                touch_on = true;
-                Try_raycast(Input.mousePosition);
-            }
-        }
-    }
-
-    private void Try_raycast(Vector3 pos)
-    {
-        //Debug.Log("Try_raycast");
-        Ray ray;
-        RaycastHit hit;
-        ray = Camera.main.ScreenPointToRay(pos);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
-        {
-            //Debug.Log("���� ��");
-            if (hit.collider.CompareTag("NPC"))
-            {
-                Interactive_NPC();
-            }
-        }
-    }
-
-    private void Interactive_NPC()
-    {
-        //Debug.Log("NPCã��");
-        TalkManager.instance.Print();
     }
 }
