@@ -1038,17 +1038,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2065477182466637398}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1603022715}
+        m_TargetAssemblyTypeName: LoginChecker, Assembly-CSharp
+        m_MethodName: StartButton
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &203651683
 MonoBehaviour:
@@ -3365,6 +3365,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1603022715}
+        m_TargetAssemblyTypeName: LoginChecker, Assembly-CSharp
+        m_MethodName: SignOutButton
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5725,9 +5737,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500c434f5e798e543bddb2f0cb6f7c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  signInPanel: {fileID: 2065477182466637398}
   signUpPanel: {fileID: 1937046125}
   checkButton: {fileID: 1551297517}
   log: {fileID: 1178006311}
+  playerLogButton: {fileID: 2126820305}
+  id_userInfo: {fileID: 78186504}
+  nickname_userInfo: {fileID: 1675660788}
   idInput_in: {fileID: 1989224908}
   pwInput_in: {fileID: 1918887075}
   idInput_up: {fileID: 812500589}
