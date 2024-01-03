@@ -32,14 +32,17 @@ public class CollectionManager : MonoBehaviour
             {
                 collection_arr[i].study = animal_arr[i];
             }
+            Debug.Log(collection_arr[i].study);
 
             //데이터 있는지 없는지 검사
             if (animal_arr[i].info == string.Empty)
             {
+                Debug.Log("false");
                 collection_arr[i].gameObject.SetActive(false);
             }
             else
             {
+                Debug.Log("true");
                 collection_arr[i].gameObject.SetActive(true);
             }
         }

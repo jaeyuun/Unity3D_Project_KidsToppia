@@ -581,6 +581,15 @@ public class SQLManager : MonoBehaviour
 
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
+            object[] tmp = new object[reader.FieldCount];
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                Debug.Log(reader.GetName(i));
+                tmp[i] = reader.GetValue(i);
+            }
+            Debug.Log(reader.GetValues(tmp));
+            
+
             if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
             {
                 // 읽은 데이터를 하나씩 나열
@@ -610,16 +619,24 @@ public class SQLManager : MonoBehaviour
                     int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
                     int food_num = reader["food_num"].ToString()[0] - '0';
                     // collection_data
-                    string D_player_id = reader["D.player_id"].ToString();
-                    char D_is_open = reader["D.is_open"].ToString()[0];
-                    char D_give_food = reader["D.give_food"].ToString()[0];
-                    char D_is_solved = reader["D.is_solved"].ToString()[0];
+                    string D_player_id = reader["player_id"].ToString();
+                    char D_is_open = reader["is_open"].ToString()[0];
+                    char D_give_food = reader["give_food"].ToString()[0];
+                    char D_is_solved = reader["is_solved"].ToString()[0];
+                    Debug.Log(D_player_id);
+                    Debug.Log(D_is_open);
+                    Debug.Log(D_give_food);
+                    Debug.Log(D_is_solved);
 
                     string E_player_id = reader["E.player_id"].ToString();
                     char E_is_open = reader["E.is_open"].ToString()[0];
                     char E_give_food = reader["E.give_food"].ToString()[0];
                     char E_is_solved = reader["E.is_solved"].ToString()[0];
-
+                    Debug.Log(E_player_id);
+                    Debug.Log(E_is_open);
+                    Debug.Log(E_give_food);
+                    Debug.Log(E_is_solved);
+/*
                     string F_player_id = reader["E.player_id"].ToString();
                     char F_is_open = reader["E.is_open"].ToString()[0];
                     char F_give_food = reader["E.give_food"].ToString()[0];
@@ -644,18 +661,21 @@ public class SQLManager : MonoBehaviour
                     char J_is_open = reader["J.is_open"].ToString()[0];
                     char J_give_food = reader["J.give_food"].ToString()[0];
                     char J_is_solved = reader["J.is_solved"].ToString()[0];
+                    */
 
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     { // 정상적으로 Data를 불러온 상황
                         info = new User_info(id, pw, nickName, firstConnect, connecting);
                         character_info = new User_Character(id_c, eyes, jummper, runners, tshirt, trunk, skin, hat, hair, ride, riding);
                         black_goat = new Nonplayer_data(D_player_id, D_is_open, D_give_food, D_is_solved);
+                        /*
                         black_sheep = new Nonplayer_data(E_player_id, E_is_open, E_give_food, E_give_food);
                         chicken = new Nonplayer_data(F_player_id, F_is_open, F_give_food, F_is_solved);
                         whale = new Nonplayer_data(G_player_id, G_is_open, G_give_food, G_is_solved);
                         white_goat = new Nonplayer_data(H_player_id, H_is_open, H_give_food, H_is_solved);
                         white_sheep = new Nonplayer_data(I_player_id, I_is_open, I_give_food, I_is_solved);
                         yellow_sheep = new Nonplayer_data(J_player_id, J_is_open, J_give_food, J_is_solved);
+                        */
                         if (!reader.IsClosed)
                         {
                             reader.Close();
