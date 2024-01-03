@@ -77,6 +77,13 @@ public class SQLManager : MonoBehaviour
 
     public User_info info;
     public User_Character character_info;
+    public Nonplayer_data black_goat;
+    public Nonplayer_data black_sheep;
+    public Nonplayer_data chicken;
+    public Nonplayer_data whale;
+    public Nonplayer_data white_goat;
+    public Nonplayer_data white_sheep;
+    public Nonplayer_data yellow_sheep;
 
     public MySqlConnection connection;
     public MySqlDataReader reader;
@@ -88,8 +95,6 @@ public class SQLManager : MonoBehaviour
     public string tableName = string.Empty;
 
     public bool isLogin = false;
-
-    private string[] animal_data = { "black_goat", "black_sheep", "chicken", "whale", "white_goat", "white_sheep", "yellow_sheep" };
 
     private void Awake()
     {
@@ -306,6 +311,34 @@ public class SQLManager : MonoBehaviour
             }
         }
     }
+
+    public void Updatecollection(string tablename,string name, int num)
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+            string selectCommand = string.Format(@"UPDATE {3} SET {0} = '{1}' WHERE player_id = '{2}';", name, num, info.User_Id,tablename); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
     #endregion
     #region Table Search (SELECT)
     public User_info PlayerInfo(string user_id)
@@ -473,7 +506,7 @@ public class SQLManager : MonoBehaviour
         {
             if (ConnectionCheck(connection))
             {
-                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN {1} B ON A.id = B.player_id WHERE A.id = '{0}';", user_id,table_name); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN {1} B ON A.id = B.player_id WHERE A.id = '{0}';", user_id, table_name); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
                 MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
@@ -534,7 +567,18 @@ public class SQLManager : MonoBehaviour
             {
                 return false;
             }
-            string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN user_character_info B ON A.id = B.user_id WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            string selectCommand = string.Format(@"SELECT * FROM user_info A
+                                                   JOIN user_character_info B ON A.id = B.user_id
+                                                   JOIN item C ON A.id = C.player_id
+                                                   JOIN black_goat D ON A.id = D.player_id
+                                                   JOIN black_sheep E ON A.id = E.player_id
+                                                   JOIN chicken F ON A.id = F.player_id
+                                                   JOIN whale G ON A.id = G.player_id
+                                                   JOIN white_goat H ON A.id = H.player_id
+                                                   JOIN white_sheep I ON A.id = I.player_id
+                                                   JOIN yellow_sheep J ON A.id = J.player_id
+                                                   WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
@@ -566,17 +610,52 @@ public class SQLManager : MonoBehaviour
                     int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
                     int food_num = reader["food_num"].ToString()[0] - '0';
                     // collection_data
-                    for (int i = 0; i < animal_data.Length; i++)
-                    {
-                        char is_open = reader["is_open"].ToString()[0];
-                        char give_food = reader["give_food"].ToString()[0];
-                        char is_solved = reader["is_solved"].ToString()[0];
-                    }
+                    string D_player_id = reader["D.player_id"].ToString();
+                    char D_is_open = reader["D.is_open"].ToString()[0];
+                    char D_give_food = reader["D.give_food"].ToString()[0];
+                    char D_is_solved = reader["D.is_solved"].ToString()[0];
+
+                    string E_player_id = reader["E.player_id"].ToString();
+                    char E_is_open = reader["E.is_open"].ToString()[0];
+                    char E_give_food = reader["E.give_food"].ToString()[0];
+                    char E_is_solved = reader["E.is_solved"].ToString()[0];
+
+                    string F_player_id = reader["E.player_id"].ToString();
+                    char F_is_open = reader["E.is_open"].ToString()[0];
+                    char F_give_food = reader["E.give_food"].ToString()[0];
+                    char F_is_solved = reader["E.is_solved"].ToString()[0];
+
+                    string G_player_id = reader["E.player_id"].ToString();
+                    char G_is_open = reader["E.is_open"].ToString()[0];
+                    char G_give_food = reader["E.give_food"].ToString()[0];
+                    char G_is_solved = reader["E.is_solved"].ToString()[0];
+
+                    string H_player_id = reader["H.player_id"].ToString();
+                    char H_is_open = reader["H.is_open"].ToString()[0];
+                    char H_give_food = reader["H.give_food"].ToString()[0];
+                    char H_is_solved = reader["H.is_solved"].ToString()[0];
+
+                    string I_player_id = reader["I.player_id"].ToString();
+                    char I_is_open = reader["I.is_open"].ToString()[0];
+                    char I_give_food = reader["I.give_food"].ToString()[0];
+                    char I_is_solved = reader["I.is_solved"].ToString()[0];
+                    
+                    string J_player_id = reader["J.player_id"].ToString();
+                    char J_is_open = reader["J.is_open"].ToString()[0];
+                    char J_give_food = reader["J.give_food"].ToString()[0];
+                    char J_is_solved = reader["J.is_solved"].ToString()[0];
 
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     { // 정상적으로 Data를 불러온 상황
                         info = new User_info(id, pw, nickName, firstConnect, connecting);
                         character_info = new User_Character(id_c, eyes, jummper, runners, tshirt, trunk, skin, hat, hair, ride, riding);
+                        black_goat = new Nonplayer_data(D_player_id, D_is_open, D_give_food, D_is_solved);
+                        black_sheep = new Nonplayer_data(E_player_id, E_is_open, E_give_food, E_give_food);
+                        chicken = new Nonplayer_data(F_player_id, F_is_open, F_give_food, F_is_solved);
+                        whale = new Nonplayer_data(G_player_id, G_is_open, G_give_food, G_is_solved);
+                        white_goat = new Nonplayer_data(H_player_id, H_is_open, H_give_food, H_is_solved);
+                        white_sheep = new Nonplayer_data(I_player_id, I_is_open, I_give_food, I_is_solved);
+                        yellow_sheep = new Nonplayer_data(J_player_id, J_is_open, J_give_food, J_is_solved);
                         if (!reader.IsClosed)
                         {
                             reader.Close();
@@ -662,6 +741,4 @@ public class SQLManager : MonoBehaviour
         }
     }
     #endregion
-
-
 }
