@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 using UnityEngine.EventSystems;
 
 public class LenderCameraController : MonoBehaviour
 {
     // camera
-    [SerializeField] private Transform target = null; // player
+    public Transform target = null; // player
     private float axisY;
 
     private float rotSensitive = 3f; // camera rotate sensitive

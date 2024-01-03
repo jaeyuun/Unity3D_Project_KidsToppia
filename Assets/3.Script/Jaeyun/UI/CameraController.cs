@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 public class CameraController : NetworkBehaviour
 {
     // camera
-    [SerializeField] private Transform target = null; // player
-    [SerializeField] private PlayerControll playerControll = null;
+    public Transform target = null; // player
+    public PlayerControll playerControll = null;
     private float axisY;
     private float axisX;
 
@@ -32,7 +32,7 @@ public class CameraController : NetworkBehaviour
             {
                 Cursor.lockState = CursorLockMode.Confined;
             }
-            playerControll = FindObjectOfType<PlayerControll>();
+            target = 
             target = playerControll.transform;
             this.transform.eulerAngles = targetRotation; // 카메라 회전
             transform.position = target.position - transform.forward * disZ + transform.up * disY;
