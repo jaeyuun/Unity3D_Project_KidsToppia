@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using Mirror;
+using TMPro;
+using UnityEngine;
 
 public class PlayerName : NetworkBehaviour
 {
     [SerializeField] private PlayerCreate player;
     [SerializeField] private TMP_Text nameText;
 
-    private void Update()
+    private void FixedUpdate()
     {
         PlayerNameUpdate();
     }

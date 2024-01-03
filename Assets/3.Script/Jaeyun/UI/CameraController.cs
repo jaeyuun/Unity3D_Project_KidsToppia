@@ -4,10 +4,9 @@ using UnityEngine.EventSystems;
 
 public class CameraController : NetworkBehaviour
 {
-    private FixedJoystick joystick;
-
     // camera
     [SerializeField] private Transform target = null; // player
+    [SerializeField] private PlayerControll playerControll = null;
     private float axisY;
     private float axisX;
 
@@ -16,47 +15,59 @@ public class CameraController : NetworkBehaviour
     private float disY = 1.5f;
     private float rotationMin = -10f;
     private float rotationMax = 80f;
-    private float smoothTime = 0.0012f;
+    private float smoothTime = 0.2f;
 
     private Vector3 targetRotation;
     private Vector3 currentVel;
 
-    // PC
-    private bool isRotate = false;
-
     private void Start()
     {
-        joystick = FindObjectOfType<FixedJoystick>();
-        /*if (isLocalPlayer)
+        if (!isLocalPlayer)
         {
-            point = target.transform.position;
+            gameObject.SetActive(false);
         }
         else
         {
-            gameObject.SetActive(false);
-        }*/
+            if (Application.platform != RuntimePlatform.Android)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            playerControll = FindObjectOfType<PlayerControll>();
+            target = playerControll.transform;
+            this.transform.eulerAngles = targetRotation; // 카메라 회전
+            transform.position = target.position - transform.forward * disZ + transform.up * disY;
+        }
     }
 
     private void LateUpdate()
     {
-        RotationCamera();
+        if (isLocalPlayer)
+        {
+            RotationCamera();
+        }
     }
 
     private void RotationCamera()
     {
         float x = Input.GetAxis("Mouse X");
         float y = Input.GetAxis("Mouse Y");
-        // touchOn = false;
         if (Application.platform == RuntimePlatform.Android)
         {
-            if (Input.touchCount > 0)
+            if (Input.touchCount > 0 && !EventSystem.current.IsPointerOverGameObject())
             {
-                x = Input.touches[0].deltaPosition.x;
-                y = Input.touches[0].deltaPosition.y;
-                if (Input.GetTouch(0).phase.Equals(TouchPhase.Moved) && !EventSystem.current.IsPointerOverGameObject())
+                for (int i = 0; i < Input.touchCount; i++)
                 {
-                    Rotate(x, y);
+                    Touch touch = Input.GetTouch(i);
+                    if (touch.phase.Equals(TouchPhase.Began))
+                    {
+                        if (touch.phase.Equals(TouchPhase.Moved) && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                        {
+                            x = Input.touches[i].deltaPosition.x;
+                            y = Input.touches[i].deltaPosition.y;
+                        }
+                    }
                 }
+                Rotate(x, y);
             }
         }
         else
@@ -70,7 +81,6 @@ public class CameraController : NetworkBehaviour
 
     private void Rotate(float x, float y)
     {
-        Debug.Log("Rotate");
         axisY = axisY + x * rotSensitive; // 좌우 움직임 제어
         axisX = axisX - y * rotSensitive; // 상하 움직임 제어
         axisX = Mathf.Clamp(axisX, rotationMin, rotationMax); // Y축 제한

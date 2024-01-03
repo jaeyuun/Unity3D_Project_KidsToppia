@@ -92,9 +92,9 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
         }
         else
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
         }
-        // SQLManager        
+        // SQLManager
         startPos = GameObject.FindGameObjectWithTag("StartPos").transform;
         this.transform.position = startPos.position;
         info = SQLManager.instance.PlayerInfo(playerId);

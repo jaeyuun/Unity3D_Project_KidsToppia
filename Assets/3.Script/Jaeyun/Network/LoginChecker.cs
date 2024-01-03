@@ -192,4 +192,14 @@ public class LoginChecker : MonoBehaviour
             signInPanel.SetActive(true);
         }
     }
+
+    public void TestButton(string login)
+    {
+        if (SQLManager.instance.SignIn(login, login))
+        {
+            User_info info = SQLManager.instance.info;
+            SQLManager.instance.isLogin = true;
+            ServerChecker.instance.StartClient();
+        }
+    }
 }
