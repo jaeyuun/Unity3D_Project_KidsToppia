@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CreateCharacterButton : MonoBehaviour
 {
@@ -62,10 +63,5 @@ public class CreateCharacterButton : MonoBehaviour
         {
             player_scene.MenuSelect();
         }
-    }
-
-    public void CreateButton()
-    {
-
     }
 }

@@ -10,11 +10,13 @@ using UnityEngine.UI;
 public class SignInItem
 { // Database login.json
     public string ID;
+    public string PW;
     public string NickName;
 
-    public SignInItem(string id, string nickName)
+    public SignInItem(string id, string pw, string nickName)
     {
         ID = id;
+        PW = pw;
         NickName = nickName;
     }
 }
@@ -65,7 +67,6 @@ public class LoginChecker : MonoBehaviour
         else
         { // window
             dbPath = Application.dataPath + "/Database"; // 경로를 string에 저장
-            Debug.Log(dbPath);
             if (!File.Exists(dbPath + "/UserInfo.json"))
             { // file 검사
                 isLogin = false;
@@ -88,7 +89,7 @@ public class LoginChecker : MonoBehaviour
     private void DefaultData(string path, User_info info)
     {
         List<SignInItem> items = new List<SignInItem>();
-        items.Add(new SignInItem($"{info.User_Id}", $"{info.User_NickName}")); // id, nickName
+        items.Add(new SignInItem($"{info.User_Id}", $"{info.User_Pw}", $"{info.User_NickName}")); // id, pw, nickName
         JsonData data = JsonMapper.ToJson(items);
         File.WriteAllText(path + "/UserInfo.json", data.ToString(), Encoding.UTF8);
     }
@@ -107,7 +108,6 @@ public class LoginChecker : MonoBehaviour
             User_info info = SQLManager.instance.info;
             SQLManager.instance.isLogin = true;
             DefaultData(dbPath, info);
-            Debug.Log(info.User_Id + " | " + info.User_Pw);
             // 처음 접속이 아닌 경우 CreateScene이 아니라 Start로 넘어감
             if (info.FirstConnect.Equals('F'))
             {
@@ -175,14 +175,31 @@ public class LoginChecker : MonoBehaviour
     }
 
     public void StartButton()
-    {
+    { // 이미 로그인 되어있는 경우
         if (isLogin)
         {
-            ServerChecker.instance.StartClient();
+            string jsonString = File.ReadAllText(dbPath + "/UserInfo.json", Encoding.UTF8);
+            JsonData ItemData = JsonMapper.ToObject(jsonString);
+            if (SQLManager.instance.SignIn(ItemData[0]["ID"].ToString(), ItemData[0]["PW"].ToString()))
+            {
+                User_info info = SQLManager.instance.info;
+                SQLManager.instance.isLogin = true;
+                ServerChecker.instance.StartClient();
+            }
         }
         else
         {
             signInPanel.SetActive(true);
+        }
+    }
+
+    public void TestButton(string login)
+    {
+        if (SQLManager.instance.SignIn(login, login))
+        {
+            User_info info = SQLManager.instance.info;
+            SQLManager.instance.isLogin = true;
+            ServerChecker.instance.StartClient();
         }
     }
 }
