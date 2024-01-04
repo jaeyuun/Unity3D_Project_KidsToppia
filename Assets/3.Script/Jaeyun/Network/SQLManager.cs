@@ -84,6 +84,7 @@ public class SQLManager : MonoBehaviour
     public Nonplayer_data white_goat;
     public Nonplayer_data white_sheep;
     public Nonplayer_data yellow_sheep;
+    public Nonplayer_data none;
 
     public MySqlConnection connection;
     public MySqlDataReader reader;
@@ -312,7 +313,7 @@ public class SQLManager : MonoBehaviour
         }
     }
 
-    public void Updatecollection(string tablename,string name, int num)
+    public void Updatecollection(string col_name, string state, char val) //col_name = 열 이름, state = is_open,givefood,issolved, val = "T" or "F"
     {
         try
         {
@@ -320,7 +321,38 @@ public class SQLManager : MonoBehaviour
             {
                 return;
             }
-            string selectCommand = string.Format(@"UPDATE {3} SET {0} = '{1}' WHERE player_id = '{2}';", name, num, info.User_Id,tablename); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+
+            Nonplayer_data tmpdata = Collection(info.User_Id, col_name);
+            string selectCommand = string.Empty;
+
+            if (state == "is_open")
+            {
+                selectCommand = string.Format(@"UPDATE animal SET {0} = json_object(
+                                                  'is_open', '{1}',
+                                                  'givefood', '{3}',
+                                                  'issolved', '{4}')
+                                                   WHERE  `player_id`='{2}';",
+                                                   col_name, val, info.User_Id, tmpdata.give_food, tmpdata.is_solved); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            }
+            else if (state == "givefood")
+            {
+                selectCommand = string.Format(@"UPDATE animal SET {0} = json_object(
+                                                  'is_open', '{3}',
+                                                  'givefood', '{1}',
+                                                  'issolved', '{4}')
+                                                   WHERE  `player_id`='{2}';",
+                                                   col_name, val, info.User_Id, tmpdata.is_open, tmpdata.is_solved);
+            }
+            else
+            {
+                selectCommand = string.Format(@"UPDATE animal SET {0} = json_object(
+                                                  'is_open', '{3}',
+                                                  'givefood', '{4}',
+                                                  'issolved', '{1}')
+                                                   WHERE  `player_id`='{2}';",
+                                                   col_name, val, info.User_Id, tmpdata.is_open, tmpdata.give_food);
+            }
+
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed)
@@ -500,13 +532,13 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
-    public Nonplayer_data Collection(string user_id, string table_name)
+    public Nonplayer_data Collection(string user_id, string col_name)
     {
         try
         {
             if (ConnectionCheck(connection))
             {
-                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN {1} B ON A.id = B.player_id WHERE A.id = '{0}';", user_id, table_name); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN animal B ON A.id = B.player_id WHERE A.id = '{0}';", user_id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
                 MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
@@ -514,17 +546,20 @@ public class SQLManager : MonoBehaviour
                     // 읽은 데이터를 하나씩 나열
                     while (reader.Read())
                     {
+                        string jsonData = reader[$"{col_name}"].ToString();
+                        JsonData G = JsonMapper.ToObject(jsonData);
                         string player_id = reader["player_id"].ToString();
-                        char is_open = reader["is_open"].ToString()[0];
-                        char give_food = reader["give_food"].ToString()[0];
-                        char is_solved = reader["is_solved"].ToString()[0];
+                        char is_open = G["is_open"].ToString()[0];
+                        char givefood = G["givefood"].ToString()[0];
+                        char issolved = G["issolved"].ToString()[0];
+
                         if (!player_id.Equals(string.Empty))
                         { // 정상적으로 Data를 불러온 상황
                             if (!reader.IsClosed)
                             {
                                 reader.Close();
                             }
-                            return new Nonplayer_data(player_id, is_open, give_food, is_solved);
+                            return new Nonplayer_data(player_id, is_open, givefood, issolved);
                         }
                         else
                         { // 로그인 실패
@@ -570,26 +605,10 @@ public class SQLManager : MonoBehaviour
             string selectCommand = string.Format(@"SELECT * FROM user_info A
                                                    JOIN user_character_info B ON A.id = B.user_id
                                                    JOIN item C ON A.id = C.player_id
-                                                   JOIN black_goat D ON A.id = D.player_id
-                                                   JOIN black_sheep E ON A.id = E.player_id
-                                                   JOIN chicken F ON A.id = F.player_id
-                                                   JOIN whale G ON A.id = G.player_id
-                                                   JOIN white_goat H ON A.id = H.player_id
-                                                   JOIN white_sheep I ON A.id = I.player_id
-                                                   JOIN yellow_sheep J ON A.id = J.player_id
+                                                   JOIN animal D ON A.id = D.player_id
                                                    WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
-
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
-            object[] tmp = new object[reader.FieldCount];
-            for (int i = 0; i < reader.FieldCount; i++)
-            {
-                Debug.Log(reader.GetName(i));
-                tmp[i] = reader.GetValue(i);
-            }
-            Debug.Log(reader.GetValues(tmp));
-            
-
             if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
             {
                 // 읽은 데이터를 하나씩 나열
@@ -619,63 +638,75 @@ public class SQLManager : MonoBehaviour
                     int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
                     int food_num = reader["food_num"].ToString()[0] - '0';
                     // collection_data
-                    string D_player_id = reader["player_id"].ToString();
-                    char D_is_open = reader["is_open"].ToString()[0];
-                    char D_give_food = reader["give_food"].ToString()[0];
-                    char D_is_solved = reader["is_solved"].ToString()[0];
-                    Debug.Log(D_player_id);
-                    Debug.Log(D_is_open);
-                    Debug.Log(D_give_food);
-                    Debug.Log(D_is_solved);
+                    string jsonDData = reader["black_goat"].ToString();
+                    JsonData D = JsonMapper.ToObject(jsonDData);
+                    string bg_player_id = reader["player_id"].ToString();
+                    char bg_is_open = D["is_open"].ToString()[0];
+                    char bg_givefood = D["givefood"].ToString()[0];
+                    char bg_issolved = D["issolved"].ToString()[0];
 
-                    string E_player_id = reader["E.player_id"].ToString();
-                    char E_is_open = reader["E.is_open"].ToString()[0];
-                    char E_give_food = reader["E.give_food"].ToString()[0];
-                    char E_is_solved = reader["E.is_solved"].ToString()[0];
-                    Debug.Log(E_player_id);
-                    Debug.Log(E_is_open);
-                    Debug.Log(E_give_food);
-                    Debug.Log(E_is_solved);
-/*
-                    string F_player_id = reader["E.player_id"].ToString();
-                    char F_is_open = reader["E.is_open"].ToString()[0];
-                    char F_give_food = reader["E.give_food"].ToString()[0];
-                    char F_is_solved = reader["E.is_solved"].ToString()[0];
+                    jsonDData = reader["black_sheep"].ToString();
+                    JsonData E = JsonMapper.ToObject(jsonDData);
+                    string bs_player_id = reader["player_id"].ToString();
+                    char bs_is_open = E["is_open"].ToString()[0];
+                    char bs_givefood = E["givefood"].ToString()[0];
+                    char bs_issolved = E["issolved"].ToString()[0];
 
-                    string G_player_id = reader["E.player_id"].ToString();
-                    char G_is_open = reader["E.is_open"].ToString()[0];
-                    char G_give_food = reader["E.give_food"].ToString()[0];
-                    char G_is_solved = reader["E.is_solved"].ToString()[0];
+                    jsonDData = reader["chicken"].ToString();
+                    JsonData F = JsonMapper.ToObject(jsonDData);
+                    string ch_player_id = reader["player_id"].ToString();
+                    char ch_is_open = F["is_open"].ToString()[0];
+                    char ch_givefood = F["givefood"].ToString()[0];
+                    char ch_issolved = F["issolved"].ToString()[0];
 
-                    string H_player_id = reader["H.player_id"].ToString();
-                    char H_is_open = reader["H.is_open"].ToString()[0];
-                    char H_give_food = reader["H.give_food"].ToString()[0];
-                    char H_is_solved = reader["H.is_solved"].ToString()[0];
+                    jsonDData = reader["whale"].ToString();
+                    JsonData G = JsonMapper.ToObject(jsonDData);
+                    string wh_player_id = reader["player_id"].ToString();
+                    char wh_is_open = G["is_open"].ToString()[0];
+                    char wh_givefood = G["givefood"].ToString()[0];
+                    char wh_issolved = G["issolved"].ToString()[0];
 
-                    string I_player_id = reader["I.player_id"].ToString();
-                    char I_is_open = reader["I.is_open"].ToString()[0];
-                    char I_give_food = reader["I.give_food"].ToString()[0];
-                    char I_is_solved = reader["I.is_solved"].ToString()[0];
-                    
-                    string J_player_id = reader["J.player_id"].ToString();
-                    char J_is_open = reader["J.is_open"].ToString()[0];
-                    char J_give_food = reader["J.give_food"].ToString()[0];
-                    char J_is_solved = reader["J.is_solved"].ToString()[0];
-                    */
+                    jsonDData = reader["white_goat"].ToString();
+                    JsonData H = JsonMapper.ToObject(jsonDData);
+                    string wg_player_id = reader["player_id"].ToString();
+                    char wg_is_open = H["is_open"].ToString()[0];
+                    char wg_givefood = H["givefood"].ToString()[0];
+                    char wg_issolved = H["issolved"].ToString()[0];
+
+                    jsonDData = reader["white_sheep"].ToString();
+                    JsonData I = JsonMapper.ToObject(jsonDData);
+                    string ws_player_id = reader["player_id"].ToString();
+                    char ws_is_open = I["is_open"].ToString()[0];
+                    char ws_givefood = I["givefood"].ToString()[0];
+                    char ws_issolved = I["issolved"].ToString()[0];
+
+                    jsonDData = reader["yellow_sheep"].ToString();
+                    JsonData J = JsonMapper.ToObject(jsonDData);
+                    string ys_player_id = reader["player_id"].ToString();
+                    char ys_is_open = J["is_open"].ToString()[0];
+                    char ys_givefood = J["givefood"].ToString()[0];
+                    char ys_issolved = J["issolved"].ToString()[0];
+
+                    jsonDData = reader["none"].ToString();
+                    JsonData K = JsonMapper.ToObject(jsonDData);
+                    string no_player_id = reader["player_id"].ToString();
+                    char no_is_open = K["is_open"].ToString()[0];
+                    char no_givefood = K["givefood"].ToString()[0];
+                    char no_issolved = K["issolved"].ToString()[0];
 
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     { // 정상적으로 Data를 불러온 상황
                         info = new User_info(id, pw, nickName, firstConnect, connecting);
                         character_info = new User_Character(id_c, eyes, jummper, runners, tshirt, trunk, skin, hat, hair, ride, riding);
-                        black_goat = new Nonplayer_data(D_player_id, D_is_open, D_give_food, D_is_solved);
-                        /*
-                        black_sheep = new Nonplayer_data(E_player_id, E_is_open, E_give_food, E_give_food);
-                        chicken = new Nonplayer_data(F_player_id, F_is_open, F_give_food, F_is_solved);
-                        whale = new Nonplayer_data(G_player_id, G_is_open, G_give_food, G_is_solved);
-                        white_goat = new Nonplayer_data(H_player_id, H_is_open, H_give_food, H_is_solved);
-                        white_sheep = new Nonplayer_data(I_player_id, I_is_open, I_give_food, I_is_solved);
-                        yellow_sheep = new Nonplayer_data(J_player_id, J_is_open, J_give_food, J_is_solved);
-                        */
+                        black_goat = new Nonplayer_data(bg_player_id, bg_is_open, bg_givefood, bg_issolved);
+                        black_sheep = new Nonplayer_data(bs_player_id, bs_is_open, bs_givefood, bs_issolved);
+                        chicken = new Nonplayer_data(ch_player_id, ch_is_open, ch_givefood, ch_issolved);
+                        whale = new Nonplayer_data(wh_player_id, wh_is_open, wh_givefood, wh_issolved);
+                        white_goat = new Nonplayer_data(wg_player_id, wg_is_open, wg_givefood, wg_issolved);
+                        white_sheep = new Nonplayer_data(ws_player_id, ws_is_open, ws_givefood, ws_issolved);
+                        yellow_sheep = new Nonplayer_data(ys_player_id, ys_is_open, ys_givefood, ys_issolved);
+                        none = new Nonplayer_data(no_player_id, no_is_open, no_givefood, no_issolved);
+
                         if (!reader.IsClosed)
                         {
                             reader.Close();
@@ -733,13 +764,39 @@ public class SQLManager : MonoBehaviour
                 string insertCommand = string.Format(@"INSERT INTO user_info (id, pw, nickname) VALUES ('{0}', '{1}', '{2}');
                                                        INSERT INTO user_character_info (user_id) VALUES ('{0}');
                                                        INSERT INTO item (player_id) VALUES('{0}');
-                                                       INSERT INTO black_goat (player_id) VALUES('{0}');
-                                                       INSERT INTO black_sheep (player_id) VALUES('{0}');
-                                                       INSERT INTO chicken (player_id) VALUES('{0}');
-                                                       INSERT INTO whale (player_id) VALUES('{0}');
-                                                       INSERT INTO white_goat (player_id) VALUES('{0}');
-                                                       INSERT INTO white_sheep (player_id) VALUES('{0}');
-                                                       INSERT INTO yellow_sheep (player_id) VALUES('{0}');",
+                                                       INSERT INTO animal(player_id, black_goat,black_sheep,chicken,whale,white_goat,white_sheep,yellow_sheep,none) values('{0}', json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F', 
+                                                            'issolved', 'F'
+                                                        ),json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F', 
+                                                            'issolved', 'F'
+                                                        ),json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F',
+                                                            'issolved', 'F'
+                                                        ),json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F', 
+                                                            'issolved', 'F'
+                                                        ),json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F', 
+                                                            'issolved', 'F'
+                                                        ),json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F', 
+                                                            'issolved', 'F'
+                                                        ),json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F', 
+                                                            'issolved', 'F'
+                                                        ),json_object(
+                                                            'is_open', 'F', 
+                                                            'givefood', 'F', 
+                                                            'issolved', 'F'
+                                                        ));",
                                                        user_id, user_pw, user_nick);
                 MySqlCommand insertCmd = new MySqlCommand(insertCommand, connection);
                 reader = insertCmd.ExecuteReader();

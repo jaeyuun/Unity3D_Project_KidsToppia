@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class collection : MonoBehaviour
 {
@@ -12,15 +13,28 @@ public class collection : MonoBehaviour
     [SerializeField] TextMeshProUGUI star_num;
 
     [Header("Data")]
-    public Study_YG study; // study_data.Get_data() = DBdata
+    public Study_YG study;
 
+    private void Start()
+    {
+        StudyManager.Event_colupdate += Set_image;
+    }
     private void OnEnable()
     {
         Set_image();
     }
 
-    private void Set_image()
+    private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Open_study();
+        }
+    }
+
+    public void Set_image()
+    {
+        Debug.Log("Set_image()");
         if (study.data.is_open == 'T')
         {
             non_text.enabled = false;
@@ -31,6 +45,7 @@ public class collection : MonoBehaviour
 
         else
         {
+            Debug.Log(study.data.is_open == 'F');
             non_text.enabled = true;
             image.sprite = non_sprite;
             star_num.text = "?";
@@ -38,15 +53,24 @@ public class collection : MonoBehaviour
         }
     }
 
+    public void Open_study()
+    {
+        if ( study.data.is_open == 'T' && EventSystem.current.IsPointerOverGameObject())
+        {
+            StudyManager.instance.animal_data = study;
+            StudyManager.instance.Interactive_Nonplayer();
+        }
+    }
+
     private void Set_number(char state, TextMeshProUGUI ui)
     {
-        if (state == 'T')
+        if (state == 'F')
         {
-            ui.text = "5";
+            ui.text = "0";
         }
         else
         {
-            ui.text = "0";
+            ui.text = "5";
         }
     }
 }

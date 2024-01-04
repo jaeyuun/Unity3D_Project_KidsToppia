@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2308826910614485007
 RectTransform:
   m_ObjectHideFlags: 0
@@ -93,9 +93,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 9122470979764052350}
   non_text: {fileID: 7453315761044700271}
+  non_sprite: {fileID: 21300000, guid: c833478bc40fbcf40a56ccf5c8b3f071, type: 3}
   heart_num: {fileID: 1899903887428786554}
   star_num: {fileID: 7217771720575597514}
-  study_data: {fileID: 0}
+  study: {fileID: 0}
 --- !u!1 &2575471286129387703
 GameObject:
   m_ObjectHideFlags: 0
