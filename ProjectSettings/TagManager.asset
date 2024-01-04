@@ -7,7 +7,7 @@ TagManager:
   - NPC
   - StartPos
   - Animal
-  - JoystickPanel
+  - Camera
   layers:
   - Default
   - TransparentFX

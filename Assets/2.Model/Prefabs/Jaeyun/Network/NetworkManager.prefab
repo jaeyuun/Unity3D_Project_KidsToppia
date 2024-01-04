@@ -69,7 +69,7 @@ MonoBehaviour:
   autoStartServerBuild: 0
   autoConnectClientBuild: 0
   offlineScene: Assets/1.Scene/Jaeyun/Client/OfflineScene.unity
-  onlineScene: Assets/1.Scene/Jaeyun/Client/MainGame_J.unity
+  onlineScene: Assets/1.Scene/Jaeyun/Client/MainGame_Map.unity
   transport: {fileID: 1910155978098645684}
   networkAddress: localhost
   maxConnections: 100
