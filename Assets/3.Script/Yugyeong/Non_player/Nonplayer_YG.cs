@@ -2,6 +2,22 @@
 using UnityEngine;
 using Mirror;
 
+public class Nonplayer_data
+{
+    public string player_id;
+    public char is_open;
+    public char give_food;
+    public char is_solved;
+
+    public Nonplayer_data(string playerid, char isopen, char givefood, char issolved)
+    {
+        player_id = playerid;
+        is_open = isopen;
+        give_food = givefood;
+        is_solved = issolved;
+    }
+}
+
 public class Nonplayer_YG : NetworkBehaviour
 {
     // Nonplayer : 랜덤으로 움직이게 하기

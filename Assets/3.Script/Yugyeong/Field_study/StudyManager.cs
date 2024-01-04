@@ -24,12 +24,16 @@ public class StudyManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI eatstate_text;
 
     [Header("Data")]
-    [SerializeField] Study_YG animal_data;
+    public Study_YG animal_data;
     [SerializeField] int food_num;
     [SerializeField] private LayerMask layer;
 
+    [Header("TTS")]
     [SerializeField] private AudioSource audio_source;
     private string url;
+
+    public delegate void del_col();
+    public static event del_col Event_colupdate;
 
 
     private void Awake()
@@ -77,20 +81,19 @@ public class StudyManager : MonoBehaviour
         {
             Debug.Log("레이 쏨");
             if (hit.collider.CompareTag("Animal"))
-            {
+            {  
                 animal_data = hit.collider.gameObject.GetComponent<Nonplayer_YG>().data;
                 Interactive_Nonplayer();
             }
         }
     }
 
-    private void Interactive_Nonplayer()
+    public void Interactive_Nonplayer()
     {
         if (!study_pannel.activeSelf)
         {
             Open();
         }
-
         Data_update();
     }
 
@@ -99,7 +102,7 @@ public class StudyManager : MonoBehaviour
         animal_name.text = animal_data.animal_name;
         animal_info.text = animal_data.info;
         animal_image.sprite = animal_data.sprite;
-        StartCoroutine(Play_tts());
+        //StartCoroutine(Play_tts());
     }
 
     public void Eat_btn()
@@ -107,22 +110,29 @@ public class StudyManager : MonoBehaviour
         if (food_num <= 0)
         {
             eatstate_text.text = "가진 먹이가 없어요.";
+            eatstate.SetActive(true);
         }
 
-        if (food_num > 0)
+        else if (animal_data.data.give_food == 'F')
         {
             //동물 먹이주기
-            //호감도 올리기
-            eatstate_text.text = "<color = black>동물에게 먹이를 주었어요.";
+            animal_data.set_data("is_open", 'T');
+            animal_data.set_data("givefood", 'T');
+            eatstate_text.text = "동물에게 먹이를 주었어요.";
+            eatstate.SetActive(true);
+            Event_colupdate();
         }
-
-        Turn_eatstate();
+        else
+        {
+            eatstate_text.text = "이미 먹이를 주었어요.";
+            eatstate.SetActive(true);
+        }
         Invoke("Turn_eatstate", 3f);
     }
 
     private void Turn_eatstate()
     {
-        eatstate_text.enabled = !eatstate_text.enabled;
+        eatstate.SetActive(false);
     }
 
     IEnumerator Play_tts()

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Chicken
   m_EditorClassIdentifier: 
   animal_name: "\uB2ED"
+  table_name: chicken
   sprite: {fileID: 21300000, guid: be32170d21cc10b47a553f7b9c2d2be9, type: 3}
   info: "\uB2ED\uC740 \uAC00\uC7A5 \uD754\uD558\uACE0 \uB110\uB9AC \uD37C\uC838 \uC788\uB294
     \uAC00\uCD95 \uC911 \uD558\uB098\uC774\uB2E4. \uBBF8\uAD6D\uC758 \uD1B5\uACC4

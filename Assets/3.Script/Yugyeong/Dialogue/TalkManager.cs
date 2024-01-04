@@ -14,7 +14,7 @@ public class TalkManager : MonoBehaviour
     public delegate void del_talkend();
     public static event del_talkend event_talkend;
 
-    [SerializeField]private Touch touch;
+    [SerializeField] private Touch touch;
     private Vector3 touched_pos;
     private Vector3 mouse_pos;
     [SerializeField] private LayerMask layer;
@@ -111,7 +111,7 @@ public class TalkManager : MonoBehaviour
                     touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
                     Try_raycast(touch.position);
                     StudyManager.instance.Try_raycast(touch.position);
-}
+                }
             }
         }
 
@@ -119,7 +119,6 @@ public class TalkManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                //Debug.Log("Input.GetMouseButtonDown(0)");
                 mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Try_raycast(Input.mousePosition);
                 StudyManager.instance.Try_raycast(Input.mousePosition);
@@ -135,7 +134,7 @@ public class TalkManager : MonoBehaviour
         ray = Camera.main.ScreenPointToRay(pos);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
         {
-           // Debug.Log("∑π¿Ã ΩÙ");
+            // Debug.Log("∑π¿Ã ΩÙ");
             if (hit.collider.CompareTag("NPC"))
             {
                 Interactive_NPC();
