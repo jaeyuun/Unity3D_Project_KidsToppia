@@ -85,6 +85,7 @@ public class SQLManager : MonoBehaviour
     public Nonplayer_data white_sheep;
     public Nonplayer_data yellow_sheep;
     public Nonplayer_data none;
+    public Challenge_data challenge_data;
 
     public MySqlConnection connection;
     public MySqlDataReader reader;
@@ -584,6 +585,58 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
+    public Challenge_data Challenge(string user_id)
+    {
+        try
+        {
+            if (ConnectionCheck(connection))
+            {
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN challenge B ON A.id = B.player_id WHERE A.id = '{0}';", user_id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+                {
+                    // 읽은 데이터를 하나씩 나열
+                    while (reader.Read())
+                    {
+                        string player_id = reader["player_id"].ToString();
+                        DateTime cur_time = (DateTime)reader["cur_time"];
+                        DateTime last_time = (DateTime)reader["cur_time"];
+                        int dailycount = reader["dailycount"].ToString()[0] - '0';
+                        int trash = reader["trash"].ToString()[0] - '0';
+                        int box = reader["box"].ToString()[0] - '0';
+                        if (!player_id.Equals(string.Empty))
+                        { // 정상적으로 Data를 불러온 상황
+                            Challenge_data challenge_Data = new Challenge_data(player_id, cur_time, last_time, dailycount, trash, box);
+                            if (!reader.IsClosed)
+                            {
+                                reader.Close();
+                            }
+                            return challenge_Data;
+                        }
+                        else
+                        { // 로그인 실패
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+    }
     #endregion
     #region Sign In, Up
     public bool SignIn(string user_id, string user_pw)
@@ -606,6 +659,7 @@ public class SQLManager : MonoBehaviour
                                                    JOIN user_character_info B ON A.id = B.user_id
                                                    JOIN item C ON A.id = C.player_id
                                                    JOIN animal D ON A.id = D.player_id
+                                                   JOIN challenge E ON A.id = E.player_id
                                                    WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
@@ -693,6 +747,13 @@ public class SQLManager : MonoBehaviour
                     char no_is_open = K["is_open"].ToString()[0];
                     char no_givefood = K["givefood"].ToString()[0];
                     char no_issolved = K["issolved"].ToString()[0];
+                    // challenge
+                    string chal_player_id = reader["player_id"].ToString();
+                    DateTime cur_time = (DateTime)reader["cur_time"];
+                    DateTime last_time = (DateTime)reader["cur_time"];
+                    int dailycount = reader["dailycount"].ToString()[0] - '0';
+                    int trash = reader["trash"].ToString()[0] - '0';
+                    int box = reader["box"].ToString()[0] - '0';
 
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     { // 정상적으로 Data를 불러온 상황
@@ -706,6 +767,7 @@ public class SQLManager : MonoBehaviour
                         white_sheep = new Nonplayer_data(ws_player_id, ws_is_open, ws_givefood, ws_issolved);
                         yellow_sheep = new Nonplayer_data(ys_player_id, ys_is_open, ys_givefood, ys_issolved);
                         none = new Nonplayer_data(no_player_id, no_is_open, no_givefood, no_issolved);
+                        challenge_data = new Challenge_data(chal_player_id, cur_time, last_time, dailycount, trash, box);
 
                         if (!reader.IsClosed)
                         {
@@ -764,6 +826,7 @@ public class SQLManager : MonoBehaviour
                 string insertCommand = string.Format(@"INSERT INTO user_info (id, pw, nickname) VALUES ('{0}', '{1}', '{2}');
                                                        INSERT INTO user_character_info (user_id) VALUES ('{0}');
                                                        INSERT INTO item (player_id) VALUES('{0}');
+                                                       INSERT INTO challenge( player_id,cur_time,last_time ) VALUES ( '{0}',now(),now() );
                                                        INSERT INTO animal(player_id, black_goat,black_sheep,chicken,whale,white_goat,white_sheep,yellow_sheep,none) values('{0}', json_object(
                                                             'is_open', 'F', 
                                                             'givefood', 'F', 

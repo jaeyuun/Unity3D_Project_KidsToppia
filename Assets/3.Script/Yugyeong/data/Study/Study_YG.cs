@@ -8,9 +8,8 @@ public class Study_YG : ScriptableObject
     public Sprite sprite;
     public Nonplayer_data data
     {
-        set
+        set 
         {
-            
         }
         get
         {

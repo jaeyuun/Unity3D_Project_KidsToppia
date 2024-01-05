@@ -32,6 +32,22 @@ public class Test : MonoBehaviour
             SceneManager.LoadScene("NPCScene_YG");
         }
     }
+    public void TestSignInButton2()
+    { // 로그인 버튼
+        if (SQLManager.instance.SignIn(idInput_in.text, pwInput_in.text))
+        {
+            // 로그인 성공
+            User_info info = SQLManager.instance.info;
+            for (int i = 0; i < study_YGs.Length; i++)
+            {
+                Set_testdata(study_YGs[i]);
+            }
+            //Nonplayer_data nonData = SQLManager.instance.Collection(info.User_Id, "yellow_sheep");
+            SQLManager.instance.isLogin = true;
+            Debug.Log(info.User_Id + " | " + info.User_Pw);
+            SceneManager.LoadScene("MainGame_J 1");
+        }
+    }
 
     public void Set_testdata(Study_YG study)
     {
