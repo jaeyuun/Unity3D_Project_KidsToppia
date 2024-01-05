@@ -22,6 +22,9 @@ public class TalkManager : MonoBehaviour
     [Header("data")]
     List<Dictionary<string, object>> data_Dialog;
 
+    public GameObject npcInfo = null; // 클릭한 NPC 갖고오기 위한 선언, 재윤 24. 01. 05
+    [SerializeField] ChatGPT gptResponse;
+
     private void Awake()
     {
         if (instance == null)
@@ -137,6 +140,7 @@ public class TalkManager : MonoBehaviour
             // Debug.Log("레이 쏨");
             if (hit.collider.CompareTag("NPC"))
             {
+                npcInfo = hit.collider.gameObject;
                 Interactive_NPC();
             }
         }
