@@ -21,7 +21,6 @@ public class ChatGPT : MonoBehaviour
 
     private void NpcClick()
     {
-
         NpcDialogStart();
     }
 

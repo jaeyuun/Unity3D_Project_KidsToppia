@@ -22,8 +22,9 @@ public class TalkManager : MonoBehaviour
     [Header("data")]
     List<Dictionary<string, object>> data_Dialog;
 
-    public GameObject npcInfo = null; // 클릭한 NPC 갖고오기 위한 선언, 재윤 24. 01. 05
+    public NPCInfoSetting npcInfoSet; // 클릭한 NPC 갖고오기 위한 선언, 재윤 24. 01. 05
     [SerializeField] ChatGPT gptResponse;
+    private bool nextText = false;
 
     private void Awake()
     {
@@ -60,6 +61,7 @@ public class TalkManager : MonoBehaviour
     public void Open_dialog()
     {
         talk_pannel.SetActive(true);
+        nextText = true;
         if (event_talkend != null)
         {
             event_talkend();
@@ -69,6 +71,7 @@ public class TalkManager : MonoBehaviour
     public void Close_dialog()
     {
         talk_pannel.SetActive(false);
+        nextText = false;
         if (event_talkend != null)
         {
             event_talkend();
@@ -82,22 +85,28 @@ public class TalkManager : MonoBehaviour
             Open_dialog();
         }
 
-        if (dialog_index < data_Dialog.Count)
+        /*if (dialog_index < data_Dialog.Count)
         {
             name_text.text = data_Dialog[dialog_index]["Character_name"].ToString();
             dialog_text.text = data_Dialog[dialog_index]["Dialog"].ToString();
             dialog_index++;
-        }
-
-        else
+        }*/
+        Debug.Log(npcInfoSet.Info.npcName);
+        for (int i = 0; i < data_Dialog.Count; i++)
         {
-            Stop_talk();
+            if (data_Dialog[i]["Character_name"].ToString().Trim().Equals(npcInfoSet.Info.npcName.Trim()))
+            {
+                dialog_index = i;
+                break;
+            }
         }
+        name_text.text = data_Dialog[dialog_index]["Character_name"].ToString();
+        string[] array = data_Dialog[dialog_index]["Dialog"].ToString().Split(']');
+        dialog_text.text = array[Random.Range(0, array.Length)];
     }
 
     public void Stop_talk()
     {
-        dialog_index = 0;
         Close_dialog();
     }
 
@@ -111,9 +120,19 @@ public class TalkManager : MonoBehaviour
                 touch = Input.GetTouch(0);
                 if (touch.phase == TouchPhase.Began)
                 {
-                    touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
-                    Try_raycast(touch.position);
-                    StudyManager.instance.Try_raycast(touch.position);
+                    if (!talk_pannel.activeSelf)
+                    {
+                        touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
+                        Try_raycast(touch.position);
+                        StudyManager.instance.Try_raycast(touch.position);
+                    }
+                    else
+                    {
+                        if (nextText)
+                        {
+                            dialog_text.text = $"<#ABABAB>{npcInfoSet.Info.npcText}</color>";
+                        }
+                    }
                 }
             }
         }
@@ -122,9 +141,20 @@ public class TalkManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Try_raycast(Input.mousePosition);
-                StudyManager.instance.Try_raycast(Input.mousePosition);
+                if (!talk_pannel.activeSelf)
+                {
+                    mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Try_raycast(Input.mousePosition);
+                    StudyManager.instance.Try_raycast(Input.mousePosition);
+                }
+                else
+                {
+                    if (nextText)
+                    {
+                        dialog_text.text = $"<#ABABAB>{npcInfoSet.Info.npcText}</color>";
+                    }
+                }
+
             }
         }
     }
@@ -140,7 +170,7 @@ public class TalkManager : MonoBehaviour
             // Debug.Log("레이 쏨");
             if (hit.collider.CompareTag("NPC"))
             {
-                npcInfo = hit.collider.gameObject;
+                npcInfoSet = hit.collider.gameObject.GetComponent<NPCInfoSetting>();
                 Interactive_NPC();
             }
         }

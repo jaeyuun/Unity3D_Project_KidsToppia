@@ -1363,6 +1363,8 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 65536
+  npcInfoSet: {fileID: 0}
+  gptResponse: {fileID: 0}
 --- !u!4 &477119392
 Transform:
   m_ObjectHideFlags: 0
@@ -1890,8 +1892,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uADF8\uB9CC \uC774\uC57C\uAE30\uD558\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 342082776459e824a856e175bab4eaed, type: 2}
-  m_sharedMaterial: {fileID: -540927837875764226, guid: 342082776459e824a856e175bab4eaed, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 47a95decb682dff439c61fba50f7d606, type: 2}
+  m_sharedMaterial: {fileID: -6559684679104077988, guid: 47a95decb682dff439c61fba50f7d606, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6701,6 +6703,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57d5f585d9fcff4580d5cf398687775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogText: {fileID: 0}
+  audioButton: {fileID: 0}
 --- !u!1 &2074583020
 GameObject:
   m_ObjectHideFlags: 0
@@ -17028,6 +17032,7 @@ GameObject:
   - component: {fileID: 3642907726969309286}
   - component: {fileID: 3642907726969309285}
   - component: {fileID: 3642907726969309284}
+  - component: {fileID: 3642907726969309291}
   m_Layer: 16
   m_Name: NPC_chaseplayer
   m_TagString: NPC
@@ -17035,6 +17040,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &3642907726969309291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642907726969309290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4eae2d915d64184382654ce39daa150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Info: {fileID: 11400000, guid: 589a0db1bdff2df46a84c2af334f736a, type: 2}
 --- !u!65 &3731321466748276728
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17758,6 +17776,7 @@ GameObject:
   - component: {fileID: 4456124847186726501}
   - component: {fileID: 4456124847186726523}
   - component: {fileID: 4456124847186726522}
+  - component: {fileID: 4456124847186726502}
   m_Layer: 16
   m_Name: NPC_randommove
   m_TagString: NPC
@@ -17781,6 +17800,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &4456124847186726502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456124847186726500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4eae2d915d64184382654ce39daa150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Info: {fileID: 11400000, guid: 850f6d46b36a6f443ae5ce723f854531, type: 2}
 --- !u!114 &4456124847186726522
 MonoBehaviour:
   m_ObjectHideFlags: 0
