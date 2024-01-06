@@ -77,6 +77,9 @@ public class SQLManager : MonoBehaviour
 
     public User_info info;
     public User_Character character_info;
+
+    public item_data item;
+
     public Nonplayer_data black_goat;
     public Nonplayer_data black_sheep;
     public Nonplayer_data chicken;
@@ -85,6 +88,8 @@ public class SQLManager : MonoBehaviour
     public Nonplayer_data white_sheep;
     public Nonplayer_data yellow_sheep;
     public Nonplayer_data none;
+    public List<Nonplayer_data> nonplayer_Datas = new List<Nonplayer_data>();
+
     public Challenge_data challenge_data;
 
     public MySqlConnection connection;
@@ -501,9 +506,10 @@ public class SQLManager : MonoBehaviour
                         int key_num = reader["key_num"].ToString()[0] - '0';
                         int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
                         int food_num = reader["food_num"].ToString()[0] - '0';
+                        int money = reader["money"].ToString()[0] - '0';
                         if (!player_id.Equals(string.Empty))
                         { // 정상적으로 Data를 불러온 상황
-                            item_data itemdata = new item_data(player_id, key_num, have_fisingrod, food_num);
+                            item_data itemdata = new item_data(player_id, key_num, have_fisingrod, food_num, money);
                             if (!reader.IsClosed)
                             {
                                 reader.Close();
@@ -674,6 +680,7 @@ public class SQLManager : MonoBehaviour
                     string nickName = reader["nickname"].ToString();
                     char firstConnect = reader["firstConnect"].ToString()[0];
                     char connecting = reader["connecting"].ToString()[0];
+
                     // user_character_info
                     string id_c = reader["user_id"].ToString();
                     int eyes = reader["Eyes"].ToString()[0] - '0';
@@ -686,11 +693,14 @@ public class SQLManager : MonoBehaviour
                     int ride = reader["Riding"].ToString()[0] - '0';
                     int hair = reader["HairStyle"].ToString()[0] - '0';
                     char riding = reader["Ride"].ToString()[0];
+
                     // item_data
                     string player_id = reader["player_id"].ToString();
                     int key_num = reader["key_num"].ToString()[0] - '0';
                     int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
                     int food_num = reader["food_num"].ToString()[0] - '0';
+                    int money = reader["money"].ToString()[0] - '0';
+
                     // collection_data
                     string jsonDData = reader["black_goat"].ToString();
                     JsonData D = JsonMapper.ToObject(jsonDData);
@@ -747,6 +757,7 @@ public class SQLManager : MonoBehaviour
                     char no_is_open = K["is_open"].ToString()[0];
                     char no_givefood = K["givefood"].ToString()[0];
                     char no_issolved = K["issolved"].ToString()[0];
+
                     // challenge
                     string chal_player_id = reader["player_id"].ToString();
                     DateTime cur_time = (DateTime)reader["cur_time"];
@@ -756,17 +767,31 @@ public class SQLManager : MonoBehaviour
                     int box = reader["box"].ToString()[0] - '0';
 
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
-                    { // 정상적으로 Data를 불러온 상황
+                    {
+                        Debug.Log("5");
+                        // 정상적으로 Data를 불러온 상황
                         info = new User_info(id, pw, nickName, firstConnect, connecting);
+
                         character_info = new User_Character(id_c, eyes, jummper, runners, tshirt, trunk, skin, hat, hair, ride, riding);
+
+                        item = new item_data(player_id, key_num, have_fisingrod, food_num, money);
+
                         black_goat = new Nonplayer_data(bg_player_id, bg_is_open, bg_givefood, bg_issolved);
+                        nonplayer_Datas.Add(black_goat);
                         black_sheep = new Nonplayer_data(bs_player_id, bs_is_open, bs_givefood, bs_issolved);
+                        nonplayer_Datas.Add(black_sheep);
                         chicken = new Nonplayer_data(ch_player_id, ch_is_open, ch_givefood, ch_issolved);
+                        nonplayer_Datas.Add(chicken);
                         whale = new Nonplayer_data(wh_player_id, wh_is_open, wh_givefood, wh_issolved);
+                        nonplayer_Datas.Add(whale);
                         white_goat = new Nonplayer_data(wg_player_id, wg_is_open, wg_givefood, wg_issolved);
+                        nonplayer_Datas.Add(white_goat);
                         white_sheep = new Nonplayer_data(ws_player_id, ws_is_open, ws_givefood, ws_issolved);
+                        nonplayer_Datas.Add(white_sheep);
                         yellow_sheep = new Nonplayer_data(ys_player_id, ys_is_open, ys_givefood, ys_issolved);
+                        nonplayer_Datas.Add(yellow_sheep);
                         none = new Nonplayer_data(no_player_id, no_is_open, no_givefood, no_issolved);
+
                         challenge_data = new Challenge_data(chal_player_id, cur_time, last_time, dailycount, trash, box);
 
                         if (!reader.IsClosed)
@@ -826,7 +851,7 @@ public class SQLManager : MonoBehaviour
                 string insertCommand = string.Format(@"INSERT INTO user_info (id, pw, nickname) VALUES ('{0}', '{1}', '{2}');
                                                        INSERT INTO user_character_info (user_id) VALUES ('{0}');
                                                        INSERT INTO item (player_id) VALUES('{0}');
-                                                       INSERT INTO challenge( player_id,cur_time,last_time ) VALUES ( '{0}',now(),now() );
+                                                       INSERT INTO challenge( player_id,cur_time,last_time) VALUES ( '{0}',now(),now() );
                                                        INSERT INTO animal(player_id, black_goat,black_sheep,chicken,whale,white_goat,white_sheep,yellow_sheep,none) values('{0}', json_object(
                                                             'is_open', 'F', 
                                                             'givefood', 'F', 
