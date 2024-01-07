@@ -643,6 +643,8 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
+
+
     #endregion
     #region Sign In, Up
     public bool SignIn(string user_id, string user_pw)
@@ -765,6 +767,28 @@ public class SQLManager : MonoBehaviour
                     int dailycount = reader["dailycount"].ToString()[0] - '0';
                     int trash = reader["trash"].ToString()[0] - '0';
                     int box = reader["box"].ToString()[0] - '0';
+
+                    // shop
+                    jsonDData = reader["riding_shop"].ToString();
+                    JsonData L = JsonMapper.ToObject(jsonDData);
+                    string shop_player_id = reader["player_id"].ToString();
+                    char riding1 = L["riding1"].ToString()[0];
+                    char riding2 = L["riding2"].ToString()[0];
+
+                    jsonDData = reader["clothes_shop"].ToString();
+                    JsonData M = JsonMapper.ToObject(jsonDData);
+                    char clothes1 = M["clothes1"].ToString()[0];
+                    char clothes2 = M["clothes2"].ToString()[0];
+
+                    jsonDData = reader["hair_shop"].ToString();
+                    JsonData N = JsonMapper.ToObject(jsonDData);
+                    char hair1 = N["hair1"].ToString()[0];
+                    char hair2 = N["hair2"].ToString()[0];
+
+                    jsonDData = reader["acce_shop"].ToString();
+                    JsonData O = JsonMapper.ToObject(jsonDData);
+                    char acc1 = O["acc1"].ToString()[0];
+                    char acc2 = O["acc2"].ToString()[0];
 
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     {
