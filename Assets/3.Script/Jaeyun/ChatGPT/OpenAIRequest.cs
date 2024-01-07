@@ -9,20 +9,19 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEngine;
 
+public class PlayerRequest
+{
+    public string player_id;
+    public string role;
+    public string message;
+
+}
+
 public class OpenAIRequest
 {
     public string openAi_key = "Secret Key"; // api secret key
 
     private static HttpClient client;
-    // Assets/StreamingAssets/JsonData.json의 path
-#if UNITY_EDITOR
-    // Unity Editor
-    private static string jsonFilePath = $"file://{Application.persistentDataPath}/JsonData.json";
-#elif UNITY_ANDROID
-    private static string jsonFilePath = $"{Application.persistentDataPath}/StreamingAssets/JsonData.json";
-#else
-    private static string jsonFilePath = $"{Application.streamingAssetsPath}/JsonData.json";
-#endif
 
     public delegate void StringEvnet(string _string);
     public StringEvnet completedRepostEvent;
@@ -30,6 +29,8 @@ public class OpenAIRequest
     private string api_URL = "";
     private const string authoirzationHeader = "Bearer";
     private const string userAgentHeader = "User-Agent";
+
+    private string body_json = string.Empty;
 
     public void Init()
     {
@@ -50,9 +51,11 @@ public class OpenAIRequest
         {
             CreateHttpClient();
         }
-        api_URL = ((URL)request).Get_API_URL(); // URL 가져오기
+        api_URL = ((URL)request).Get_API_URL(); // URL 가져오기        
 
-        string jsonContent = File.ReadAllText(jsonFilePath);
+
+
+        string jsonContent = string.Empty;
         StringContent stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         Debug.Log(api_URL);
@@ -68,6 +71,45 @@ public class OpenAIRequest
             else
             { // 응답 실패
                 throw new HttpRequestException($"Error calling OpenAI API to get completion. HTTP status code: {response.StatusCode}. Request body: {jsonContent}");
+            }
+        }
+    }
+
+    public void ResponseJson(string player_id, string player_audio)
+    {
+        string request_body = string.Empty;
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+
+            // player role, message body =
+            request_body = string.Format(@"UPDATE chatGPT_request SET stringContent = json_object(
+                                           'role', 'user',
+                                           'message', '{0}'
+                                           WHERE 'player_id' = '{1}';",
+                                           player_audio, player_id
+                                           );
+
+            MySqlCommand cmd = new MySqlCommand(request_body, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
             }
         }
     }
