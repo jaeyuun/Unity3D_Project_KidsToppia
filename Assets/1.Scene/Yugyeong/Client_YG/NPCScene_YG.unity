@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4495008, g: 0.49649543, b: 0.55914587, a: 1}
+  m_IndirectSpecularColor: {r: 0.44950104, g: 0.49649596, b: 0.5591463, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -581,6 +581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nametext: {fileID: 1601862677}
   rewardtext: {fileID: 400733757}
+  progresstext: {fileID: 588347878}
   slider: {fileID: 466942000}
   button: {fileID: 268305866}
   challange_data: {fileID: 11400000, guid: ec4974c7e74e6fe419ef91af99d6f6db, type: 2}
@@ -2018,7 +2019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &268305865
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2102,7 +2103,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268305864}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -3433,6 +3434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nametext: {fileID: 1375260729}
   rewardtext: {fileID: 464326555}
+  progresstext: {fileID: 921250237}
   slider: {fileID: 305134944}
   button: {fileID: 119523104}
   challange_data: {fileID: 11400000, guid: 0fd9bb10a03ec39478fe52b1b8a43766, type: 2}
@@ -6117,6 +6119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nametext: {fileID: 1081781324}
   rewardtext: {fileID: 1955191982}
+  progresstext: {fileID: 2100625668}
   slider: {fileID: 2117196857}
   button: {fileID: 583703656}
   challange_data: {fileID: 11400000, guid: d305a780d70cba24c84340ada7cce30d, type: 2}
@@ -9830,6 +9833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nametext: {fileID: 2049087604}
   rewardtext: {fileID: 1123619058}
+  progresstext: {fileID: 1861043057}
   slider: {fileID: 2032879639}
   button: {fileID: 1589554928}
   challange_data: {fileID: 11400000, guid: 980fbfc60f158e146a92744dae9efcdd, type: 2}
@@ -10818,6 +10822,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nametext: {fileID: 2015762937}
   rewardtext: {fileID: 1821129892}
+  progresstext: {fileID: 106851605}
   slider: {fileID: 450382711}
   button: {fileID: 1744751737}
   challange_data: {fileID: 11400000, guid: 48af7585e6942cf4a8f700969f5618a3, type: 2}
@@ -12250,6 +12255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nametext: {fileID: 7656260}
   rewardtext: {fileID: 622737998}
+  progresstext: {fileID: 1708662697}
   slider: {fileID: 375387615}
   button: {fileID: 1020276621}
   challange_data: {fileID: 11400000, guid: d93adede6cb412c428dedc9988e288b3, type: 2}

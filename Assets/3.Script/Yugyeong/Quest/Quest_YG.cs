@@ -8,7 +8,7 @@ public class Quest_YG : ScriptableObject
     [Header("Info")]
     public string info;
 
-    //[Header("Reward")]
+    [Header("Reward")]
     //나중에 아이템 만들고 보상 넣어야함
 
     [Header("Completed")]

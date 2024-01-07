@@ -299,7 +299,7 @@ public class SQLManager : MonoBehaviour
             {
                 return;
             }
-            string selectCommand = string.Format(@"UPDATE item SET {0} = '{1}' WHERE player_id = '{2}';", name, num, info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            string selectCommand = string.Format(@"UPDATE item SET {0} = {1} WHERE player_id = '{2}';", name, num, info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed)
@@ -768,7 +768,6 @@ public class SQLManager : MonoBehaviour
 
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     {
-                        Debug.Log("5");
                         // 정상적으로 Data를 불러온 상황
                         info = new User_info(id, pw, nickName, firstConnect, connecting);
 

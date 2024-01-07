@@ -52,13 +52,16 @@ public class Challenge_data
             switch (type)
             {
                 case "is_open":
-                    count += tmp[i].is_open;
+                    if (tmp[i].is_open == 'T')
+                        count += 1;
                     break;
                 case "is_solved":
-                    count += tmp[i].is_solved;
+                    if (tmp[i].give_food == 'T')
+                        count += 1;
                     break;
                 case "give_food":
-                    count += tmp[i].give_food;
+                    if (tmp[i].give_food == 'T')
+                        count += 1;
                     break;
                 default:
                     Debug.Log($"매개변수 잘못 넣었음");

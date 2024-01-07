@@ -13,10 +13,9 @@ public class Challenge : MonoBehaviour
         }
     }
 
-    public void Get_reward()
+    public void Get_reward(int reward)
     {
         //보상금액
-        int reward = gameObject.GetComponentInParent<Element>().challange_data.reward_count;
         Debug.Log($"보상금 : {reward}");
 
         //기존 금액
@@ -26,5 +25,6 @@ public class Challenge : MonoBehaviour
         //현재 금액 = 보상금액+ 기존금액
         SQLManager.instance.Updateitem("money", reward + cur_money);
         Debug.Log($"보상금 지급 후 소지금액 : {SQLManager.instance.Item(SQLManager.instance.info.User_Id).money}");
+        Debug.Log($"보상금 지급 후 소지금액2 : {SQLManager.instance.item.money}");
     }
 }
