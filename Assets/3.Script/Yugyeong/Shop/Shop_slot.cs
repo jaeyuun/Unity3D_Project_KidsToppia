@@ -7,9 +7,8 @@ using UnityEngine.Purchasing;
 public class Shop_slot : MonoBehaviour
 {
     [SerializeField] Goods goods;
-    [SerializeField] Button purchase_btn;
+    [SerializeField] bool is_purchase;
     [SerializeField] Text purchase_text;
-    [SerializeField] GameObject fail;
 
     [Header("Cache")]
     private IStoreController storeController; //구매 과정을 제어하는 함수 제공자
@@ -35,7 +34,11 @@ public class Shop_slot : MonoBehaviour
     }
     public void Buy_goods() //btn등록
     {
-    }
 
+    }
+}
+
+public class Shop_btn : MonoBehaviour
+{
 
 }
