@@ -1,6 +1,5 @@
 using OpenApiFormat;
 using System;
-using System.IO;
 using System.Text; // encoding
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +13,6 @@ public class PlayerRequest
     public string player_id;
     public string role;
     public string message;
-
 }
 
 public class OpenAIRequest
@@ -30,8 +28,6 @@ public class OpenAIRequest
     private const string authoirzationHeader = "Bearer";
     private const string userAgentHeader = "User-Agent";
 
-    private string body_json = string.Empty;
-
     public void Init()
     {
         CreateHttpClient();
@@ -45,24 +41,23 @@ public class OpenAIRequest
         client.DefaultRequestHeaders.Add(userAgentHeader, "okgodoit/dotnet_openai_api"); // gpt-3.5-turbo sdk, https://github.com/OkGoDoIt/OpenAI-API-dotnet
     }
 
-    private async Task<string> ClientResponse<SendData>(SendData request) // ChatRequest or STTRequest
+    public async Task<string> ClientResponse<SendData>(SendData request) // ChatRequest or STTRequest
     {
         if (client == null)
         {
             CreateHttpClient();
         }
-        api_URL = ((URL)request).Get_API_URL(); // URL 가져오기        
 
+        api_URL = ((URL)request).Get_API_URL(); // URL 가져오기       
 
-
-        string jsonContent = string.Empty;
+        string jsonContent = JsonUtility.ToJson(request); // json 직렬화
         StringContent stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         Debug.Log(api_URL);
         Debug.Log(stringContent);
 
         // 데이터 전송 후 대기
-        using(HttpResponseMessage response = await client.PostAsync(api_URL, stringContent)) // only post
+        using (HttpResponseMessage response = await client.PostAsync(api_URL, stringContent)) // only post
         {
             if (response.IsSuccessStatusCode)
             { // 응답 성공
@@ -75,9 +70,9 @@ public class OpenAIRequest
         }
     }
 
-    public void ResponseJson(string player_id, string player_audio)
+    public string ResponseJson(string player_audio)
     {
-        string request_body = string.Empty;
+        /*string request_body = string.Empty;
         try
         {
             if (!ConnectionCheck(connection))
@@ -111,6 +106,18 @@ public class OpenAIRequest
                 reader.Close();
                 return;
             }
-        }
+        }*/
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.role = role.user.ToString();
+        chatMessage.content = player_audio;
+
+        string json = JsonUtility.ToJson(chatMessage);
+
+        return json;
+    }
+
+    public async Task<ChatResponse> ClientResponseChat(ChatRequest r)
+    {
+        return JsonMapper.ToObject<ChatResponse>(await ClientResponse(r));
     }
 }

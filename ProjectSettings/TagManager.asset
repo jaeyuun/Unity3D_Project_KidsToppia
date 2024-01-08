@@ -8,6 +8,7 @@ TagManager:
   - StartPos
   - Animal
   - Camera
+  - tran
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - UI
   - Player
   - Player_Local
-  - 
+  - Unwalkable
   - 
   - 
   - 
