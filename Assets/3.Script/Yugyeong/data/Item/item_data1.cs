@@ -12,5 +12,6 @@
         key_num = keynum;
         have_fishingrod = havefishingrod;
         food_num = foodnum;
+        money = money_;
     }
 }

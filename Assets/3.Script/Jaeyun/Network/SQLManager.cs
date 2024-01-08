@@ -377,6 +377,109 @@ public class SQLManager : MonoBehaviour
             }
         }
     }
+
+    public void Updatechal_boxtrash(string name, int num)
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+            string selectCommand = string.Format(@"UPDATE item SET {0} = {1} WHERE player_id = '{2}';", name, num, info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
+
+    public void Updatechal_curtime()
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+            string selectCommand = string.Format(@"UPDATE challenge SET cur_time = now() WHERE player_id = '{0}';", info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
+
+    public void Updatechal_dailycount(DateTime cur, DateTime last, int dailycount)
+    {
+        int dayrange = (last.Date - cur.Date).Days;
+        int tmp = 0;
+
+        if (dayrange == 1)
+        {
+            tmp = dailycount+1;
+        }
+        else if (dayrange >= 2)
+        {
+            tmp = 0;
+        }
+        else
+        {
+            tmp = dailycount;
+        }
+
+        if ((last.Date - cur.Date).Days == 1)
+        {
+            try
+            {
+                if (!ConnectionCheck(connection))
+                {
+                    return;
+                }
+                string selectCommand = string.Format(@"UPDATE challenge SET dailycount = {1} WHERE player_id = '{0}';", info.User_Id, tmp); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (!reader.IsClosed)
+                {
+                    reader.Close();
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                if (!reader.IsClosed)
+                {
+                    reader.Close();
+                    return;
+                }
+            }
+        }
+    }
     #endregion
     #region Table Search (SELECT)
     public User_info PlayerInfo(string user_id)
@@ -506,10 +609,12 @@ public class SQLManager : MonoBehaviour
                         int key_num = reader["key_num"].ToString()[0] - '0';
                         int have_fisingrod = reader["have_fisingrod"].ToString()[0] - '0';
                         int food_num = reader["food_num"].ToString()[0] - '0';
-                        int money = reader["money"].ToString()[0] - '0';
+                        int money = int.Parse(reader["money"].ToString());
                         if (!player_id.Equals(string.Empty))
                         { // 정상적으로 Data를 불러온 상황
                             item_data itemdata = new item_data(player_id, key_num, have_fisingrod, food_num, money);
+                            Debug.Log("item데이터 불러오기");
+                            Debug.Log($"{player_id}, {key_num}, {have_fisingrod}, {food_num}, {money}");
                             if (!reader.IsClosed)
                             {
                                 reader.Close();
@@ -559,6 +664,11 @@ public class SQLManager : MonoBehaviour
                         char is_open = G["is_open"].ToString()[0];
                         char givefood = G["givefood"].ToString()[0];
                         char issolved = G["issolved"].ToString()[0];
+                        if (givefood == 'T' || issolved == 'T' && is_open == 'F')
+                        {
+                            Updatecollection(col_name, "is_open", 'T');
+                            is_open = 'T';
+                        }
 
                         if (!player_id.Equals(string.Empty))
                         { // 정상적으로 Data를 불러온 상황
@@ -591,13 +701,13 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
-    public Challenge_data Challenge(string user_id)
+    public Challenge_data Challenge()
     {
         try
         {
             if (ConnectionCheck(connection))
             {
-                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN challenge B ON A.id = B.player_id WHERE A.id = '{0}';", user_id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN challenge B ON A.id = B.player_id WHERE A.id = '{0}';", info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
                 MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
@@ -644,7 +754,6 @@ public class SQLManager : MonoBehaviour
         }
     }
 
-
     #endregion
     #region Sign In, Up
     public bool SignIn(string user_id, string user_pw)
@@ -668,6 +777,7 @@ public class SQLManager : MonoBehaviour
                                                    JOIN item C ON A.id = C.player_id
                                                    JOIN animal D ON A.id = D.player_id
                                                    JOIN challenge E ON A.id = E.player_id
+                                                   JOIN shop F ON A.id = F.player_id
                                                    WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
@@ -765,6 +875,8 @@ public class SQLManager : MonoBehaviour
                     DateTime cur_time = (DateTime)reader["cur_time"];
                     DateTime last_time = (DateTime)reader["cur_time"];
                     int dailycount = reader["dailycount"].ToString()[0] - '0';
+                    Updatechal_dailycount(cur_time, last_time, dailycount);
+                    dailycount = reader["dailycount"].ToString()[0] - '0';
                     int trash = reader["trash"].ToString()[0] - '0';
                     int box = reader["box"].ToString()[0] - '0';
 
@@ -785,7 +897,7 @@ public class SQLManager : MonoBehaviour
                     char hair1 = N["hair1"].ToString()[0];
                     char hair2 = N["hair2"].ToString()[0];
 
-                    jsonDData = reader["acce_shop"].ToString();
+                    jsonDData = reader["acc_shop"].ToString();
                     JsonData O = JsonMapper.ToObject(jsonDData);
                     char acc1 = O["acc1"].ToString()[0];
                     char acc2 = O["acc2"].ToString()[0];
@@ -816,6 +928,7 @@ public class SQLManager : MonoBehaviour
                         none = new Nonplayer_data(no_player_id, no_is_open, no_givefood, no_issolved);
 
                         challenge_data = new Challenge_data(chal_player_id, cur_time, last_time, dailycount, trash, box);
+
 
                         if (!reader.IsClosed)
                         {
@@ -875,6 +988,19 @@ public class SQLManager : MonoBehaviour
                                                        INSERT INTO user_character_info (user_id) VALUES ('{0}');
                                                        INSERT INTO item (player_id) VALUES('{0}');
                                                        INSERT INTO challenge( player_id,cur_time,last_time) VALUES ( '{0}',now(),now() );
+                                                       INSERT INTO shop(player_id,riding_shop,clothes_shop,hair_shop,acc_shop) VALUES ('{0}', json_object(
+                                                            'riding1', 'F', 
+                                                            'riding2', 'F'
+                                                        ),json_object(
+                                                            'clothes1', 'F', 
+                                                            'clothes2', 'F' 
+                                                        ),json_object(
+                                                            'hair1', 'F', 
+                                                            'hair2', 'F'
+                                                        ),json_object(
+                                                            'acc1', 'F', 
+                                                            'acc2', 'F'
+                                                        ));
                                                        INSERT INTO animal(player_id, black_goat,black_sheep,chicken,whale,white_goat,white_sheep,yellow_sheep,none) values('{0}', json_object(
                                                             'is_open', 'F', 
                                                             'givefood', 'F', 
@@ -927,6 +1053,23 @@ public class SQLManager : MonoBehaviour
             }
             return false;
         }
+    }
+    #endregion
+    #region Delete All Data(Delete)
+
+    public void Delete_all()
+    {
+
+            /*
+            string deleteCommand = string.Format(@"DELETE FROM user_info;
+                                               DELETE FROM user_character_info;
+                                               DELETE FROM item;
+                                               DELETE FROM challenge;
+                                               DELETE FROM animal;
+                                               DELETE FROM shop;");
+            MySqlCommand insertCmd = new MySqlCommand(deleteCommand, connection);
+            reader = insertCmd.ExecuteReader();
+            */
     }
     #endregion
 }

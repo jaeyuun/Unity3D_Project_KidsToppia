@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Purchasing;
 
 public class Shop_slot : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class Shop_slot : MonoBehaviour
     [SerializeField] Button purchase_btn;
     [SerializeField] Text purchase_text;
     [SerializeField] GameObject fail;
+
+    [Header("Cache")]
+    private IStoreController storeController; //구매 과정을 제어하는 함수 제공자
+    private IExtensionProvider storeExtensionProvider; //여러 플랫폼을 위한 확장 처리 제공자
 
     private void OnEnable()
     {
