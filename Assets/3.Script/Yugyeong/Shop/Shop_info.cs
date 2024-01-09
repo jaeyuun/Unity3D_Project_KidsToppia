@@ -4,7 +4,6 @@ public abstract class Shop_info : MonoBehaviour
 {
     GameObject shop_pannel;
     Shop_slot[] slots;
-    Shop_btn[] btns;
 
     public void Open()
     {
@@ -15,8 +14,4 @@ public abstract class Shop_info : MonoBehaviour
     {
         shop_pannel.SetActive(false);
     }
-
-    public 
-
-
 }

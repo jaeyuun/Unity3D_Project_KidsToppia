@@ -22,7 +22,7 @@ public class Inven : MonoBehaviour
     private void Get_data()
     {
         Debug.Log("Get_data");
-        data = SQLManager.instance.Item(SQLManager.instance.info.User_Id);
+        data = SQLManager.instance.Item();
         Debug.Log(data.key_num);
         Debug.Log(data.player_id);
         Debug.Log(data.food_num);
