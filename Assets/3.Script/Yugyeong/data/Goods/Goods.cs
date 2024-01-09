@@ -7,7 +7,7 @@ using UnityEngine;
 public class Goods : ScriptableObject
 {
     [SerializeField] private string id;
-    [SerializeField] private int price;
+    [SerializeField] public int price;
     [SerializeField] private GameObject example;
     [SerializeField]
     public bool is_purchase

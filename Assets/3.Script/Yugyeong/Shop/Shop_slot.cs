@@ -11,17 +11,30 @@ public class Shop_slot : MonoBehaviour
     [SerializeField] bool is_purchase;
     [SerializeField] Text purchase_text;
 
-    private void UI_update()
+    private void OnEnable()
     {
-        if (goods.is_purchase)
+        btn = GetComponent<Button>();
+    }
+    public void UI_update()
+    {
+        if (is_purchase)
         {
-            purchase_text.text = "구매 완료";
-            btn.interactable = false;
+            if (goods.is_purchase)
+            {
+                purchase_text.text = "구매 완료";
+                btn.interactable = false;
+            }
+            else
+            {
+                purchase_text.text = "구매하기";
+                btn.interactable = true;
+            }
         }
-        else
-        {
-            purchase_text.text = "구매하기";
-            btn.interactable = true;
-        }
+    }
+
+    public void Btn()
+    {
+        ShopManager.instance.Buy_item(goods.price);
+        btn.interactable = false;
     }
 }
