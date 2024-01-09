@@ -91,6 +91,7 @@ public class SQLManager : MonoBehaviour
     public List<Nonplayer_data> nonplayer_Datas = new List<Nonplayer_data>();
 
     public Challenge_data challenge_data;
+    public Shop_data shopdata;
 
     public MySqlConnection connection;
     public MySqlDataReader reader;
@@ -480,6 +481,81 @@ public class SQLManager : MonoBehaviour
             }
         }
     }
+
+    public void Updateshop(Shopname shopname, int index, char val) //col_name = 열 이름, state = is_open,givefood,issolved, val = "T" or "F"
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+
+            Shop_data tmpdata = Shop();
+            char tmp1 = 'a';
+            char tmp2 = 'a';
+            string tmpstr = null;
+            string col1 = null;
+            string col2 = null;
+            switch (shopname)
+            {
+                case Shopname.hair:
+                    tmp1 = tmpdata.hair1;
+                    tmp2 = tmpdata.hair2;
+                    tmpstr = "hair_shop";
+                    col1 = "hair1";
+                    col2 = "hair2";
+                    break;
+                case Shopname.riding:
+                    tmp1 = tmpdata.riding1;
+                    tmp2 = tmpdata.riding2;
+                    tmpstr = "riding_shop";
+                    col1 = "riding1";
+                    col2 = "riding2";
+                    break;
+                case Shopname.clothes:
+                    tmp1 = tmpdata.clothes1;
+                    tmp2 = tmpdata.clothes2;
+                    tmpstr = "clothes_shop";
+                    col1 = "clothes1";
+                    col2 = "clothes2";
+                    break;
+                case Shopname.acc:
+                    tmp1 = tmpdata.acc1;
+                    tmp2 = tmpdata.acc2;
+                    tmpstr = "acc_shop";
+                    col1 = "acc1";
+                    col2 = "acc2";
+                    break;
+                default:
+                    break;
+            }
+            _ = index == 0 ? tmp1 = val : tmp2 = val;
+
+            string selectCommand = string.Format(@"UPDATE shop SET {0} = json_object(
+                                                  '{1}', '{2}',
+                                                  '{3}', '{4}')
+                                                   WHERE  `player_id`='{5}';",
+                                                   tmpstr, col1,tmp1,col2,tmp2,info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
     #endregion
     #region Table Search (SELECT)
     public User_info PlayerInfo(string user_id)
@@ -613,8 +689,6 @@ public class SQLManager : MonoBehaviour
                         if (!player_id.Equals(string.Empty))
                         { // 정상적으로 Data를 불러온 상황
                             item_data itemdata = new item_data(player_id, key_num, have_fisingrod, food_num, money);
-                            Debug.Log("item데이터 불러오기");
-                            Debug.Log($"{player_id}, {key_num}, {have_fisingrod}, {food_num}, {money}");
                             if (!reader.IsClosed)
                             {
                                 reader.Close();
@@ -729,6 +803,74 @@ public class SQLManager : MonoBehaviour
                                 reader.Close();
                             }
                             return challenge_Data;
+                        }
+                        else
+                        { // 로그인 실패
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+    }
+    public Shop_data Shop()
+    {
+        try
+        {
+            if (ConnectionCheck(connection))
+            {
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN shop B ON A.id = B.player_id WHERE A.id = '{0}';", info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+                {
+                    // 읽은 데이터를 하나씩 나열
+                    while (reader.Read())
+                    {
+                        // shop
+                        string jsonDData = reader["riding_shop"].ToString();
+                        JsonData L = JsonMapper.ToObject(jsonDData);
+                        string player_id = reader["player_id"].ToString();
+                        char riding1 = L["riding1"].ToString()[0];
+                        char riding2 = L["riding2"].ToString()[0];
+
+                        jsonDData = reader["clothes_shop"].ToString();
+                        JsonData M = JsonMapper.ToObject(jsonDData);
+                        char clothes1 = M["clothes1"].ToString()[0];
+                        char clothes2 = M["clothes2"].ToString()[0];
+
+                        jsonDData = reader["hair_shop"].ToString();
+                        JsonData N = JsonMapper.ToObject(jsonDData);
+                        char hair1 = N["hair1"].ToString()[0];
+                        char hair2 = N["hair2"].ToString()[0];
+
+                        jsonDData = reader["acc_shop"].ToString();
+                        JsonData O = JsonMapper.ToObject(jsonDData);
+                        char acc1 = O["acc1"].ToString()[0];
+                        char acc2 = O["acc2"].ToString()[0];
+
+                        if (!player_id.Equals(string.Empty))
+                        { // 정상적으로 Data를 불러온 상황
+                            shopdata = new Shop_data(player_id, riding1, riding2, clothes1, clothes2, hair1, hair2, acc1, acc2);
+                            if (!reader.IsClosed)
+                            {
+                                reader.Close();
+                            }
+                            return shopdata;
                         }
                         else
                         { // 로그인 실패
@@ -928,6 +1070,7 @@ public class SQLManager : MonoBehaviour
                         none = new Nonplayer_data(no_player_id, no_is_open, no_givefood, no_issolved);
 
                         challenge_data = new Challenge_data(chal_player_id, cur_time, last_time, dailycount, trash, box);
+                        shopdata = new Shop_data(shop_player_id, riding1, riding2, clothes1, clothes2, hair1, hair2, acc1, acc2);
 
 
                         if (!reader.IsClosed)
@@ -1053,23 +1196,6 @@ public class SQLManager : MonoBehaviour
             }
             return false;
         }
-    }
-    #endregion
-    #region Delete All Data(Delete)
-
-    public void Delete_all()
-    {
-
-            /*
-            string deleteCommand = string.Format(@"DELETE FROM user_info;
-                                               DELETE FROM user_character_info;
-                                               DELETE FROM item;
-                                               DELETE FROM challenge;
-                                               DELETE FROM animal;
-                                               DELETE FROM shop;");
-            MySqlCommand insertCmd = new MySqlCommand(deleteCommand, connection);
-            reader = insertCmd.ExecuteReader();
-            */
     }
     #endregion
 }

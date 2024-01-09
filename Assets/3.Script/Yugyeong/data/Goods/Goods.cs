@@ -6,27 +6,34 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Goods", menuName = "YG/Goods", order = 0)]
 public class Goods : ScriptableObject
 {
-    [SerializeField] private string id;
+    [SerializeField] public Shopname shop;
+    [SerializeField] public int index;
     [SerializeField] public int price;
-    [SerializeField] private GameObject example;
-    [SerializeField]
-    public bool is_purchase
+    [SerializeField] public char is_purchase
     {
-        get 
+        get
         {
-           bool tmp = char_purchase == 'T' ? true : false;
-           return tmp;
+            var data = SQLManager.instance.Shop();
+            char a = 'a';
+            switch (shop)
+            {
+                case Shopname.hair:
+                    a = index == 0 ? data.hair1 : data.hair2;
+                    break;
+                case Shopname.riding:
+                    a = index == 0 ? data.riding1 : data.riding2;
+                    break;
+                case Shopname.clothes:
+                    a = index == 0 ? data.clothes1 : data.clothes2;
+                    break;
+                case Shopname.acc:
+                    a = index == 0 ? data.acc1 : data.acc2;
+                    break;
+                default:
+                    break;
+            }
+            return a;
         }
     }
-    [SerializeField] private char char_purchase;
-        /*
-    {
-         get
-        {
-            //SQL에서 데이터 char로 받아오기
-        }0
-         
-
-    }
-        */
 }
+

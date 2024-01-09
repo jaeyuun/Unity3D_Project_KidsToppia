@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4d8f16480bd7741ba80532a2a83a84, type: 3}
   m_Name: Clothes1
   m_EditorClassIdentifier: 
-  id: Clothes1
-  price: 500
-  example: {fileID: 0}
-  char_purchase: 70
+  shop: 2
+  index: 0
+  price: 200
