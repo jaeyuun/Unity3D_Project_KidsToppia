@@ -7,6 +7,7 @@ public class PathFinding : MonoBehaviour
     public Transform player, target;
     private Grid grid;
     public Transform[] pos;
+    public bool isFinding = false;
 
     private void Awake()
     {
@@ -98,6 +99,7 @@ public class PathFinding : MonoBehaviour
 
     public void MinimapButton(int i)
     {
+        isFinding = true;
         target = pos[i];
     }
 }

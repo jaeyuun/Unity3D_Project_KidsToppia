@@ -5,6 +5,8 @@ using System;
 
 public class Grid : MonoBehaviour
 {
+    [SerializeField] private PathFinding pathFinding;
+    [SerializeField] private LineAnimator lineAnimator;
     public LayerMask unwalkableMask; // 장애물 표시 레이어
     public Vector2 gridWorldSize; // node grid size
     Node[,] grid; // grid
@@ -20,6 +22,11 @@ public class Grid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
+    }
+
+    private void Update()
+    {
+        DrawLine();
     }
 
     private void CreateGrid()
@@ -74,7 +81,8 @@ public class Grid : MonoBehaviour
     }
 
     public List<Node> path;
-    /*private void OnDrawGizmos()
+
+    private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y)); // gizmos 범위
         if (grid != null)
@@ -96,9 +104,9 @@ public class Grid : MonoBehaviour
                 }
             }
         }
-    }*/
+    }
 
-    public void OnDrawGizmos()
+    public void DrawLine()
     {
         if (grid != null)
         {
@@ -109,14 +117,14 @@ public class Grid : MonoBehaviour
                     Node n = grid[x, y];
                     if (path != null)
                     {
-                        if (path.Contains(n))
+                        if (path.Contains(n) && pathFinding.isFinding)
                         { // startNode부터 endNode까지의 길
-                            Gizmos.color = Color.black;
-                            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-                        }
-                        else
-                        {
-
+                            // Gizmos.color = Color.black;
+                            // Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                            for (int i = 0; i < path.Count; i++)
+                            {
+                                lineAnimator.NavLine(n.worldPosition, path[i].worldPosition);
+                            }
                         }
                     }
                 }
