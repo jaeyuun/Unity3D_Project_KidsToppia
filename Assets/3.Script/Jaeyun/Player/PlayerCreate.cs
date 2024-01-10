@@ -38,6 +38,7 @@ public enum Ride
 
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
+    private PathFinding pathFinding = null;
     [SerializeField] private PlayerName playerName;
     private Transform startPos;
 
@@ -89,6 +90,11 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
         {
             playerId = SQLManager.instance.info.User_Id;
             PlayerIDSet_CM(playerId);
+
+            // PathFinding
+            pathFinding = FindObjectOfType<PathFinding>();
+            pathFinding.playerObject = gameObject;
+            pathFinding.player = gameObject.transform;
         }
         else
         {

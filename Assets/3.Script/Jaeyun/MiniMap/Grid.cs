@@ -1,12 +1,10 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
     [SerializeField] private PathFinding pathFinding;
-    [SerializeField] private LineAnimator lineAnimator;
+    [SerializeField] private LineRenderer lineRenderer;
     public LayerMask unwalkableMask; // 장애물 표시 레이어
     public Vector2 gridWorldSize; // node grid size
     Node[,] grid; // grid
@@ -17,7 +15,6 @@ public class Grid : MonoBehaviour
     Vector3 worldBottonLeft;
     private void Start()
     {
-        // grid space bake
         nodeDiameter = nodeRadious * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
@@ -30,9 +27,9 @@ public class Grid : MonoBehaviour
     }
 
     private void CreateGrid()
-    { // A* 적용 범위에 node grid 생성
+    { // A* 적용 범위에 node grid 생성 == bake
         grid = new Node[gridSizeX, gridSizeY]; // grid 초기화
-         worldBottonLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        worldBottonLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
         for (int x = gridSizeX - 1; x >= 0; x--)
         {
@@ -68,8 +65,8 @@ public class Grid : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     { // target position node
-        float percentX = (worldPosition.x  - worldBottonLeft.x) / gridWorldSize.x;
-        float percentY = (worldPosition.z  - worldBottonLeft.z) / gridWorldSize.y;
+        float percentX = (worldPosition.x - worldBottonLeft.x) / gridWorldSize.x;
+        float percentY = (worldPosition.z - worldBottonLeft.z) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
@@ -84,50 +81,64 @@ public class Grid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y)); // gizmos 범위
-        if (grid != null)
+        if (pathFinding.isFinding)
         {
-            for (int x = 0; x < gridSizeX; x++)
+            Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y)); // gizmos 범위
+            if (grid != null)
             {
-                for (int y = 0; y < gridSizeY; y++)
+                for (int x = 0; x < gridSizeX; x++)
                 {
-                    Node n = grid[x, y];
-                    Gizmos.color = (n.walkable) ? Color.white : Color.red; // 장애물이 있는 곳은 red
-                    if (path != null)
+                    for (int y = 0; y < gridSizeY; y++)
                     {
-                        if (path.Contains(n))
-                        { // startNode부터 endNode까지의 길
-                            Gizmos.color = Color.black;
+                        Node n = grid[x, y];
+                        Gizmos.color = (n.walkable) ? Color.white : Color.red; // 장애물이 있는 곳은 red
+                        if (path != null)
+                        {
+                            if (path.Contains(n))
+                            { // startNode부터 endNode까지의 길
+                                Gizmos.color = Color.black;
+                            }
                         }
+                        Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
                     }
-                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }
         }
     }
 
     public void DrawLine()
-    {
-        if (grid != null)
+    { // Linerenderer draw
+        if (pathFinding.isFinding)
         {
-            for (int x = 0; x < gridSizeX; x++)
+            List<Vector3> points = new List<Vector3>();
+            if (grid != null)
             {
-                for (int y = 0; y < gridSizeY; y++)
+                for (int x = 0; x < gridSizeX; x++)
                 {
-                    Node n = grid[x, y];
-                    if (path != null)
+                    for (int y = 0; y < gridSizeY; y++)
                     {
-                        if (path.Contains(n) && pathFinding.isFinding)
-                        { // startNode부터 endNode까지의 길
-                            // Gizmos.color = Color.black;
-                            // Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-                            for (int i = 0; i < path.Count; i++)
-                            {
-                                lineAnimator.NavLine(n.worldPosition, path[i].worldPosition);
+                        Node n = grid[x, y];
+                        if (path != null)
+                        {
+                            if (path.Contains(n))
+                            { // startNode부터 endNode까지의 길
+                                points = new List<Vector3>();
+                                for (int i = 0; i < path.Count; i++)
+                                {
+                                    Vector3 pathPoint = new Vector3(path[i].worldPosition.x, path[i].worldPosition.y + 0.5f, path[i].worldPosition.z);
+                                    points.Add(pathPoint);
+                                }
                             }
                         }
                     }
                 }
+                lineRenderer.enabled = true;
+                lineRenderer.positionCount = points.Count;
+                lineRenderer.SetPositions(points.ToArray());
+            }
+            else
+            {
+                lineRenderer.enabled = false;
             }
         }
     }

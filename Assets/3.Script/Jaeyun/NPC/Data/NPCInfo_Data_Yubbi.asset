@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: NPCInfo_Data_Yubbi
   m_EditorClassIdentifier: 
   npcName: "\uC720\uC090"
-  npcText: "\uC720\uC090\uC640 \uD558\uACE0 \uC2F6\uC740 \uC774\uC57C\uAE30\uB97C
-    \uB9D0\uC500\uD574 \uC8FC\uC138\uC694."
+  npcText: "\uC548\uB155, \uB098\uB294 \uC720\uC090\uB77C\uACE0\uD574! \uB098\uB791
+    \uAC19\uC774 \uD034\uC988\uB97C \uD480\uC5B4\uBCF4\uC9C0 \uC54A\uC744\uB798?"
   prompt: 
+  npcYesButton: 1
+  noButtonText: "\uB2E4\uC74C\uC5D0!"
+  yesButtonText: "\uC751, \uC88B\uC544!"
