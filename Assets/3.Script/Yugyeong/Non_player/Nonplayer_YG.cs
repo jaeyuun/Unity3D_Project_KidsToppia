@@ -18,7 +18,7 @@ public class Nonplayer_data
     }
 }
 
-public class Nonplayer_YG : NetworkBehaviour
+public class Nonplayer_YG : MonoBehaviour
 {
     // Nonplayer : 랜덤으로 움직이게 하기
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328db2ca439a623458bfd72014f674d4, type: 3}
   m_Name: box
   m_EditorClassIdentifier: 
-  info: "\uBCF4\uBB3C\uC0C1\uC790<br>3\uAC1C\uCC3E\uAE30(test)"
+  info: "\uBCF4\uBB3C\uC0C1\uC790<br>3\uAC1C\uCC3E\uAE30"
   need: box
-  clear_count: 0
+  clear_count: 3
   reward_count: 300

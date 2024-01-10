@@ -897,7 +897,7 @@ public class SQLManager : MonoBehaviour
     }
 
     #endregion
-    #region Sign In, Up
+    #region Sign In, Up, Out
     public bool SignIn(string user_id, string user_pw)
     { // 로그인
         // 조회되는 데이터가 없다면 false, 조회가 되는 데이터가 있다면 true
@@ -1186,6 +1186,67 @@ public class SQLManager : MonoBehaviour
                 }
                 return true;
             }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return false;
+        }
+    }
+
+    public bool SignOut(string user_id, string user_pw)
+    { // 회원탈퇴
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return false;
+            }
+            string sqlCommand = string.Format(@"SELECT * FROM user_info A
+                                                   JOIN user_character_info B ON A.id = B.user_id
+                                                   JOIN item C ON A.id = C.player_id
+                                                   JOIN animal D ON A.id = D.player_id
+                                                   JOIN challenge E ON A.id = E.player_id
+                                                   JOIN shop F ON A.id = F.player_id
+                                                   WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw);
+            MySqlCommand cmd = new MySqlCommand(sqlCommand, connection);
+            reader = cmd.ExecuteReader();
+            Debug.Log(reader.HasRows);
+
+            if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+            { // 회원탈퇴 실패
+                if (!reader.IsClosed)
+                {
+                    reader.Close();
+                }
+                string insertCommand = string.Format(@"DELETE FROM user_info WHERE id = '{0}';
+                                                       DELETE FROM user_character_info WHERE user_id = '{0}';
+                                                       DELETE FROM item WHERE player_id = '{0}';
+                                                       DELETE FROM animal WHERE player_id = '{0}';
+                                                       DELETE FROM challenge WHERE player_id = '{0}';
+                                                       DELETE FROM shop WHERE player_id = '{0}';", user_id);
+                MySqlCommand insertCmd = new MySqlCommand(insertCommand, connection);
+                reader = insertCmd.ExecuteReader();
+                if (!reader.IsClosed)
+                {
+                    reader.Close();
+                }
+                return true;
+            }
+
+            else
+            {
+                if (!reader.IsClosed)
+                {
+                    reader.Close();
+                }
+                return false;
+            }
+
         }
         catch (Exception e)
         {
