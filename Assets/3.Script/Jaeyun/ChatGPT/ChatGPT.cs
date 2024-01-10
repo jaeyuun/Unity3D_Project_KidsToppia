@@ -16,7 +16,7 @@ public class ChatGPT : MonoBehaviour
     public async void TestResponseButton()
     {
         api = new OpenAIRequest();
-        api.openAi_key = "";
+        api.openAi_key = "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";
         api.Init();
 
         ChatRequest chatRequest = new ChatRequest();
