@@ -15,7 +15,7 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance = null;
     [SerializeField] private Text name_text;
-    [SerializeField] private Shopname shopname;
+    public Shopname shopname;
     [SerializeField] private GameObject shop_pannel;
     [SerializeField] private GameObject[] shop_obj;
     [SerializeField] private Shop_slot[] shop_Slots;
@@ -67,7 +67,7 @@ public class ShopManager : MonoBehaviour
         Set_shop(shopname);
     }
 
-    private void Set_shop(Shopname shopname)
+    public void Set_shop(Shopname shopname)
     {
         //active 상태 체크
         shop_pannel.SetActive(true);

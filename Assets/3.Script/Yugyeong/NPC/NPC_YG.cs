@@ -40,3 +40,14 @@ public abstract class NPC_YG : MonoBehaviour
         yield return null;
     }
 }
+
+public class Shop_NPC : NPC_YG
+{
+    public Shopname shopname;
+
+    public void Openshop()
+    {
+        ShopManager.instance.shopname = shopname;
+        ShopManager.instance.Set_shop(shopname);
+    }
+}
