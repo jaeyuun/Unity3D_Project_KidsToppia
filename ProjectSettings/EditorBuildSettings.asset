@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Jaeyun/Client/IntroScene.unity
     guid: 31c4ac2051a851143a41c35a578f4e17
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Jaeyun/Client/CreateScene.unity
     guid: 7c783cc911e64c64283e728652f00a34
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Jaeyun/Client/MainGame_Map.unity
     guid: 9824eddb3170c234aae5898311093552
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Jaeyun/Client/OfflineScene.unity
     guid: c80cfd2de69a7a24ab2ea878ebc694ec
   - enabled: 0
@@ -23,10 +23,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/1.Scene/Yugyeong/Server_YG/Nonplayer_Server.unity
     guid: c2edbe3b6e858fd4bb14ac186f686cf9
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/Yugyeong/Client_YG/NPCScene_YG.unity
     guid: d37280fc19f1afa49909a05db4f46acf
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Yugyeong/J_test/Client/CreateScene 1.unity
     guid: f868a67cc3b4dfc42b676b46530da4dd
   - enabled: 1
@@ -35,10 +35,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/Yugyeong/J_test/Client/MainGame_J 1.unity
     guid: 989f7c6949acccb4a9466a07e4a1e5b2
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Yugyeong/J_test/Client/OfflineScene 1.unity
     guid: da7f23d8237957a4fb778d10f569b2ea
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Yugyeong/J_test/Server/IntroScene_Server 1.unity
     guid: c9b7b9e0d9b993c4b862b41855b5fd1a
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

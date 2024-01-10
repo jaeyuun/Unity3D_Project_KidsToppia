@@ -135,10 +135,8 @@ public class StudyManager : MonoBehaviour
         eatstate.SetActive(false);
     }
 
-    IEnumerator Play_tts()
+    IEnumerator Play_tts(string tts_info)
     {
-        string tts_info = animal_data.info;
-
         //개행 문자 제거
         tts_info = Regex.Replace(tts_info, "<br>", "");
         tts_info = Regex.Replace(tts_info, ",", "");
@@ -155,6 +153,6 @@ public class StudyManager : MonoBehaviour
 
     public void Playtts_btn()
     {
-        StartCoroutine(Play_tts());
+        StartCoroutine(Play_tts(animal_data.info));
     }
 }
