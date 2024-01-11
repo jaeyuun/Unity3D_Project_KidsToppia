@@ -42,6 +42,4 @@ public class Friend_data
         friend2 = f2;
         friend3 = f3;
     }
-
-
 }

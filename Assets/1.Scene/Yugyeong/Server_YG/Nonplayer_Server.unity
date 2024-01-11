@@ -279,6 +279,10 @@ PrefabInstance:
       propertyPath: onlineScene
       value: Assets/1.Scene/Yugyeong/Client_YG/NPCScene_YG.unity
       objectReference: {fileID: 0}
+    - target: {fileID: 1663852163270136875, guid: 5678a3665172511469300b0d5483b2a1, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 3869829890766790971, guid: 7b94b1861c924a04aaadc5f596d8dfe9, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5678a3665172511469300b0d5483b2a1, type: 3}
 --- !u!114 &1663852162988999923 stripped

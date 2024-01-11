@@ -285,7 +285,7 @@ MonoBehaviour:
   autoStartServerBuild: 0
   autoConnectClientBuild: 0
   offlineScene: 
-  onlineScene: Assets/1.Scene/Yugyeong/J_test/Client/IntroScene 1.unity
+  onlineScene: Assets/1.Scene/Yugyeong/Client_YG/NPCScene_YG.unity
   transport: {fileID: 331534552}
   networkAddress: localhost
   maxConnections: 100
