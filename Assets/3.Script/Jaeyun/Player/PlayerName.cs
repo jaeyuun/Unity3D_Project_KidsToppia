@@ -1,15 +1,35 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerName : NetworkBehaviour
 {
     [SerializeField] private PlayerCreate player;
+    [SerializeField] private PlayerCreate target_player;
+
     [SerializeField] private TMP_Text nameText;
+    [SerializeField] private GameObject click_obj;      
+
+    [SerializeField] private GameObject community;
+    [SerializeField] private TMP_Text community_text;
+
+    [SerializeField] private Touch touch;
+    [SerializeField] private LayerMask layer;
 
     private void FixedUpdate()
     {
         PlayerNameUpdate();
+    }
+
+    private void Update()
+    {
+        Find_Player();
+
+        if (click_obj.activeSelf)
+        {
+            ClickobjUpdate();
+        }
     }
 
     public void PlayerNameSet()
@@ -17,8 +37,83 @@ public class PlayerName : NetworkBehaviour
         nameText.text = player.info.User_NickName;
     }
 
+    public void Set_clickobj()
+    {
+        if (click_obj.activeSelf)
+        {
+            click_obj.SetActive(false);
+        }
+        else
+        {
+            click_obj.SetActive(true);
+        }
+    }
+
+    public void community_btn(bool is_firend)
+    {
+        if (is_firend)
+        {
+            community_text.text = $"에게 친구를 신청할까요?";
+            //community_text.text = $"{target_player.info.User_NickName}에게 친구를 신청할까요?";
+        }
+        else
+        {
+            community_text.text = $"에게 파티를 신청할까요?";
+            //community_text.text = $"{target_player.info.User_NickName}에게 파티를 신청할까요?";
+        }
+        community.SetActive(true);
+    }
+
+    public void Find_Player()
+    {
+        {
+            Debug.Log("Input_touch");
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (Input.touchCount > 0)
+                {
+                    touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        Try_raycast(touch.position);
+                        StudyManager.instance.Try_raycast(touch.position);
+                    }
+                }
+            }
+
+            else
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    //mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Try_raycast(Input.mousePosition);
+                }
+            }
+        }
+    }
+
+    private void Try_raycast(Vector3 pos)
+    {
+        Ray ray;
+        RaycastHit hit;
+        ray = Camera.main.ScreenPointToRay(pos);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                target_player = hit.collider.gameObject.GetComponent<PlayerCreate>();
+                Set_clickobj();
+            }
+        }
+    }
+
     private void PlayerNameUpdate()
     {
         nameText.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f, 0));
+    }
+
+    private void ClickobjUpdate()
+    {
+        click_obj.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 3f, 0));
     }
 }

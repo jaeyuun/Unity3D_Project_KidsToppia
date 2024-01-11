@@ -73,7 +73,7 @@ public class StudyManager : MonoBehaviour
 
     public void Try_raycast(Vector3 pos)
     {
-        Debug.Log("Try_raycast");
+        //Debug.Log("Try_raycast");
         Ray ray;
         RaycastHit hit;
         ray = Camera.main.ScreenPointToRay(pos);

@@ -25,6 +25,7 @@ public class LoginChecker : MonoBehaviour
 {
     [SerializeField] private GameObject signInPanel;
     [SerializeField] private GameObject signUpPanel;
+    [SerializeField] private GameObject deleteaccountPannel;
     [SerializeField] private GameObject checkButton;
     [SerializeField] private TMP_Text log;
 
@@ -39,6 +40,10 @@ public class LoginChecker : MonoBehaviour
     public InputField idInput_up;
     public InputField pwInput_up;
     public InputField nickName_up;
+    [Header("Delete")]
+    public InputField idInput_delete;
+    public InputField pwInput_delete;
+    public InputField nickName_delete;
 
     private bool isLogin = false;
     private string dbPath = string.Empty;
@@ -193,13 +198,28 @@ public class LoginChecker : MonoBehaviour
         }
     }
 
-    public void TestButton(string login)
+    public void DeleteAccount()
     {
-        if (SQLManager.instance.SignIn(login, login))
+        Debug.Log(idInput_delete.text);
+        Debug.Log(pwInput_delete.text);
+        if (idInput_delete.text.Equals(string.Empty) || pwInput_delete.text.Equals(string.Empty) || nickName_delete.text.Equals(string.Empty))
         {
-            User_info info = SQLManager.instance.info;
-            SQLManager.instance.isLogin = true;
-            ServerChecker.instance.StartClient();
+            checkButton.SetActive(true);
+            log.text = "빈칸을 입력해 주세요.";
+            return;
+        }
+
+        if (SQLManager.instance.SignOut(idInput_delete.text, pwInput_delete.text))
+        {
+            // 회원탈퇴 성공
+            deleteaccountPannel.SetActive(false);
+        }
+        else
+        {
+            // 회원탈퇴 실패
+            checkButton.SetActive(true);
+            log.text = "해당하는 아이디가 없습니다.";
+            return;
         }
     }
 }
