@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class NPCInfoSetting : MonoBehaviour
 {
-    public NPCInfo_Data Info;
+    public NPCInfo_Data npcInfo;
 }

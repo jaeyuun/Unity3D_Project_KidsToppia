@@ -36,7 +36,6 @@ public class PlayerCreate_Scene : MonoBehaviour, IState_Select
                 GameObject_Change();
                 break;
         }
-        // Database에 저장하는 Method 추가
     }
     public void Material_Change()
     {

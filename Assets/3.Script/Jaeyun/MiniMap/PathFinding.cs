@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
+    public GameObject playerObject;
     public Transform player, target;
     private Grid grid;
     public Transform[] pos;
@@ -16,14 +17,14 @@ public class PathFinding : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+        if (player != null && target != null)
         {
-            FindPath(player.position, target.position);
+            FindPath(player.position, target.position); // from: player pos, to: target pos
         }
     }
-
+    #region A*
     private void FindPath(Vector3 startPos, Vector3 targetPos)
-    { // AStar
+    { // A*
         Node startNode = grid.NodeFromWorldPoint(startPos); // player position
         Node targetNode = grid.NodeFromWorldPoint(targetPos); // target position
 
@@ -71,7 +72,7 @@ public class PathFinding : MonoBehaviour
     }
 
     private void RetracePath(Node startNode, Node endNode)
-    {
+    { // A* path
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
 
@@ -86,7 +87,7 @@ public class PathFinding : MonoBehaviour
     }
 
     private int GetDistance(Node nodeA, Node nodeB)
-    {
+    { // A* path cost
         int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
         int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
@@ -96,9 +97,9 @@ public class PathFinding : MonoBehaviour
         }
         return 14 * dstX + 10 * (dstY - dstX);
     }
-
+    #endregion
     public void MinimapButton(int i)
-    {
+    { // minimap button click method
         isFinding = true;
         target = pos[i];
     }
