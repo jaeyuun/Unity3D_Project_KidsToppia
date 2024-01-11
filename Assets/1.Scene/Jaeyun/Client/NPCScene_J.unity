@@ -3167,6 +3167,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &513400971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 513400972}
+  - component: {fileID: 513400973}
+  m_Layer: 0
+  m_Name: SpeechToText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &513400972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513400971}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &513400973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513400971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7698dd68a3e8134b9fb2c1bd89d12ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &524001857
 GameObject:
   m_ObjectHideFlags: 0
@@ -5859,7 +5902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4eae2d915d64184382654ce39daa150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcInfo: {fileID: 0}
+  npcInfo: {fileID: 11400000, guid: 850f6d46b36a6f443ae5ce723f854531, type: 2}
 --- !u!114 &876757079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7178,9 +7221,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2072784651}
-        m_TargetAssemblyTypeName: ChatGPT, Assembly-CSharp
-        m_MethodName: TestResponseButton
+      - m_Target: {fileID: 513400973}
+        m_TargetAssemblyTypeName: MicrophoneRecording, Assembly-CSharp
+        m_MethodName: StartRecording
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16133,9 +16176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2614fd21af4c74e48bebd8d0a517a2b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   rigid: {fileID: 0}
   trans: {fileID: 0}
   ani: {fileID: 0}
@@ -26477,7 +26517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4eae2d915d64184382654ce39daa150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcInfo: {fileID: 11400000, guid: 2d01bcac4e040854db765c180f414926, type: 2}
+  npcInfo: {fileID: 11400000, guid: 589a0db1bdff2df46a84c2af334f736a, type: 2}
 --- !u!114 &4456124847186726522
 MonoBehaviour:
   m_ObjectHideFlags: 0

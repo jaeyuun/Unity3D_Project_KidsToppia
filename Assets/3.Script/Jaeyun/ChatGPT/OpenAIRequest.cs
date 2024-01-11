@@ -72,41 +72,6 @@ public class OpenAIRequest
 
     public string ResponseJson(string player_audio)
     {
-        /*string request_body = string.Empty;
-        try
-        {
-            if (!ConnectionCheck(connection))
-            {
-                return;
-            }
-
-            // player role, message body =
-            request_body = string.Format(@"UPDATE chatGPT_request SET stringContent = json_object(
-                                           'role', 'user',
-                                           'message', '{0}'
-                                           WHERE 'player_id' = '{1}';",
-                                           player_audio, player_id
-                                           );
-
-            MySqlCommand cmd = new MySqlCommand(request_body, connection);
-            reader = cmd.ExecuteReader();
-            if (!reader.IsClosed)
-            {
-                reader.Close();
-                return;
-            }
-
-
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-            if (!reader.IsClosed)
-            {
-                reader.Close();
-                return;
-            }
-        }*/
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.role = role.user.ToString();
         chatMessage.content = player_audio;
