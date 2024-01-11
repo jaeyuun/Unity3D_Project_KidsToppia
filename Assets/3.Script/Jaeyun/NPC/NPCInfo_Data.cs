@@ -18,5 +18,5 @@ public class NPCInfo_Data : ScriptableObject
     public string noButtonText;
 
     [Header("Animal Info")] // 24.01.10 유경이와 animal info 대신 npc info에 animal 관련을 저장해두기로 상의완.
-    public string animalName;
+    public string animal_id;
 }

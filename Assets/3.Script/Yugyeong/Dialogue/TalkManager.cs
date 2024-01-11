@@ -68,7 +68,6 @@ public class TalkManager : MonoBehaviour
         // npc info setting, button text
         no_button_text.text = $"{npcInfoSet.npcInfo.noButtonText}";
         yes_button_text.text = $"{npcInfoSet.npcInfo.yesButtonText}";
-        yes_button.SetActive(npcInfoSet.npcInfo.npcYesButton); // npc에 따른 talk panel button 개수
         nextText = true;
 
         if (event_talkend != null)
@@ -85,6 +84,10 @@ public class TalkManager : MonoBehaviour
         {
             event_talkend();
         }
+
+        // 버튼 활성화 초기화
+        yes_button.SetActive(false);
+        micButton.SetActive(false);
     }
     #endregion
 
@@ -134,6 +137,7 @@ public class TalkManager : MonoBehaviour
                         if (nextText)
                         { // npc info text
                             dialog_text.text = $"<#ABABAB>{npcInfoSet.npcInfo.npcText}</color>";
+                            yes_button.SetActive(npcInfoSet.npcInfo.npcYesButton); // npc에 따른 talk panel button 개수
                             micButton.SetActive(npcInfoSet.npcInfo.micButton); // audio button을 사용하는 지
                         }
                     }
@@ -156,6 +160,7 @@ public class TalkManager : MonoBehaviour
                     if (nextText)
                     { // npc info text
                         dialog_text.text = $"<#ABABAB>{npcInfoSet.npcInfo.npcText}</color>";
+                        yes_button.SetActive(npcInfoSet.npcInfo.npcYesButton); // npc에 따른 talk panel button 개수
                         micButton.SetActive(npcInfoSet.npcInfo.micButton); // audio button을 사용하는 지
                     }
                 }
@@ -181,11 +186,15 @@ public class TalkManager : MonoBehaviour
     {
         if (npcInfoSet.npcInfo.npcName.Equals("유삐"))
         { // Quiz
+            Close_dialog();
+            QuizManager.instance.quizCanvas.SetActive(true);
             QuizManager.instance.mainMenu.SetActive(true);
+            QuizManager.instance.AnimalsQuiz_Print();
         }
         else if (npcInfoSet.npcInfo.npcName.Equals("태삐"))
         { // Shop
-            // 나중에 SetActive(ture) 꼬옥 추가해주면돼,,, todo
+            Close_dialog();
+            // 나중에 상점으로 꼬옥 추가해주면돼,,, todo
         }
     }
     #endregion
