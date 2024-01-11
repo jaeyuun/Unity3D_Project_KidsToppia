@@ -12,7 +12,7 @@ public class PlayerName : NetworkBehaviour
     [SerializeField] private GameObject click_obj;      
 
     [SerializeField] private GameObject community;
-    [SerializeField] private Text community_text;
+    [SerializeField] private TMP_Text community_text;
 
     [SerializeField] private Touch touch;
     [SerializeField] private LayerMask layer;
@@ -20,6 +20,12 @@ public class PlayerName : NetworkBehaviour
     private void FixedUpdate()
     {
         PlayerNameUpdate();
+    }
+
+    private void Update()
+    {
+        Find_Player();
+
         if (click_obj.activeSelf)
         {
             ClickobjUpdate();
@@ -47,11 +53,13 @@ public class PlayerName : NetworkBehaviour
     {
         if (is_firend)
         {
-            community_text.text = $"{target_player.info.User_NickName}에게 친구를 신청할까요?";
+            community_text.text = $"에게 친구를 신청할까요?";
+            //community_text.text = $"{target_player.info.User_NickName}에게 친구를 신청할까요?";
         }
         else
         {
-            community_text.text = $"{target_player.info.User_NickName}에게 파티를 신청할까요?";
+            community_text.text = $"에게 파티를 신청할까요?";
+            //community_text.text = $"{target_player.info.User_NickName}에게 파티를 신청할까요?";
         }
         community.SetActive(true);
     }
@@ -59,7 +67,7 @@ public class PlayerName : NetworkBehaviour
     public void Find_Player()
     {
         {
-            //Debug.Log("Input_touch");
+            Debug.Log("Input_touch");
             if (Application.platform == RuntimePlatform.Android)
             {
                 if (Input.touchCount > 0)
@@ -79,7 +87,6 @@ public class PlayerName : NetworkBehaviour
                 {
                     //mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Try_raycast(Input.mousePosition);
-                    StudyManager.instance.Try_raycast(Input.mousePosition);
                 }
             }
         }
@@ -87,13 +94,11 @@ public class PlayerName : NetworkBehaviour
 
     private void Try_raycast(Vector3 pos)
     {
-        //Debug.Log("Try_raycast");
         Ray ray;
         RaycastHit hit;
         ray = Camera.main.ScreenPointToRay(pos);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
         {
-            // Debug.Log("레이 쏨");
             if (hit.collider.CompareTag("Player"))
             {
                 target_player = hit.collider.gameObject.GetComponent<PlayerCreate>();
@@ -109,6 +114,6 @@ public class PlayerName : NetworkBehaviour
 
     private void ClickobjUpdate()
     {
-        nameText.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 3f, 0));
+        click_obj.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 3f, 0));
     }
 }

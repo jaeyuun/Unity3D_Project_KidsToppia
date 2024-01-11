@@ -79,6 +79,9 @@ public class SQLManager : MonoBehaviour
     public User_Character character_info;
 
     public item_data item;
+    public Challenge_data challenge_data;
+    public Shop_data shopdata;
+    public Friend_data friendsdata;
 
     public Nonplayer_data black_goat;
     public Nonplayer_data black_sheep;
@@ -89,9 +92,6 @@ public class SQLManager : MonoBehaviour
     public Nonplayer_data yellow_sheep;
     public Nonplayer_data none;
     public List<Nonplayer_data> nonplayer_Datas = new List<Nonplayer_data>();
-
-    public Challenge_data challenge_data;
-    public Shop_data shopdata;
 
     public MySqlConnection connection;
     public MySqlDataReader reader;
@@ -442,7 +442,7 @@ public class SQLManager : MonoBehaviour
 
         if (dayrange == 1)
         {
-            tmp = dailycount+1;
+            tmp = dailycount + 1;
         }
         else if (dayrange >= 2)
         {
@@ -536,8 +536,38 @@ public class SQLManager : MonoBehaviour
                                                   '{1}', '{2}',
                                                   '{3}', '{4}')
                                                    WHERE  `player_id`='{5}';",
-                                                   tmpstr, col1,tmp1,col2,tmp2,info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
+                                                   tmpstr, col1, tmp1, col2, tmp2, info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
 
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
+    public void UpdateFriend(string friendname, int select)
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+
+            Friend_data tmp = Friend();
+
+            string selectCommand = string.Format(@"UPDATE friend SET {0} = '{1}' WHERE user_id = '{2}';", friendname);
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed)
@@ -895,6 +925,58 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
+    public Friend_data Friend()
+    {
+        try
+        {
+            if (ConnectionCheck(connection))
+            {
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN friend B ON A.id = B.user_id WHERE A.id = '{0}';", info.User_Id);
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
+                {
+                    // 읽은 데이터를 하나씩 나열
+                    while (reader.Read())
+                    {
+                        // user_info
+                        string player_id = reader["player_id"].ToString();
+                        string f1 = reader["friend1"].ToString();
+                        string f2 = reader["friend2"].ToString();
+                        string f3 = reader["friend3"].ToString();
+                        if (!player_id.Equals(string.Empty))
+                        { // 정상적으로 Data를 불러온 상황
+                            Friend_data friend_Data = new Friend_data(player_id, f1, f2, f3);
+                            if (!reader.IsClosed)
+                            {
+                                reader.Close();
+                            }
+                            return friend_Data;
+                        }
+                        else
+                        { 
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+            }
+            return null;
+        }
+    }
+
 
     #endregion
     #region Sign In, Up, Out
@@ -920,6 +1002,7 @@ public class SQLManager : MonoBehaviour
                                                    JOIN animal D ON A.id = D.player_id
                                                    JOIN challenge E ON A.id = E.player_id
                                                    JOIN shop F ON A.id = F.player_id
+                                                   JOIN firend G ON A.id = G.player_id
                                                    WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
@@ -1044,6 +1127,13 @@ public class SQLManager : MonoBehaviour
                     char acc1 = O["acc1"].ToString()[0];
                     char acc2 = O["acc2"].ToString()[0];
 
+                    //firend
+                    string f_player_id = reader["player_id"].ToString();
+                    string friend1 = reader["friend1"].ToString();
+                    string friend2 = reader["friend2"].ToString();
+                    string friend3 = reader["friend3"].ToString();
+
+
                     if (!id.Equals(string.Empty) || !pw.Equals(string.Empty) || !nickName.Equals(string.Empty))
                     {
                         // 정상적으로 Data를 불러온 상황
@@ -1071,7 +1161,7 @@ public class SQLManager : MonoBehaviour
 
                         challenge_data = new Challenge_data(chal_player_id, cur_time, last_time, dailycount, trash, box);
                         shopdata = new Shop_data(shop_player_id, riding1, riding2, clothes1, clothes2, hair1, hair2, acc1, acc2);
-
+                        friendsdata = new Friend_data(f_player_id, friend1, friend2, friend3);
 
                         if (!reader.IsClosed)
                         {
@@ -1130,6 +1220,7 @@ public class SQLManager : MonoBehaviour
                 string insertCommand = string.Format(@"INSERT INTO user_info (id, pw, nickname) VALUES ('{0}', '{1}', '{2}');
                                                        INSERT INTO user_character_info (user_id) VALUES ('{0}');
                                                        INSERT INTO item (player_id) VALUES('{0}');
+                                                       INSERT INTO firend (player_id) VALUES('{0}');
                                                        INSERT INTO challenge( player_id,cur_time,last_time) VALUES ( '{0}',now(),now() );
                                                        INSERT INTO shop(player_id,riding_shop,clothes_shop,hair_shop,acc_shop) VALUES ('{0}', json_object(
                                                             'riding1', 'F', 
@@ -1212,6 +1303,7 @@ public class SQLManager : MonoBehaviour
                                                    JOIN animal D ON A.id = D.player_id
                                                    JOIN challenge E ON A.id = E.player_id
                                                    JOIN shop F ON A.id = F.player_id
+                                                   JOIN firend G ON A.id = G.player_id
                                                    WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw);
             MySqlCommand cmd = new MySqlCommand(sqlCommand, connection);
             reader = cmd.ExecuteReader();
@@ -1228,6 +1320,7 @@ public class SQLManager : MonoBehaviour
                                                        DELETE FROM item WHERE player_id = '{0}';
                                                        DELETE FROM animal WHERE player_id = '{0}';
                                                        DELETE FROM challenge WHERE player_id = '{0}';
+                                                       DELETE FROM firend WHERE player_id = '{0}';
                                                        DELETE FROM shop WHERE player_id = '{0}';", user_id);
                 MySqlCommand insertCmd = new MySqlCommand(insertCommand, connection);
                 reader = insertCmd.ExecuteReader();
