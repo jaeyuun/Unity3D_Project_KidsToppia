@@ -29,7 +29,7 @@ public class Shop_slot : MonoBehaviour
         }
         else
         {
-            purchase_text.text = "구매하기\n({goods.price}원)";
+            purchase_text.text = $"구매하기\n({goods.price}원)";
             btn.interactable = true;
         }
     }
@@ -37,7 +37,7 @@ public class Shop_slot : MonoBehaviour
     public void Btn()
     {
         Debug.Log(ShopManager.instance.cur_slot);
-        ShopManager.instance.Buy_item(goods);
         ShopManager.instance.cur_slot = this;
+        ShopManager.instance.Buy_item(goods);
     }
 }

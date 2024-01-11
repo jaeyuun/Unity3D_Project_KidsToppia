@@ -1531,15 +1531,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 342082776459e824a856e175bab4eaed, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: ad59e71c192a5544e89b61e1e36d6ebb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 15f658ebcdadcea40ba522f0e46d046e, type: 2}
+  m_sharedMaterial: {fileID: 8801589910759803634, guid: 15f658ebcdadcea40ba522f0e46d046e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280953386
+  m_fontColor: {r: 0.16470589, g: 0.16470589, b: 0.16470589, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1556,8 +1556,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5713,7 +5713,7 @@ GameObject:
   - component: {fileID: 9036380895330116982}
   m_Layer: 6
   m_Name: Player_New
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
