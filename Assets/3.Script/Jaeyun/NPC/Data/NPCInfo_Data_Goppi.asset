@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e120da3992759c44881c7d2dbb4bd8f, type: 3}
+  m_Name: NPCInfo_Data_Goppi
+  m_EditorClassIdentifier: 
+  npcName: "\uACE0\uC090"
+  npcText: "\uACE0\uC090\uC640 \uD558\uACE0 \uC2F6\uC740 \uC774\uC57C\uAE30\uB97C
+    \uB9D0\uC500\uD574 \uC8FC\uC138\uC694."
+  prompt: "\uC544\uC774\uB4E4\uC758 \uC120\uC0DD\uB2D8\uC774\uACE0 \uCE5C\uC808\uD558\uB2E4.
+    \uB300\uB2F5 \uC798\uD574\uC918 15\uC790 \uC774\uB0B4\uB85C \uB9D0\uD574."
+  micButton: 1
+  language: Kor
+  npcYesButton: 0
+  yesButtonText: 
+  noButtonText: "\uADF8\uB9CC \uC774\uC57C\uAE30\uD558\uAE30"
+  animal_id: 

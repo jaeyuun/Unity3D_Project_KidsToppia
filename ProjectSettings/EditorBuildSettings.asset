@@ -32,7 +32,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/1.Scene/Yugyeong/J_test/Client/IntroScene 1.unity
     guid: 00da89995bb52024d9d7c35b27262c51
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Yugyeong/J_test/Client/MainGame_J 1.unity
     guid: 989f7c6949acccb4a9466a07e4a1e5b2
   - enabled: 0
