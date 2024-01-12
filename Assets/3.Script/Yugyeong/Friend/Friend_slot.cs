@@ -16,13 +16,11 @@ public class Friend_slot : MonoBehaviour
     [SerializeField] private Sprite[] sprites; //O,X
     [SerializeField] private Button chase_btn;
 
-    private void Start()
-    {
-        friend_x = transform.GetChild(0).gameObject;
-        friend_o = transform.GetChild(1).gameObject;
-    }
     private void OnEnable()
     {
+        data = SQLManager.instance.Friend();
+        friend_x = transform.GetChild(0).gameObject;
+        friend_o = transform.GetChild(1).gameObject;
         Setting();
     }
 
