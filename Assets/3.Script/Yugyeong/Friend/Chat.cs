@@ -16,6 +16,7 @@ public class Chat : NetworkBehaviour
     //client가 server에 connect 되었을 때 콜백함수
     public override void OnStartAuthority()
     {
+        Debug.Log("OnStartAuthority");
         if(isLocalPlayer)
         {
             canvas.SetActive(true);
@@ -24,6 +25,8 @@ public class Chat : NetworkBehaviour
     }
     private void newMessage(string mess)
     {
+        Debug.Log("newMessage");
+        Debug.Log($"추가된 메세지 {mess}");
         chatText.text += mess;
     }
 
@@ -31,6 +34,7 @@ public class Chat : NetworkBehaviour
     [ClientCallback]
     private void OnDestroy()
     {
+        Debug.Log("OnDestroy");
         if (!isLocalPlayer) return;
         onMessage -= newMessage;
     }
@@ -39,24 +43,24 @@ public class Chat : NetworkBehaviour
     [Client]
     public void Send()
     {
-        if (!Input.GetKeyDown(KeyCode.Return)) return;
+        Debug.Log("Send");
+        //if (!Input.GetKeyDown(KeyCode.Return)) return;
         if (string.IsNullOrWhiteSpace(inputfield.text)) return;
-        cmdSendMessage(inputfield.text);
+        cmdSendMessage(SQLManager.instance.info.User_NickName,inputfield.text);
         inputfield.text = string.Empty;
     }
     
-    
-    [Command]
-    private void cmdSendMessage(string message)
+    [Command(requiresAuthority = false)]
+    private void cmdSendMessage(string nickname, string message)
     {
-        RPCHandleMessage
-            ($"[{SQLManager.instance.info.User_NickName}] : {message}");
-        //($"[{connectionToClient.connectionId}] : {message}");
+        Debug.Log($"cmdSendMessage : {message}");
+        RPCHandleMessage(nickname,message);
     }
 
     [ClientRpc]
-    private void RPCHandleMessage(string message)
+    private void RPCHandleMessage(string nickname, string message)
     {
-        onMessage?.Invoke($"\n{message}");
+        Debug.Log("RPCHandleMessage");
+        onMessage?.Invoke($"[{nickname}] : {message}\n");
     }
 }
