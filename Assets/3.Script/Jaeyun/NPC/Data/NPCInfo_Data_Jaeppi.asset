@@ -15,7 +15,9 @@ MonoBehaviour:
   npcName: "\uC7AC\uC090"
   npcText: "\uC7AC\uC090\uC640 \uD558\uACE0 \uC2F6\uC740 \uC774\uC57C\uAE30\uB97C
     \uB9D0\uC500\uD574 \uC8FC\uC138\uC694."
-  prompt: 
+  prompt: "I want you to act as professional US english as second language teacher.
+    user is children. 15 \uB2E8\uC5B4 \uC774\uB0B4\uB85C \uB9D0\uD558\uACE0 \"\uB97C
+    \uC81C\uC678\uD558\uACE0 \uB9D0\uD574\uC918."
   micButton: 1
   language: Eng
   npcYesButton: 0

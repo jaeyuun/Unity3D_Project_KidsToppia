@@ -4,10 +4,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
-#if PLATFORM_ANDROID
 using UnityEngine.Android;
-#endif
+using UnityEngine.UI;
 
 public class SpeechToText : MonoBehaviour
 {
