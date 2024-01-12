@@ -1095,9 +1095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2614fd21af4c74e48bebd8d0a517a2b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   rigid: {fileID: 0}
   trans: {fileID: 0}
   ani: {fileID: 0}
@@ -1105,7 +1102,7 @@ MonoBehaviour:
   min_range: 1
   goal: {x: 0, y: 0, z: 0}
   can_move: 0
-  animal: 2
+  data: {fileID: 0}
 --- !u!114 &7757690318146008666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1189,7 +1186,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &4613853716767717862
 MonoBehaviour:
