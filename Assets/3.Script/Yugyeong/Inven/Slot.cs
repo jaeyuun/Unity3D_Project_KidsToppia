@@ -11,16 +11,16 @@ public class Slot : MonoBehaviour
 
     public void Slot_update(int num)
     {
-        Debug.Log("Slot_update");
+        //Debug.Log("Slot_update");
         if (num <= 0)
         {
-            Debug.Log("num <= 0");
+           //Debug.Log("num <= 0");
             none_text.enabled = true;
             text.enabled = false;
         }
         else
         {
-            Debug.Log("num > 0");
+            //Debug.Log("num > 0");
             none_text.enabled = false;
             text.enabled = true;
             text.text = $"{num}";

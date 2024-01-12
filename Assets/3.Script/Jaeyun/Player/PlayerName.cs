@@ -6,17 +6,19 @@ using UnityEngine.UI;
 public class PlayerName : NetworkBehaviour
 {
     [SerializeField] private PlayerCreate player;
-    [SerializeField] private PlayerCreate target_player;
+    public PlayerCreate target_info;
+    [SerializeField] private PlayerName target_player;
 
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private GameObject click_obj;      
 
-    [SerializeField] private GameObject community;
-    [SerializeField] private TMP_Text community_text;
-
     [SerializeField] private Touch touch;
     [SerializeField] private LayerMask layer;
 
+    private void Start()
+    {
+        click_obj.SetActive(false);
+    }
     private void FixedUpdate()
     {
         PlayerNameUpdate();
@@ -39,6 +41,7 @@ public class PlayerName : NetworkBehaviour
 
     public void Set_clickobj()
     {
+        Debug.Log(gameObject.name);
         if (click_obj.activeSelf)
         {
             click_obj.SetActive(false);
@@ -47,21 +50,6 @@ public class PlayerName : NetworkBehaviour
         {
             click_obj.SetActive(true);
         }
-    }
-
-    public void community_btn(bool is_firend)
-    {
-        if (is_firend)
-        {
-            community_text.text = $"에게 친구를 신청할까요?";
-            //community_text.text = $"{target_player.info.User_NickName}에게 친구를 신청할까요?";
-        }
-        else
-        {
-            community_text.text = $"에게 파티를 신청할까요?";
-            //community_text.text = $"{target_player.info.User_NickName}에게 파티를 신청할까요?";
-        }
-        community.SetActive(true);
     }
 
     public void Find_Player()
@@ -101,8 +89,11 @@ public class PlayerName : NetworkBehaviour
         {
             if (hit.collider.CompareTag("Player"))
             {
-                target_player = hit.collider.gameObject.GetComponent<PlayerCreate>();
-                Set_clickobj();
+
+                Debug.Log("asdf");
+                target_player = hit.collider.gameObject.transform.root.GetComponent<PlayerName>();
+                target_info = hit.collider.gameObject.transform.root.GetComponent<PlayerCreate>();
+                target_player.Set_clickobj();
             }
         }
     }
