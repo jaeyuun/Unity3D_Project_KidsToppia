@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class TalkManager : MonoBehaviour
     [SerializeField] private GameObject yes_button;
     [SerializeField] private TextMeshProUGUI yes_button_text;
     [SerializeField] private TextMeshProUGUI no_button_text;
+    [SerializeField] private GameObject micButton_panel; // click 방지
     [SerializeField] private GameObject micButton; // audio button
 
     public delegate void del_talkend();
@@ -29,8 +31,10 @@ public class TalkManager : MonoBehaviour
 
     [Header("NPC")]
     public NPCInfoSetting npcInfoSet; // 클릭한 NPC 갖고오기 위한 선언, 재윤 24. 01. 05
-    [SerializeField] private ChatGPT gptResponse; // npc에 따라 요청하는 response
-    private bool nextText = false;
+    
+    [SerializeField] private ChatGPT chatGPT; // npc에 따라 요청하는 response
+    public string responseText = string.Empty; // gpt 결과 text
+    public bool isGuide = false;
 
     // user touch position
     private Vector3 touched_pos;
@@ -51,7 +55,7 @@ public class TalkManager : MonoBehaviour
     }
     private void Start()
     {
-        data_Dialog = CSVReader.Read("test");
+        data_Dialog = CSVReader.Read("NpcDialog");
         Close_dialog();
     }
 
@@ -64,11 +68,11 @@ public class TalkManager : MonoBehaviour
     public void Open_dialog()
     {
         talk_pannel.SetActive(true);
-        micButton.SetActive(false); // 맨 처음 talkpanel을 열었을 때는 micbutton 없음
+        micButton_panel.SetActive(false); // 맨 처음 talkpanel을 열었을 때는 micbutton 없음
         // npc info setting, button text
         no_button_text.text = $"{npcInfoSet.npcInfo.noButtonText}";
         yes_button_text.text = $"{npcInfoSet.npcInfo.yesButtonText}";
-        nextText = true;
+        isGuide = true;
 
         if (event_talkend != null)
         {
@@ -79,7 +83,6 @@ public class TalkManager : MonoBehaviour
     public void Close_dialog()
     { // No_Button Click method
         talk_pannel.SetActive(false);
-        nextText = false;
         if (event_talkend != null)
         {
             event_talkend();
@@ -87,6 +90,7 @@ public class TalkManager : MonoBehaviour
 
         // 버튼 활성화 초기화
         yes_button.SetActive(false);
+        micButton_panel.SetActive(false);
         micButton.SetActive(false);
     }
     #endregion
@@ -116,6 +120,7 @@ public class TalkManager : MonoBehaviour
     {
         Close_dialog();
     }
+
     #region NPC 구분
     private void Input_touch()
     {
@@ -132,15 +137,6 @@ public class TalkManager : MonoBehaviour
                         Try_raycast(touch.position);
                         StudyManager.instance.Try_raycast(touch.position);
                     }
-                    else
-                    {
-                        if (nextText)
-                        { // npc info text
-                            dialog_text.text = $"<#ABABAB>{npcInfoSet.npcInfo.npcText}</color>";
-                            yes_button.SetActive(npcInfoSet.npcInfo.npcYesButton); // npc에 따른 talk panel button 개수
-                            micButton.SetActive(npcInfoSet.npcInfo.micButton); // audio button을 사용하는 지
-                        }
-                    }
                 }
             }
         }
@@ -155,18 +151,51 @@ public class TalkManager : MonoBehaviour
                     Try_raycast(Input.mousePosition);
                     StudyManager.instance.Try_raycast(Input.mousePosition);
                 }
-                else
-                {
-                    if (nextText)
-                    { // npc info text
-                        dialog_text.text = $"<#ABABAB>{npcInfoSet.npcInfo.npcText}</color>";
-                        yes_button.SetActive(npcInfoSet.npcInfo.npcYesButton); // npc에 따른 talk panel button 개수
-                        micButton.SetActive(npcInfoSet.npcInfo.micButton); // audio button을 사용하는 지
-                    }
-                }
             }
         }
     }
+    #region Dialog Panel Text
+    public void InputNextText()
+    { // panel click method
+        if (isGuide)
+        { // npc info text
+            dialog_text.text = $"<#ABABAB>{npcInfoSet.npcInfo.npcText}</color>";
+            yes_button.SetActive(npcInfoSet.npcInfo.npcYesButton); // npc에 따른 talk panel button 개수
+            micButton_panel.SetActive(npcInfoSet.npcInfo.micButton);
+            micButton.SetActive(npcInfoSet.npcInfo.micButton); // audio button을 사용하는 지
+        }
+        else
+        {
+            if (!npcInfoSet.npcInfo.npcYesButton)
+            {
+                name_text.text = data_Dialog[dialog_index]["Character_name"].ToString();
+                dialog_text.text = responseText;
+                micButton_panel.SetActive(true);
+                StartCoroutine(MicButtonActive_Co());
+            }
+        }
+    }
+
+    private IEnumerator MicButtonActive_Co()
+    {
+        yield return new WaitForSeconds(1.5f);
+        micButton.SetActive(true);
+    }
+
+    public void PlayerRequestText(string request)
+    { // mic button click method
+        // 1. name.text에 player nickname, dialog_text.text에 response text
+        // 2. response gpt에 요청 후 출력
+        // 3. 출력 후 panal click 시 micButton active
+        // name_text.text = SQLManager.instance.info.User_NickName; ... todo 이걸로 나주엥 바꿔주길
+        name_text.text = data_Dialog[dialog_index]["Character_name"].ToString();
+        dialog_text.text = request;
+        micButton_panel.SetActive(false);
+        micButton.SetActive(false);
+        isGuide = false;
+        chatGPT.NpcResponse(request);
+    }
+    #endregion
 
     private void Try_raycast(Vector3 pos)
     { // NPC 찾는 raycast

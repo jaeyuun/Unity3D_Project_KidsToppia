@@ -13,6 +13,7 @@ public class NPCInfo_Data : ScriptableObject
     // button setting
     [Header("TalkPanel Setting")]
     public bool micButton; // audio button
+    public string language; // clova lang
     public bool npcYesButton; // talk panel¿¡ button 1 or 2, true = 2
     public string yesButtonText;
     public string noButtonText;

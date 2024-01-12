@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: NPCInfo_Data_Taeppi
   m_EditorClassIdentifier: 
   npcName: "\uD0DC\uC090"
-  npcText: 
+  npcText: "\uC0C1\uC810\uC744 \uAD6C\uACBD\uD560 \uC218 \uC788\uC5B4! \uAD6C\uACBD\uD558\uACA0\uB2C8?"
   prompt: 
   micButton: 0
+  language: 
   npcYesButton: 1
-  yesButtonText: "\uB2E4\uC74C\uC5D0 \uC62C\uAC8C"
-  noButtonText: "\uC0C1\uC810\uAC00\uAE30"
+  yesButtonText: "\uAD6C\uACBD\uD560\uB798!"
+  noButtonText: "\uB2E4\uC74C\uC5D0 \uC62C\uAC8C!"
+  animal_id: 

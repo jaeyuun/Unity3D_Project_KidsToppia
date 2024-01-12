@@ -2,23 +2,19 @@ using OpenApiFormat;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class ChatGPT : MonoBehaviour
 {
-    // npc info
-    private NPCInfo_Data info;
-    string npcPrompt = string.Empty;
-    // player audio
-    private string playerRequest = string.Empty;
+    string npcPrompt = string.Empty; // npc info
+    private string playerRequest = string.Empty; // player audio
 
     [SerializeField] private TMP_Text dialogText;
-    [SerializeField] private Button audioButton;
+    public string npcResponse = string.Empty;
 
     private OpenAIRequest api;
 
-    public async void NpcResponse()
+    public async void NpcResponse(string message)
     { // response
         api = new OpenAIRequest();
         api.openAi_key = "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";
@@ -32,30 +28,9 @@ public class ChatGPT : MonoBehaviour
         List<ChatChoice> data = ((await (api.ClientResponseChat(chatRequest))).choices);
         foreach (ChatChoice choice in data)
         {
-            dialogText.text = $"{choice.message.content}";
+            npcResponse = $"{choice.message.content}";
         }
-    }
 
-    public void DialogButtonClick()
-    {
-        ChatGPTRequest(SpeechToText()); // STT한 string message
-    }
-
-    private string SpeechToText()
-    { // 음성 인식 버튼
-        // 음성 인식이 일정 크기보다 클 때
-        string message = string.Empty;
-
-        return message;
-    }
-
-    private void ChatGPTRequest(string message)
-    {
-        ChatRequest request = new ChatRequest();
-        request.messages = new List<ChatMessage>
-        {
-            new ChatMessage() { role = role.user.ToString(), content = $"{message}" },
-        };
-
+        TalkManager.instance.responseText = npcResponse;
     }
 }

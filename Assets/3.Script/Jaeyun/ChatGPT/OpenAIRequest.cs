@@ -8,21 +8,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerRequest
-{
-    public string player_id;
-    public string role;
-    public string message;
-}
-
 public class OpenAIRequest
 {
     public string openAi_key = "Secret Key"; // api secret key
 
     private static HttpClient client;
-
-    public delegate void StringEvnet(string _string);
-    public StringEvnet completedRepostEvent;
 
     private string api_URL = "";
     private const string authoirzationHeader = "Bearer";
