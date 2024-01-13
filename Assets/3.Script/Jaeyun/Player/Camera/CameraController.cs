@@ -94,7 +94,6 @@ public class CameraController : NetworkBehaviour
                         //if (touch.phase.Equals(TouchPhase.Began) || touch.phase.Equals(TouchPhase.Moved))
                        // {
                             touchOn[touch.fingerId] = true;
-                            Debug.Log($"TouchOn[{touch.fingerId}]: {touchOn[touch.fingerId]}");
                         //}
                         continue;
                     }
@@ -103,12 +102,10 @@ public class CameraController : NetworkBehaviour
                         x = touch.deltaPosition.x;
                         y = touch.deltaPosition.y;
                         isRotate = true;
-                        Debug.Log("Rotate OOOO");
                     }
                     else
                     {
                         isRotate = false;
-                        Debug.Log("Rotate XXXXX");
                     }
                 }
                 if (isRotate)
