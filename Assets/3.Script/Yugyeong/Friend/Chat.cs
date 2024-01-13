@@ -1,9 +1,7 @@
+using Mirror;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Mirror;
 
 public class Chat : NetworkBehaviour
 {
@@ -11,13 +9,17 @@ public class Chat : NetworkBehaviour
     [SerializeField] private InputField inputfield;
     [SerializeField] private GameObject canvas;
 
+    private bool is_smallsize;
+    [SerializeField] private Image image;
+    [SerializeField] private GameObject scrollview;
+
     private static event Action<string> onMessage;
 
     //client가 server에 connect 되었을 때 콜백함수
     public override void OnStartAuthority()
     {
         Debug.Log("OnStartAuthority");
-        if(isLocalPlayer)
+        if (isLocalPlayer)
         {
             canvas.SetActive(true);
         }
@@ -39,22 +41,22 @@ public class Chat : NetworkBehaviour
         onMessage -= newMessage;
     }
     //RPC는 결국 ClientRpc 명령어 < Command(server)명령어 < Client 명령어?
-    
+
     [Client]
     public void Send()
     {
         Debug.Log("Send");
         //if (!Input.GetKeyDown(KeyCode.Return)) return;
         if (string.IsNullOrWhiteSpace(inputfield.text)) return;
-        cmdSendMessage(SQLManager.instance.info.User_NickName,inputfield.text);
+        cmdSendMessage(SQLManager.instance.info.User_NickName, inputfield.text);
         inputfield.text = string.Empty;
     }
-    
+
     [Command(requiresAuthority = false)]
     private void cmdSendMessage(string nickname, string message)
     {
         Debug.Log($"cmdSendMessage : {message}");
-        RPCHandleMessage(nickname,message);
+        RPCHandleMessage(nickname, message);
     }
 
     [ClientRpc]
@@ -62,5 +64,20 @@ public class Chat : NetworkBehaviour
     {
         Debug.Log("RPCHandleMessage");
         onMessage?.Invoke($"[{nickname}] : {message}\n");
+    }
+
+    public void Set_size()
+    {
+        if (is_smallsize)
+        {
+            image.enabled = false;
+            scrollview.SetActive(false);
+        }
+
+        else
+        {
+            image.enabled = true;
+            scrollview.SetActive(true);
+        }
     }
 }

@@ -31,7 +31,6 @@ public class Nonplayer_YG : NetworkBehaviour
     [SerializeField] private float max_range = 1f;
     [SerializeField] private float min_range = 0f;
     [SerializeField] private float move_speed = 1f;
-
     [SerializeField] private Vector3 goal;
     [SerializeField] private bool is_stop;
     [SerializeField] public Study_YG data;
@@ -46,8 +45,8 @@ public class Nonplayer_YG : NetworkBehaviour
 
     private void Start()
     {
-        //StartCoroutine(Find_posttion());
         StartCoroutine(Input_change());
+        //StartCoroutine(Find_posttion());
         //StartCoroutine(Set_position());
         //goal = transform.position;
     }
@@ -60,25 +59,27 @@ public class Nonplayer_YG : NetworkBehaviour
 
     IEnumerator Input_change()
     {
-        float tmp = Random.Range(2, 7);
+        float tmp = Random.Range(1, 6);
         while (true)
         {
-            horizontal = Random.Range(-1f, 1f);
-            vertical = Random.Range(-1f, 1f);
+            horizontal = Random.Range(0, 2f);
+            vertical = Random.Range(0, 2f);
             yield return new WaitForSeconds(tmp);
+            horizontal = 0f;
+            vertical = 0f;
+            yield return new WaitForSeconds(1f);
         }
     }
 
     private void Test()
     {
-        rigid.velocity = new Vector3(horizontal * move_speed, 0, vertical * move_speed);
-        //rigid.velocity.y
+        rigid.velocity = new Vector3(horizontal * move_speed, rigid.velocity.y, vertical * move_speed);
         Debug.Log($"{gameObject.name} || {rigid.velocity}");
 
         if (horizontal != 0 || vertical != 0)
         {
             ani.SetBool("is_walk", true);
-            trans.rotation = Quaternion.LookRotation(new Vector3(rigid.velocity.x, 0f, rigid.velocity.z));
+            trans.rotation = Quaternion.LookRotation(new Vector3(rigid.velocity.x, rigid.velocity.y, rigid.velocity.z));
         }
 
         else
@@ -109,8 +110,8 @@ public class Nonplayer_YG : NetworkBehaviour
     private void Try_raycast()
     {
         RaycastHit hit;
-        Debug.DrawRay(transform.position + new Vector3(0, 0, 0.3f), transform.forward, Color.red);
-        if (Physics.Raycast(transform.position + new Vector3(0, 0, 0.3f), transform.forward, out hit, 0.5f))
+        Debug.DrawRay(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0, 0.2f, 0), Color.red);
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0,0.2f,0), out hit, 0.5f))
         {
             if (is_stop)
             {
@@ -134,7 +135,7 @@ public class Nonplayer_YG : NetworkBehaviour
 
     IEnumerator Set_position()
     {
-        while (is_stop)
+        while (true)
         {
             //Debug.Log(Vector3.Distance(trans.position, goal));
             if (Vector3.Distance(trans.position, goal) >= 0.5f)

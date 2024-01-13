@@ -1410,10 +1410,13 @@ MonoBehaviour:
   rigid: {fileID: 0}
   trans: {fileID: 0}
   ani: {fileID: 0}
+  horizontal: 0
+  vertical: 0
   max_range: 2.5
   min_range: 1
+  move_speed: 1
   goal: {x: 0, y: 0, z: 0}
-  can_move: 0
+  is_stop: 0
   data: {fileID: 11400000, guid: 3b7720844bb8da145a95c2ff076713a1, type: 2}
 --- !u!54 &1726007199354091422
 Rigidbody:
@@ -1429,7 +1432,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &282449960422409660
 MonoBehaviour:
