@@ -277,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1663852163270136875, guid: 5678a3665172511469300b0d5483b2a1, type: 3}
       propertyPath: onlineScene
-      value: Assets/1.Scene/Yugyeong/Client_YG/NPCScene_YG.unity
+      value: Assets/1.Scene/Yugyeong/CompleteTown 1.unity
       objectReference: {fileID: 0}
     - target: {fileID: 1663852163270136875, guid: 5678a3665172511469300b0d5483b2a1, type: 3}
       propertyPath: playerPrefab

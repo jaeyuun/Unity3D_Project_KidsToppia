@@ -3565,6 +3565,7 @@ GameObject:
   - component: {fileID: 5447858870745558046}
   - component: {fileID: 5447858870745558043}
   - component: {fileID: 8335038595158830191}
+  - component: {fileID: 2752719815338161910}
   m_Layer: 0
   m_Name: SK_Goat_white
   m_TagString: Untagged
@@ -3629,7 +3630,7 @@ MonoBehaviour:
   min_range: 1
   goal: {x: 0, y: 0, z: 0}
   can_move: 0
-  animal: 1
+  data: {fileID: 11400000, guid: e2cdd9434804efb4b84653127958eeb5, type: 2}
 --- !u!54 &5447858870745558042
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3749,6 +3750,20 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
+--- !u!136 &2752719815338161910
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5447858870745558040}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.38, z: 0}
 --- !u!1 &5447858870768324520
 GameObject:
   m_ObjectHideFlags: 0

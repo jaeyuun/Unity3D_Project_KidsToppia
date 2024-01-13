@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using UnityEngine;
-using Mirror;
 
 public class Nonplayer_data
 {
@@ -18,7 +18,7 @@ public class Nonplayer_data
     }
 }
 
-public class Nonplayer_YG : MonoBehaviour
+public class Nonplayer_YG : NetworkBehaviour
 {
     // Nonplayer : 랜덤으로 움직이게 하기
 
@@ -26,43 +26,118 @@ public class Nonplayer_YG : MonoBehaviour
     [SerializeField] private Transform trans;
     [SerializeField] private Animator ani;
 
-    [SerializeField] private float max_range = 2f;
-    [SerializeField] private float min_range = 1;
-    
+    [SerializeField] private float horizontal;
+    [SerializeField] private float vertical;
+    [SerializeField] private float max_range = 1f;
+    [SerializeField] private float min_range = 0f;
+    [SerializeField] private float move_speed = 1f;
+
     [SerializeField] private Vector3 goal;
-    [SerializeField] private bool can_move;
+    [SerializeField] private bool is_stop;
     [SerializeField] public Study_YG data;
 
     private void Awake()
     {
         //컴포넌트 가져오기
-        TryGetComponent(out trans);
-        TryGetComponent(out ani);
+        trans = GetComponent<Transform>();
+        ani = GetComponent<Animator>();
+        rigid = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
-        StartCoroutine(Find_posttion());
-        StartCoroutine(Set_position());
-        goal = transform.position;
+        //StartCoroutine(Find_posttion());
+        StartCoroutine(Input_change());
+        //StartCoroutine(Set_position());
+        //goal = transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        Test();
+        Try_raycast();
+    }
+
+    IEnumerator Input_change()
+    {
+        float tmp = Random.Range(2, 7);
+        while (true)
+        {
+            horizontal = Random.Range(-1f, 1f);
+            vertical = Random.Range(-1f, 1f);
+            yield return new WaitForSeconds(tmp);
+        }
+    }
+
+    private void Test()
+    {
+        rigid.velocity = new Vector3(horizontal * move_speed, 0, vertical * move_speed);
+        //rigid.velocity.y
+        Debug.Log($"{gameObject.name} || {rigid.velocity}");
+
+        if (horizontal != 0 || vertical != 0)
+        {
+            ani.SetBool("is_walk", true);
+            trans.rotation = Quaternion.LookRotation(new Vector3(rigid.velocity.x, 0f, rigid.velocity.z));
+        }
+
+        else
+        {
+            ani.SetBool("is_walk", false);
+        }
     }
 
     IEnumerator Find_posttion()
     {
         float goal_x = Random.Range(min_range, max_range);
         float goal_z = Random.Range(min_range, max_range);
+        float tmp = Random.Range(0, 2);
 
-        goal = new Vector3(transform.position.x + goal_x, transform.position.y, transform.position.z +goal_z);
-        //Debug.Log($"목표 위치 / {goal}");
+        if (tmp == 0)
+        {
+            goal = new Vector3(transform.position.x + goal_x, transform.position.y, transform.position.z + goal_z);
+        }
+
+        else
+        {
+            goal = new Vector3(transform.position.x - goal_x, transform.position.y, transform.position.z - goal_z);
+        }
+
         yield return null;
+    }
+
+    private void Try_raycast()
+    {
+        RaycastHit hit;
+        Debug.DrawRay(transform.position + new Vector3(0, 0, 0.3f), transform.forward, Color.red);
+        if (Physics.Raycast(transform.position + new Vector3(0, 0, 0.3f), transform.forward, out hit, 0.5f))
+        {
+            if (is_stop)
+            {
+                is_stop = false;
+                Debug.Log("벽에 부딪힘");
+                ani.SetBool("is_walk", false);
+
+                rigid.velocity = Vector3.zero;
+                Invoke("Reset_Input", 1f);
+            }
+        }
+    }
+
+    private void Reset_Input()
+    {
+        is_stop = true;
+        Debug.Log("Reset_Input");
+        horizontal = Random.Range(-1f, 1f);
+        vertical = Random.Range(-1f, 1f);
     }
 
     IEnumerator Set_position()
     {
-        while (true)
+        while (is_stop)
         {
             //Debug.Log(Vector3.Distance(trans.position, goal));
-            if (Vector3.Distance(trans.position, goal) >= 0.75f)
+            if (Vector3.Distance(trans.position, goal) >= 0.5f)
             {
                 ani.SetBool("is_walk", true);
                 Vector3 tmprot = goal - transform.position;
@@ -74,8 +149,8 @@ public class Nonplayer_YG : MonoBehaviour
 
             else
             {
-                ani.SetBool("is_walk", false);
-                Play_ani();
+
+                //Play_ani();
                 yield return new WaitForSeconds(3f);
                 StartCoroutine(Find_posttion());
                 break;

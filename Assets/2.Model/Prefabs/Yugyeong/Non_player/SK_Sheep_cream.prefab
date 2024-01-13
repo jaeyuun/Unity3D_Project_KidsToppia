@@ -937,6 +937,7 @@ GameObject:
   - component: {fileID: 7117408446888966054}
   - component: {fileID: 4440472366177279240}
   - component: {fileID: 8543681323941206742}
+  - component: {fileID: 7605623592754043862}
   m_Layer: 0
   m_Name: SK_Sheep_cream
   m_TagString: Untagged
@@ -1001,7 +1002,7 @@ MonoBehaviour:
   min_range: 1
   goal: {x: 0, y: 0, z: 0}
   can_move: 0
-  animal: 5
+  data: {fileID: 11400000, guid: 45858dcb195d8a440849c0d998486e3d, type: 2}
 --- !u!114 &6233298251400360577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1070,7 +1071,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   clientAuthority: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8869551592179381521}
 --- !u!114 &4440472366177279240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1121,6 +1122,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!136 &7605623592754043862
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869551592179381523}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.42, z: 0}
 --- !u!1 &8869551592182066554
 GameObject:
   m_ObjectHideFlags: 0

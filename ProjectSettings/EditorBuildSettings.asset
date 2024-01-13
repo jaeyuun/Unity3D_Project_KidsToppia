@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/1.Scene/Jaeyun/Server/IntroScene_Server.unity
     guid: ad9362b58c19d5446a536fb52c753892
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/Yugyeong/Server_YG/Nonplayer_Server.unity
     guid: c2edbe3b6e858fd4bb14ac186f686cf9
   - enabled: 1
@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/Jaeyun/Client/NPCScene_J.unity
     guid: a5fca7cbb9b5a414eae6b41e0dd2b19d
+  - enabled: 1
+    path: Assets/1.Scene/Yugyeong/CompleteTown 1.unity
+    guid: b7e8204febc55e74f97dad95958a782e
   m_configObjects: {}

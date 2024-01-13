@@ -1349,6 +1349,7 @@ GameObject:
   - component: {fileID: 2494389843017838866}
   - component: {fileID: 8389498739876718451}
   - component: {fileID: 5040410956176423298}
+  - component: {fileID: 4705556754521184221}
   m_Layer: 0
   m_Name: SK_Sheep_white
   m_TagString: Untagged
@@ -1413,7 +1414,7 @@ MonoBehaviour:
   min_range: 1
   goal: {x: 0, y: 0, z: 0}
   can_move: 0
-  animal: 6
+  data: {fileID: 11400000, guid: 3b7720844bb8da145a95c2ff076713a1, type: 2}
 --- !u!54 &1726007199354091422
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1498,7 +1499,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   clientAuthority: 0
-  animator: {fileID: 0}
+  animator: {fileID: 3596009750225347469}
 --- !u!114 &5040410956176423298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1533,6 +1534,20 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
+--- !u!136 &4705556754521184221
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3596009750225347475}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.51, z: 0}
 --- !u!1 &3596009750251828526
 GameObject:
   m_ObjectHideFlags: 0
