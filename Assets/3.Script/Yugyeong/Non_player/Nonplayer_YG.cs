@@ -28,9 +28,13 @@ public class Nonplayer_YG : NetworkBehaviour
 
     [SerializeField] private float horizontal;
     [SerializeField] private float vertical;
+    [SerializeField] private float angle;
+
     [SerializeField] private float max_range = 1f;
     [SerializeField] private float min_range = 0f;
     [SerializeField] private float move_speed = 1f;
+    [SerializeField] private float max_distance = 2f;
+    [SerializeField] private LayerMask layer;
     [SerializeField] private Vector3 goal;
     [SerializeField] private bool is_stop;
     [SerializeField] public Study_YG data;
@@ -45,10 +49,10 @@ public class Nonplayer_YG : NetworkBehaviour
 
     private void Start()
     {
+        goal = trans.parent.GetChild(0).transform.position;
+        Debug.Log(trans.parent.GetChild(0).name);
         StartCoroutine(Input_change());
-        //StartCoroutine(Find_posttion());
-        //StartCoroutine(Set_position());
-        //goal = transform.position;
+        is_stop = true;
     }
 
     private void FixedUpdate()
@@ -62,30 +66,77 @@ public class Nonplayer_YG : NetworkBehaviour
         float tmp = Random.Range(1, 6);
         while (true)
         {
-            horizontal = Random.Range(0, 2f);
-            vertical = Random.Range(0, 2f);
+            horizontal = Random.Range(0.5f, 1f);
+            vertical = Random.Range(0.5f, 1f);
+            angle = Random.Range(0f, 270f);
+
             yield return new WaitForSeconds(tmp);
+
             horizontal = 0f;
             vertical = 0f;
+
             yield return new WaitForSeconds(1f);
         }
     }
 
     private void Test()
     {
-        rigid.velocity = new Vector3(horizontal * move_speed, rigid.velocity.y, vertical * move_speed);
-        Debug.Log($"{gameObject.name} || {rigid.velocity}");
-
-        if (horizontal != 0 || vertical != 0)
+        if (Vector3.Distance(trans.position, goal) <= max_distance)
         {
-            ani.SetBool("is_walk", true);
-            trans.rotation = Quaternion.LookRotation(new Vector3(rigid.velocity.x, rigid.velocity.y, rigid.velocity.z));
-        }
+            Debug.Log("목표지점과 가까움");
+            rigid.velocity = new Vector3(horizontal * move_speed, rigid.velocity.y, vertical * move_speed);
 
+            if (horizontal != 0 || vertical != 0)
+            {
+                ani.SetBool("is_walk", true);
+                trans.rotation = Quaternion.Euler(trans.rotation.x, trans.rotation.y + angle, trans.rotation.z);
+                //trans.rotation = Quaternion.LookRotation(new Vector3(rigid.velocity.x, rigid.velocity.y, rigid.velocity.z));
+            }
+
+            else
+            {
+                ani.SetBool("is_walk", false);
+            }
+        }
         else
         {
-            ani.SetBool("is_walk", false);
+            Debug.Log("떨어져서 다시 오는중");
+            rigid.MovePosition(Vector3.Lerp(rigid.position, goal, Time.deltaTime / 2));
         }
+
+    }
+
+
+
+    private void Try_raycast()
+    {
+        RaycastHit hit;
+        Debug.DrawRay(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0, 0.2f, 0) * 0.5f, Color.red);
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.2f, 0), transform.forward, out hit, 0.5f,layer))
+        {
+            if (is_stop)
+            {
+                is_stop = false;
+
+                horizontal = 0;
+                vertical = 0;
+
+                //랜덤 애니메이션 출력
+
+                Invoke("Reset_Input", 1f);
+                float tmp = Random.Range(45,180);
+                trans.rotation = Quaternion.Euler(trans.rotation.x, trans.rotation.y + tmp, trans.rotation.z);
+
+            }
+        }
+    }
+
+    private void Reset_Input()
+    {
+        is_stop = true;
+        Debug.Log("Reset_Input");
+        horizontal = Random.Range(-1f, 1f);
+        vertical = Random.Range(-1f, 1f);
     }
 
     IEnumerator Find_posttion()
@@ -107,32 +158,6 @@ public class Nonplayer_YG : NetworkBehaviour
         yield return null;
     }
 
-    private void Try_raycast()
-    {
-        RaycastHit hit;
-        Debug.DrawRay(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0, 0.2f, 0), Color.red);
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0,0.2f,0), out hit, 0.5f))
-        {
-            if (is_stop)
-            {
-                is_stop = false;
-                Debug.Log("벽에 부딪힘");
-                ani.SetBool("is_walk", false);
-
-                rigid.velocity = Vector3.zero;
-                Invoke("Reset_Input", 1f);
-            }
-        }
-    }
-
-    private void Reset_Input()
-    {
-        is_stop = true;
-        Debug.Log("Reset_Input");
-        horizontal = Random.Range(-1f, 1f);
-        vertical = Random.Range(-1f, 1f);
-    }
-
     IEnumerator Set_position()
     {
         while (true)
@@ -144,6 +169,7 @@ public class Nonplayer_YG : NetworkBehaviour
                 Vector3 tmprot = goal - transform.position;
                 tmprot.y = 0;
                 tmprot.Normalize();
+                horizontal =0;
                 transform.rotation = Quaternion.LookRotation(tmprot);
                 transform.position = Vector3.MoveTowards(transform.position, goal, Time.deltaTime);
             }

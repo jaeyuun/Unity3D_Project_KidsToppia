@@ -935,9 +935,8 @@ GameObject:
   - component: {fileID: 6233298251400360577}
   - component: {fileID: 7345869593860420021}
   - component: {fileID: 7117408446888966054}
-  - component: {fileID: 4440472366177279240}
   - component: {fileID: 8543681323941206742}
-  - component: {fileID: 7605623592754043862}
+  - component: {fileID: 5395244708364752382}
   m_Layer: 0
   m_Name: SK_Sheep_cream
   m_TagString: Untagged
@@ -1002,7 +1001,7 @@ MonoBehaviour:
   vertical: 0
   max_range: 2.5
   min_range: 1
-  move_speed: 1
+  move_speed: 2
   goal: {x: 0, y: 0, z: 0}
   is_stop: 0
   data: {fileID: 11400000, guid: 45858dcb195d8a440849c0d998486e3d, type: 2}
@@ -1075,40 +1074,6 @@ MonoBehaviour:
   syncInterval: 0
   clientAuthority: 0
   animator: {fileID: 8869551592179381521}
---- !u!114 &4440472366177279240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8869551592179381523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b20dc110904e47f8a154cdcf6433eae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  target: {fileID: 8869551592179381520}
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 1
-  coordinateSpace: 0
-  sendIntervalMultiplier: 1
-  timelineOffset: 0
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  onlySyncOnChange: 1
-  compressRotation: 1
-  bufferResetMultiplier: 3
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
 --- !u!54 &8543681323941206742
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1123,22 +1088,31 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 116
   m_CollisionDetection: 0
---- !u!136 &7605623592754043862
-CapsuleCollider:
+--- !u!114 &5395244708364752382
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8869551592179381523}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.42, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 8543681323941206742}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
 --- !u!1 &8869551592182066554
 GameObject:
   m_ObjectHideFlags: 0
