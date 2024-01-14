@@ -6217,7 +6217,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3869356566062062081}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -7125,17 +7125,22 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  mainCamera: {fileID: 5587334346098746294}
   lenderCamera: {fileID: 6700524583552164764}
   createPanel: {fileID: 0}
   rigid_net: {fileID: 0}
   trans_net: {fileID: 0}
   ani_net: {fileID: 0}
   playerRigid: {fileID: 0}
+  playerRotate: {fileID: 3871637297312991269}
   moveSpeed: 3
   jumpForce: 3
   isGround: 0
   isJoystick: 0
   isLender: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &3869829890766790970
 MonoBehaviour:
   m_ObjectHideFlags: 0

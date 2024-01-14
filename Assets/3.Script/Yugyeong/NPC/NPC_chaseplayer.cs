@@ -19,6 +19,7 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
         {
             if (player != null)
             {
+                goal = player.transform;
                 goal.position = player.transform.position;
             }
             yield return null;
@@ -28,9 +29,11 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
     {
         while (true)
         {
+            //Debug.Log(Vector3.Distance(trans.position, goal.position));
             if (player != null)
             {
-                //Debug.Log(Vector3.Distance(trans.position, goal.position));
+                goal = player.transform;
+
                 if (Vector3.Distance(trans.position, goal.position) >= 1f)
                 {
                     ani.SetBool("is_walk", true);
@@ -49,7 +52,6 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
                     rigid_.velocity = Vector3.zero;
                 }
             }
-
             yield return null;
         }
     }
