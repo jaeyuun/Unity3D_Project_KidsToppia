@@ -157,12 +157,14 @@ public class ShopManager : MonoBehaviour
     #region 인앱결제
     public void Complete_purchase()
     {
+        Debug.Log("Complete_purchase");
         text_setting(inapp_text, "충전에 성공했습니다.\n현재 골드 : {000}");
-        Invoke("Can_No", 3f);
+        Invoke("Can_Yes", 3f);
     }
 
     public void Failed_purchase()
     {
+        Debug.Log("Failed_purchase");
         text_setting(inapp_text, "결제가 취소되었습니다.");
         Invoke("Can_No", 3f);
     }
@@ -170,6 +172,7 @@ public class ShopManager : MonoBehaviour
     public void Buy_Gold(int num)
     {
         SQLManager.instance.Updateitem("money", money + num);
+        Debug.Log(SQLManager.instance.Item().money);
     }
 
     public void Update_moneytext()
