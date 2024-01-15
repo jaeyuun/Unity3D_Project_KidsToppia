@@ -38,6 +38,7 @@ public enum Ride
 
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
+    private NPC_chaseplayer npc_goppi;
     private PathFinding pathFinding = null;
     [SerializeField] private PlayerName playerName;
     private Transform startPos;
@@ -95,6 +96,10 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             pathFinding = FindObjectOfType<PathFinding>();
             pathFinding.playerObject = gameObject;
             pathFinding.player = gameObject.transform;
+
+            // player follow npc
+            npc_goppi = FindObjectOfType<NPC_chaseplayer>();
+            npc_goppi.player = gameObject;
         }
         else
         {

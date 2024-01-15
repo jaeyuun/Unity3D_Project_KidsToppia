@@ -16,7 +16,6 @@ public class Community : NetworkBehaviour
 
     public void community_btn(bool is_firend)
     {
-        target_player = gameObject.transform.root.GetComponent<PlayerName>().target_info;
         if (is_firend)
         {
             notice_text.text = $"{target_player.info.User_NickName}를 친구로 추가할까요?";

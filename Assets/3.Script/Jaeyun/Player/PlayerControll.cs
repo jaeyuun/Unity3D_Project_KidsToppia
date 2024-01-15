@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerControll : NetworkBehaviour
 {
     private FixedJoystick joystick;
+    [SerializeField] private Transform mainCamera;
     [SerializeField] private GameObject lenderCamera;
     public GameObject createPanel = null;
 
@@ -14,12 +15,15 @@ public class PlayerControll : NetworkBehaviour
 
     public Rigidbody playerRigid;
     private Transform playerTrans;
+    [SerializeField] private Transform playerRotate;
 
     [SerializeField] private float moveSpeed = 3f;
     public float jumpForce = 3f;
     public bool isGround = true;
     public bool isJoystick = false;
     public bool isLender = false;
+
+    [SerializeField] private LayerMask groundLayer;
 
     public override void OnStartClient()
     {
@@ -46,9 +50,14 @@ public class PlayerControll : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!isLocalPlayer) return;
-        if (isClient && !lenderCamera.activeSelf)
+        if (isClient)
         {
-            lenderCamera.SetActive(true);
+            if (!lenderCamera.activeSelf)
+            {
+                lenderCamera.SetActive(true);
+            }
+            GroundCheck();
+            Debug.Log(isGround);
         }
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -63,12 +72,10 @@ public class PlayerControll : NetworkBehaviour
 
     private void PlayerMovement_And()
     {
-        playerRigid.velocity = new Vector3(joystick.Horizontal * moveSpeed, playerRigid.velocity.y, joystick.Vertical * moveSpeed);
-
         if (joystick.Horizontal != 0 || joystick.Vertical != 0)
         {
             isJoystick = true;
-            playerTrans.rotation = Quaternion.LookRotation(new Vector3(playerRigid.velocity.x, 0f, playerRigid.velocity.z)); // jump 했을 때 앞으로 넘어지지 않게 만듦
+            MoveVector(joystick.Horizontal, joystick.Vertical);
             ani_net.animator.SetBool("isWalking", true);
         }
         else
@@ -89,17 +96,28 @@ public class PlayerControll : NetworkBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        playerRigid.velocity = new Vector3(horizontal * moveSpeed, playerRigid.velocity.y, vertical * moveSpeed);
-
         if (horizontal != 0 || vertical != 0)
         {
-            playerTrans.rotation = Quaternion.LookRotation(new Vector3(playerRigid.velocity.x, 0f, playerRigid.velocity.z)); // jump 했을 때 앞으로 넘어지지 않게 만듦
+            MoveVector(horizontal, vertical);
             ani_net.animator.SetBool("isWalking", true);
         }
         else
         {
             ani_net.animator.SetBool("isWalking", false);
         }
+    }
+
+    private void MoveVector(float horizontal, float vertical)
+    {
+        Vector3 heading = mainCamera.localRotation * Vector3.forward;
+        heading.y = 0;
+        heading = heading.normalized;
+
+        Vector3 v3Direction = heading * Time.deltaTime * vertical * moveSpeed;
+        v3Direction += Quaternion.Euler(0, 90, 0) * heading * Time.deltaTime * horizontal * moveSpeed;
+
+        playerTrans.Translate(v3Direction);
+        MoveRotate_CMD(v3Direction);
     }
 
     public void PlayerJump_And()
@@ -120,13 +138,33 @@ public class PlayerControll : NetworkBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void GroundCheck()
     {
-        isGround = true;
+        Vector3 checkPosition = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+        Vector3 boxSize = new Vector3(0.5f, 0.2f, 0.5f);
+        isGround = Physics.CheckBox(checkPosition, boxSize, Quaternion.identity, groundLayer);
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnDrawGizmos()
     {
-        isGround = false;
+        Gizmos.color = Color.red;
+        Vector3 checkPosition = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+        Vector3 boxSize = new Vector3(0.5f, 0.2f, 0.5f);
+        Gizmos.DrawWireCube(checkPosition, boxSize);
     }
+
+    #region Command
+    [Command]
+    private void MoveRotate_CMD(Vector3 v3Direction)
+    {
+        MoveRotate_RPC(v3Direction);
+    }
+    #endregion
+    #region ClientRpc
+    [ClientRpc]
+    private void MoveRotate_RPC(Vector3 v3Direction)
+    {
+        playerRotate.rotation = Quaternion.LookRotation(v3Direction);
+    }
+    #endregion
 }

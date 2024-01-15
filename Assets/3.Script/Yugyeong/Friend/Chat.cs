@@ -15,11 +15,10 @@ public class Chat : NetworkBehaviour
 
     private static event Action<string> onMessage;
 
-    //client°¡ server¿¡ connect µÇ¾úÀ» ¶§ ÄÝ¹éÇÔ¼ö
+    //clientï¿½ï¿½ serverï¿½ï¿½ connect ï¿½Ç¾ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ý¹ï¿½ï¿½Ô¼ï¿½
     public override void OnStartAuthority()
     {
-        Debug.Log("OnStartAuthority");
-        if (isLocalPlayer)
+        if(isLocalPlayer)
         {
             canvas.SetActive(true);
         }
@@ -27,25 +26,21 @@ public class Chat : NetworkBehaviour
     }
     private void newMessage(string mess)
     {
-        Debug.Log("newMessage");
-        Debug.Log($"Ãß°¡µÈ ¸Þ¼¼Áö {mess}");
         chatText.text += mess;
     }
 
-    //Å¬¶óÀÌ¾ðÆ®°¡ Server¸¦ ³ª°¬À» ¶§ 
+    //Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ Serverï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 
     [ClientCallback]
     private void OnDestroy()
     {
-        Debug.Log("OnDestroy");
         if (!isLocalPlayer) return;
         onMessage -= newMessage;
     }
-    //RPC´Â °á±¹ ClientRpc ¸í·É¾î < Command(server)¸í·É¾î < Client ¸í·É¾î?
+    //RPCï¿½ï¿½ ï¿½á±¹ ClientRpc ï¿½ï¿½ï¿½É¾ï¿½ < Command(server)ï¿½ï¿½ï¿½É¾ï¿½ < Client ï¿½ï¿½ï¿½É¾ï¿½?
 
     [Client]
     public void Send()
     {
-        Debug.Log("Send");
         //if (!Input.GetKeyDown(KeyCode.Return)) return;
         if (string.IsNullOrWhiteSpace(inputfield.text)) return;
         cmdSendMessage(SQLManager.instance.info.User_NickName, inputfield.text);
@@ -55,14 +50,12 @@ public class Chat : NetworkBehaviour
     [Command(requiresAuthority = false)]
     private void cmdSendMessage(string nickname, string message)
     {
-        Debug.Log($"cmdSendMessage : {message}");
-        RPCHandleMessage(nickname, message);
+        RPCHandleMessage(nickname,message);
     }
 
     [ClientRpc]
     private void RPCHandleMessage(string nickname, string message)
     {
-        Debug.Log("RPCHandleMessage");
         onMessage?.Invoke($"[{nickname}] : {message}\n");
     }
 

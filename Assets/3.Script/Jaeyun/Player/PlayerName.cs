@@ -1,7 +1,6 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerName : NetworkBehaviour
 {
@@ -9,16 +8,22 @@ public class PlayerName : NetworkBehaviour
     public PlayerCreate target_info;
     [SerializeField] private PlayerName target_player;
 
-    [SerializeField] private TMP_Text nameText;
-    [SerializeField] private GameObject click_obj;      
+    public TMP_Text nameText;
+    [SerializeField] private GameObject click_obj;
 
     [SerializeField] private Touch touch;
-    [SerializeField] private LayerMask layer;
+    [SerializeField] private LayerMask layer_player;
+    [SerializeField] private LayerMask layer_playerLocal;
 
     private void Start()
     {
         click_obj.SetActive(false);
+        if (isLocalPlayer)
+        {
+            nameText.enabled = true;
+        }
     }
+
     private void FixedUpdate()
     {
         PlayerNameUpdate();
@@ -26,12 +31,12 @@ public class PlayerName : NetworkBehaviour
 
     private void Update()
     {
-        Find_Player();
-
         if (click_obj.activeSelf)
         {
             ClickobjUpdate();
         }
+        if (!isLocalPlayer) return;
+        Find_Player();
     }
 
     public void PlayerNameSet()
@@ -41,7 +46,6 @@ public class PlayerName : NetworkBehaviour
 
     public void Set_clickobj()
     {
-        Debug.Log(gameObject.name);
         if (click_obj.activeSelf)
         {
             click_obj.SetActive(false);
@@ -54,27 +58,24 @@ public class PlayerName : NetworkBehaviour
 
     public void Find_Player()
     {
+        if (Application.platform == RuntimePlatform.Android)
         {
-            if (Application.platform == RuntimePlatform.Android)
+            if (Input.touchCount > 0)
             {
-                if (Input.touchCount > 0)
+                touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
                 {
-                    touch = Input.GetTouch(0);
-                    if (touch.phase == TouchPhase.Began)
-                    {
-                        Try_raycast(touch.position);
-                        StudyManager.instance.Try_raycast(touch.position);
-                    }
+                    Try_raycast(touch.position);
+                    StudyManager.instance.Try_raycast(touch.position);
                 }
             }
-
-            else
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    //mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Try_raycast(Input.mousePosition);
-                }
+                //mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Try_raycast(Input.mousePosition);
             }
         }
     }
@@ -82,14 +83,11 @@ public class PlayerName : NetworkBehaviour
     private void Try_raycast(Vector3 pos)
     {
         Ray ray;
-        RaycastHit hit;
         ray = Camera.main.ScreenPointToRay(pos);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layer_player))
         {
             if (hit.collider.CompareTag("Player"))
             {
-
-                Debug.Log("asdf");
                 target_player = hit.collider.gameObject.transform.root.GetComponent<PlayerName>();
                 target_info = hit.collider.gameObject.transform.root.GetComponent<PlayerCreate>();
                 target_player.Set_clickobj();
@@ -99,11 +97,23 @@ public class PlayerName : NetworkBehaviour
 
     private void PlayerNameUpdate()
     {
+        if (!isLocalPlayer)
+        { // player가 뒤에 있거나 거리가 멀어질 경우 출력 X
+            if (!Physics.CheckSphere(transform.position, 20f, layer_playerLocal) || nameText.gameObject.transform.position.z < 0)
+            {
+                nameText.enabled = false;
+            }
+            else
+            {
+                nameText.enabled = true;
+            }
+        }
+
         nameText.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f, 0));
     }
 
     private void ClickobjUpdate()
     {
-        click_obj.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 3f, 0));
+        click_obj.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2.5f, 0));
     }
 }
