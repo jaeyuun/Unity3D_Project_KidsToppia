@@ -6,6 +6,7 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
     [Header("Chase_player")]
     public GameObject player;
     [SerializeField] private Rigidbody rigid_;
+    [SerializeField] private float move_speed = 1;
 
     override public void Awake()
     {
@@ -43,7 +44,7 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
                     transform.rotation = Quaternion.LookRotation(tmprot);
                     if (can_move)
                     {
-                        transform.position = Vector3.MoveTowards(transform.position, goal.position, Time.deltaTime);
+                        transform.position = Vector3.MoveTowards(transform.position, goal.position, Time.deltaTime * move_speed);
                     }
                 }
                 else
