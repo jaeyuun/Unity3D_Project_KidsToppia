@@ -15,7 +15,9 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance = null;
     [SerializeField] private Text name_text;
-    public Shopname shopname;
+
+    public Shopname shopname;//npc_info로 대체할예정
+
     [SerializeField] private GameObject shop_pannel;
     [SerializeField] private GameObject[] shop_obj;
     [SerializeField] private Shop_slot[] shop_Slots;
@@ -109,7 +111,6 @@ public class ShopManager : MonoBehaviour
         if (goods.price <= money)
         {
             SQLManager.instance.Updateitem("money", money - goods.price);
-            // 버튼 잠금해제 풀기(재윤아 해줘 넌 천재야)
             Debug.Log($"{goods.price} <= {money}라서 구매 성공");
             SQLManager.instance.Updateshop(goods.shop, goods.index, 'T');
             var shop = SQLManager.instance.Shop();
