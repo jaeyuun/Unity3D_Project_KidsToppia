@@ -117,6 +117,7 @@ public class ShopManager : MonoBehaviour
             buy_text.text = $"구매에 성공했습니다.\n 현재골드 : {money}";
             cur_slot.UI_update();
         }
+
         else
         {
             Debug.Log($"{goods.price} < {money}라서 구매 실패");

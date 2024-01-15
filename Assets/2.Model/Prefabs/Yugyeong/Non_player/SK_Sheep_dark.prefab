@@ -1155,7 +1155,7 @@ GameObject:
   - component: {fileID: 5752893368094732248}
   - component: {fileID: 3488524992317827430}
   - component: {fileID: 2384601991460632437}
-  - component: {fileID: 8858821527691504415}
+  - component: {fileID: 567759567190976913}
   m_Layer: 0
   m_Name: SK_Sheep_dark
   m_TagString: Untagged
@@ -1216,11 +1216,14 @@ MonoBehaviour:
   rigid: {fileID: 0}
   trans: {fileID: 0}
   ani: {fileID: 0}
+  horizontal: 0
+  vertical: 0
   max_range: 2
   min_range: 1
+  move_speed: 2
   goal: {x: 0, y: 0, z: 0}
-  can_move: 0
-  animal: 4
+  is_stop: 0
+  data: {fileID: 11400000, guid: 79fb90a836b26a549850d837260e1211, type: 2}
 --- !u!54 &2917052398617554104
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1305,8 +1308,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   clientAuthority: 0
-  animator: {fileID: 0}
---- !u!114 &8858821527691504415
+  animator: {fileID: 8814362035681380148}
+--- !u!114 &567759567190976913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1315,31 +1318,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 8814362035681380150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b20dc110904e47f8a154cdcf6433eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  target: {fileID: 8814362035681380147}
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 1
-  coordinateSpace: 0
-  sendIntervalMultiplier: 1
-  timelineOffset: 0
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  onlySyncOnChange: 1
-  compressRotation: 1
-  bufferResetMultiplier: 3
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
+  target: {fileID: 2917052398617554104}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
 --- !u!1 &8814362035817235669
 GameObject:
   m_ObjectHideFlags: 0

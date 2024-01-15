@@ -28,7 +28,15 @@ public class Community : NetworkBehaviour
     }
     public void Friend_Yes()
     {
-        SQLManager.instance.UpdateFriend(target_player.info.User_Id);
+        string[] tmp = SQLManager.instance.Friend().friends;
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            if (tmp[i] == target_player.info.User_NickName)
+            {
+                return;
+            }
+        }
+        SQLManager.instance.UpdateFriend(target_player.info.User_NickName);
     }
 }
 

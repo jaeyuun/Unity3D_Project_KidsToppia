@@ -761,7 +761,7 @@ GameObject:
   - component: {fileID: 4390988994372255887}
   - component: {fileID: 4390988994372255886}
   - component: {fileID: 4390988994372255885}
-  - component: {fileID: -4827737493238564629}
+  - component: {fileID: 4303207273264388801}
   m_Layer: 0
   m_Name: Toon Chicken
   m_TagString: Untagged
@@ -819,14 +819,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2614fd21af4c74e48bebd8d0a517a2b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   rigid: {fileID: 0}
   trans: {fileID: 0}
   ani: {fileID: 0}
+  horizontal: 0
+  vertical: 0
   max_range: 2.5
   min_range: 1
+  move_speed: 2
   goal: {x: 0, y: 0, z: 0}
-  can_move: 0
-  data: {fileID: 0}
+  is_stop: 0
+  data: {fileID: 11400000, guid: a33ec0ccc949d234dac385d4eb0a882a, type: 2}
 --- !u!114 &4390988994372255880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,7 +878,7 @@ MonoBehaviour:
   timelineOffset: 0
   showGizmos: 0
   showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  overlayColor: {r: 0.19607845, g: 0.19607845, b: 0.19607845, a: 0.5}
   onlySyncOnChange: 1
   compressRotation: 1
   bufferResetMultiplier: 3
@@ -912,7 +918,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &-4827737493238564629
+--- !u!114 &4303207273264388801
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -921,31 +927,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4390988994372255875}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b20dc110904e47f8a154cdcf6433eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  target: {fileID: 4387649492947109261}
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 1
-  coordinateSpace: 0
-  sendIntervalMultiplier: 1
-  timelineOffset: 0
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  onlySyncOnChange: 1
-  compressRotation: 1
-  bufferResetMultiplier: 3
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
+  target: {fileID: 4390988994372255885}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
 --- !u!1 &4390992339790741057
 GameObject:
   m_ObjectHideFlags: 0
