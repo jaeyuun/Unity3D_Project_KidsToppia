@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class MapInfoSetting : MonoBehaviour
 {
-    [SerializeField] private PathFinding pathFinding;
+    [SerializeField] private PathFinding[] pathFinding;
 
     private void Awake()
     {
-        pathFinding = FindObjectOfType<PathFinding>();
+        pathFinding = FindObjectsOfType<PathFinding>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            pathFinding.isFinding = false;
+            for (int i = 0; i < pathFinding.Length; i++)
+            {
+                pathFinding[i].isFinding = false;
+            }
         }
     }
 }

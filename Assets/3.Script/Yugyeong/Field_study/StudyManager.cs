@@ -71,23 +71,6 @@ public class StudyManager : MonoBehaviour
         }
     }
 
-    public void Try_raycast(Vector3 pos)
-    {
-        //Debug.Log("Try_raycast");
-        Ray ray;
-        RaycastHit hit;
-        ray = Camera.main.ScreenPointToRay(pos);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
-        {
-            Debug.Log("∑π¿Ã ΩÙ");
-            if (hit.collider.CompareTag("Animal"))
-            {  
-                animal_data = hit.collider.gameObject.GetComponent<Nonplayer_YG>().data;
-                Interactive_Nonplayer();
-            }
-        }
-    }
-
     public void Interactive_Nonplayer()
     {
         if (!study_pannel.activeSelf)

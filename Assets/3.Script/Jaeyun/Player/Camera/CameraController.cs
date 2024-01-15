@@ -35,6 +35,7 @@ public class CameraController : NetworkBehaviour
         }
         else
         {
+            TalkManager.instance.mainCamera = this.gameObject;
             if (Application.platform != RuntimePlatform.Android)
             {
                 Cursor.lockState = CursorLockMode.Confined;
@@ -91,10 +92,7 @@ public class CameraController : NetworkBehaviour
                     }
                     if (IsPointerOverUIObject(touch))
                     {
-                        //if (touch.phase.Equals(TouchPhase.Began) || touch.phase.Equals(TouchPhase.Moved))
-                       // {
-                            touchOn[touch.fingerId] = true;
-                        //}
+                        touchOn[touch.fingerId] = true;
                         continue;
                     }
                     if (touch.phase.Equals(TouchPhase.Moved) && !touchOn[touch.fingerId])

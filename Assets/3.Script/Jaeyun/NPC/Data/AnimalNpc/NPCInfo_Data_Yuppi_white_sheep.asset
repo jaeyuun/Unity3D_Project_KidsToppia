@@ -16,8 +16,13 @@ MonoBehaviour:
   npcText: "\uC548\uB155, \uB098\uB294 \uC720\uC090\uB77C\uACE0\uD574! \uB098\uB791
     \uAC19\uC774 \uD034\uC988\uB97C \uD480\uC5B4\uBCF4\uC9C0 \uC54A\uC744\uB798?"
   prompt: 
+  npcSetting: 2
+  shopInfo: 0
   micButton: 0
+  language: 
   npcYesButton: 1
   yesButtonText: "\uC751, \uC88B\uC544!"
   noButtonText: "\uB2E4\uC74C\uC5D0!"
+  animalNpc: 1
   animal_id: white_sheep
+  shopNpc: 0

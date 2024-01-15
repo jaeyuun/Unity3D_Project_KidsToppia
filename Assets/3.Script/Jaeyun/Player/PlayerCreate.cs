@@ -38,10 +38,11 @@ public enum Ride
 
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
+    [SerializeField] private GameObject chatPanel;
+    private NPCLookAt[] npc;
     private NPC_chaseplayer npc_goppi;
-    private PathFinding pathFinding = null;
+    private PathFinding[] pathFinding = null;
     [SerializeField] private PlayerName playerName;
-    private Transform startPos;
 
     public NetworkAnimator ani_net;
     public User_info info;
@@ -93,21 +94,31 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             PlayerIDSet_CM(playerId);
 
             // PathFinding
-            pathFinding = FindObjectOfType<PathFinding>();
-            pathFinding.playerObject = gameObject;
-            pathFinding.player = gameObject.transform;
+            pathFinding = FindObjectsOfType<PathFinding>();
+            for (int i = 0; i < pathFinding.Length; i++)
+            {
+                pathFinding[i].playerObject = gameObject;
+                pathFinding[i].player = gameObject.transform;
+            }
 
             // player follow npc
             npc_goppi = FindObjectOfType<NPC_chaseplayer>();
             npc_goppi.player = gameObject;
+
+            // npc lookat
+            npc = FindObjectsOfType<NPCLookAt>();
+            for (int i = 0; i < npc.Length; i++)
+            {
+                npc[i].player = gameObject.transform;
+            }
+
+            TalkManager.instance.chatPanel = chatPanel;
         }
         else
         {
             yield return new WaitForSeconds(0.5f);
         }
         // SQLManager
-        startPos = GameObject.FindGameObjectWithTag("StartPos").transform;
-        this.transform.position = startPos.position;
         info = SQLManager.instance.PlayerInfo(playerId);
         character = SQLManager.instance.CharacterInfo(playerId);
         playerName.PlayerNameSet();

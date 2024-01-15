@@ -66,7 +66,6 @@ public class PlayerName : NetworkBehaviour
                 if (touch.phase == TouchPhase.Began)
                 {
                     Try_raycast(touch.position);
-                    StudyManager.instance.Try_raycast(touch.position);
                 }
             }
         }
@@ -82,8 +81,8 @@ public class PlayerName : NetworkBehaviour
 
     private void Try_raycast(Vector3 pos)
     {
-        Ray ray;
-        ray = Camera.main.ScreenPointToRay(pos);
+        if (!TalkManager.instance.mainCamera.activeSelf) return;
+        Ray ray = Camera.main.ScreenPointToRay(pos);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layer_player))
         {
             if (hit.collider.CompareTag("Player"))
@@ -109,7 +108,15 @@ public class PlayerName : NetworkBehaviour
             }
         }
 
-        nameText.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f, 0));
+        if (TalkManager.instance.mainCamera == null) return;
+        if (!TalkManager.instance.mainCamera.activeSelf)
+        {
+            nameText.gameObject.SetActive(false);
+        }
+        else
+        {
+            nameText.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f, 0));
+        }
     }
 
     private void ClickobjUpdate()

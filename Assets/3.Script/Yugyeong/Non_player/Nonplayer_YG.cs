@@ -50,7 +50,6 @@ public class Nonplayer_YG : NetworkBehaviour
     private void Start()
     {
         goal = trans.parent.GetChild(0).transform.position;
-        Debug.Log(trans.parent.GetChild(0).name);
         StartCoroutine(Input_change());
         is_stop = true;
     }
@@ -83,7 +82,6 @@ public class Nonplayer_YG : NetworkBehaviour
     {
         if (Vector3.Distance(trans.position, goal) <= max_distance)
         {
-            Debug.Log("목표지점과 가까움");
             rigid.velocity = new Vector3(horizontal * move_speed, rigid.velocity.y, vertical * move_speed);
 
             if (horizontal != 0 || vertical != 0)
@@ -100,7 +98,6 @@ public class Nonplayer_YG : NetworkBehaviour
         }
         else
         {
-            Debug.Log("떨어져서 다시 오는중");
             rigid.MovePosition(Vector3.Lerp(rigid.position, goal, Time.deltaTime / 2));
         }
 

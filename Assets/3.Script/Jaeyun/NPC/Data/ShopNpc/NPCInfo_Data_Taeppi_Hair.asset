@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e120da3992759c44881c7d2dbb4bd8f, type: 3}
+  m_Name: NPCInfo_Data_Taeppi_Hair
+  m_EditorClassIdentifier: 
+  npcName: "\uD0DC\uC090"
+  npcText: "\uBA38\uB9AC\uB97C \uAD6C\uACBD\uD560 \uC218 \uC788\uC5B4! \uAD6C\uACBD\uD558\uACA0\uB2C8?"
+  prompt: 
+  npcSetting: 3
+  shopInfo: 2
+  micButton: 0
+  language: 
+  npcYesButton: 1
+  yesButtonText: "\uAD6C\uACBD\uD560\uB798!"
+  noButtonText: "\uB2E4\uC74C\uC5D0 \uC62C\uAC8C!"
+  animalNpc: 0
+  animal_id: 
+  shopNpc: 1

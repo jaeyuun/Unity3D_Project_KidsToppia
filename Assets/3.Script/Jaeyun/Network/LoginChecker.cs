@@ -189,6 +189,7 @@ public class LoginChecker : MonoBehaviour
             {
                 User_info info = SQLManager.instance.info;
                 SQLManager.instance.isLogin = true;
+                SQLManager.instance.UpdateUserInfo("connecting", 'T', info.User_Id);
                 ServerChecker.instance.StartClient();
             }
         }
@@ -200,8 +201,6 @@ public class LoginChecker : MonoBehaviour
 
     public void DeleteAccount()
     {
-        Debug.Log(idInput_delete.text);
-        Debug.Log(pwInput_delete.text);
         if (idInput_delete.text.Equals(string.Empty) || pwInput_delete.text.Equals(string.Empty) || nickName_delete.text.Equals(string.Empty))
         {
             checkButton.SetActive(true);

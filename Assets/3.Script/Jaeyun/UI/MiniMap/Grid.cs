@@ -136,10 +136,10 @@ public class Grid : MonoBehaviour
                 lineRenderer.positionCount = points.Count;
                 lineRenderer.SetPositions(points.ToArray());
             }
-            else
-            {
-                lineRenderer.enabled = false;
-            }
+        }
+        else
+        {
+            lineRenderer.enabled = false;
         }
     }
 }
