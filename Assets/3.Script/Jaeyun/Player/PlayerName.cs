@@ -55,7 +55,6 @@ public class PlayerName : NetworkBehaviour
     public void Find_Player()
     {
         {
-            Debug.Log("Input_touch");
             if (Application.platform == RuntimePlatform.Android)
             {
                 if (Input.touchCount > 0)

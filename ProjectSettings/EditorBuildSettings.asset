@@ -5,15 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/Jaeyun/Client/IntroScene.unity
     guid: 31c4ac2051a851143a41c35a578f4e17
   - enabled: 1
     path: Assets/1.Scene/Jaeyun/Client/CreateScene.unity
     guid: 7c783cc911e64c64283e728652f00a34
-  - enabled: 0
-    path: Assets/1.Scene/Jaeyun/Client/MainGame_Map.unity
-    guid: 9824eddb3170c234aae5898311093552
+  - enabled: 1
+    path: Assets/1.Scene/MainGame.unity
+    guid: 852f7b591057e0f49b192fe6fc4895a5
   - enabled: 1
     path: Assets/1.Scene/Jaeyun/Client/OfflineScene.unity
     guid: c80cfd2de69a7a24ab2ea878ebc694ec
