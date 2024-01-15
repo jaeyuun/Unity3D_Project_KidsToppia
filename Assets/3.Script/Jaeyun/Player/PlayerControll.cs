@@ -57,7 +57,6 @@ public class PlayerControll : NetworkBehaviour
                 lenderCamera.SetActive(true);
             }
             GroundCheck();
-            Debug.Log(isGround);
         }
         if (Application.platform == RuntimePlatform.Android)
         {
