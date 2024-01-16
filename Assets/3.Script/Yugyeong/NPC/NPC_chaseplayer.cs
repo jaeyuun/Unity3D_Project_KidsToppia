@@ -35,21 +35,26 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
             {
                 goal = player.transform;
 
-                if (Vector3.Distance(trans.position, goal.position) >= 10f)
+                if (Vector3.Distance(trans.position, goal.position) >= 1f)
                 {
-                    trans.position = goal.position + 3 * Vector3.right;
-                }
-
-                else if (Vector3.Distance(trans.position, goal.position) >= 1f)
-                {
-                    ani.SetBool("is_walk", true);
-                    Vector3 tmprot = goal.position - transform.position;
-                    tmprot.y = 0;
-                    tmprot.Normalize();
-                    transform.rotation = Quaternion.LookRotation(tmprot);
-                    if (can_move)
+                    if (Vector3.Distance(trans.position, goal.position) >= 10f)
                     {
-                        rigid_.MovePosition(Vector3.Lerp(rigid_.position, goal.position, Time.deltaTime * move_speed));
+                        Debug.Log("Tele");
+
+                        trans.position = goal.position + 3 * Vector3.right;
+                    }
+                    else
+                    {
+                        Debug.Log("Walk");
+                        ani.SetBool("is_walk", true);
+                        Vector3 tmprot = goal.position - transform.position;
+                        tmprot.y = 0;
+                        tmprot.Normalize();
+                        transform.rotation = Quaternion.LookRotation(tmprot);
+                        if (can_move)
+                        {
+                            rigid_.MovePosition(Vector3.Lerp(rigid_.position, goal.position, Time.deltaTime * move_speed));
+                        }
                     }
                 }
                 else
