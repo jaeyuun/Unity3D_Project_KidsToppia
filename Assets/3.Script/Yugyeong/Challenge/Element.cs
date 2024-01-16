@@ -20,13 +20,6 @@ public class Element : MonoBehaviour
         nametext.text = challange_data.info;
         rewardtext.text = $"{challange_data.reward_count}";
 
-        /*
-        Debug.Log(challange_data.clear_count <= challange_data.cur_count);
-        Debug.Log(challange_data.info);
-        Debug.Log($"클리어 카운트 : {challange_data.clear_count}");
-        Debug.Log($"현재 카운트 : {challange_data.cur_count}");
-        */
-
         if (challange_data.clear_count <= challange_data.cur_count) //완료
         {
             button.gameObject.SetActive(true);

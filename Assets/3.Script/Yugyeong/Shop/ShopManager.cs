@@ -27,6 +27,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private GameObject can_inapp;
     [SerializeField] private GameObject go_inapp;
     [SerializeField] private Text inapp_text;
+    [SerializeField] private GameObject inapp_textobj;
 
     [SerializeField] private GameObject buy_obj;
     [SerializeField] private Text buy_text;
@@ -71,6 +72,26 @@ public class ShopManager : MonoBehaviour
 
     public void Set_shop(Shopname shopname)
     {
+        //상점 이름 변경
+        switch (shopname)
+        {
+            case Shopname.hair:
+                name_text.text = "헤어샵";
+                break;
+            case Shopname.riding:
+                name_text.text = "라이딩가게";
+                break;
+            case Shopname.clothes:
+                name_text.text = "옷가게";
+                break;
+            case Shopname.acc:
+                name_text.text = "악세서리 가게";
+                break;
+            default:
+                name_text.text = "???";
+                break;
+        }
+
         //active 상태 체크
         shop_pannel.SetActive(true);
         inapp_obj.SetActive(false);
@@ -90,10 +111,10 @@ public class ShopManager : MonoBehaviour
         }
 
         //slot UI update
-        for (int i = 0; i < shop_Slots.Length; i++)
-        {
-            shop_Slots[i].UI_update();
-        }
+        //for (int i = 0; i < shop_Slots.Length; i++)
+        //{
+        //    shop_Slots[i].UI_update();
+        //}
 
         //골드 업데이트
         Update_moneytext();
@@ -146,11 +167,13 @@ public class ShopManager : MonoBehaviour
     {
         can_inapp.SetActive(false);
         go_inapp.SetActive(true);
+        inapp_textobj.SetActive(false);
     }
 
     public void Can_No()
     {
         inapp_obj.SetActive(false);
+        inapp_textobj.SetActive(false);
     }
     #endregion
 
@@ -159,6 +182,7 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log("Complete_purchase");
         text_setting(inapp_text, "충전에 성공했습니다.\n현재 골드 : {000}");
+        inapp_textobj.SetActive(true);
         Invoke("Can_Yes", 3f);
     }
 
@@ -166,6 +190,7 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log("Failed_purchase");
         text_setting(inapp_text, "결제가 취소되었습니다.");
+        inapp_textobj.SetActive(true);
         Invoke("Can_No", 3f);
     }
 

@@ -11865,7 +11865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverIp: 13.124.181.154
-  tableName: kidstopia_player
+  tableName: kidstopia
   isLogin: 0
 --- !u!1 &2637235414838325172
 GameObject:

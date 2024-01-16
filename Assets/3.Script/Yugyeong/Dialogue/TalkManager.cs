@@ -267,6 +267,7 @@ public class TalkManager : MonoBehaviour
             Close_dialog();
             // 나중에 상점으로 꼬옥 추가해주면돼,,, todo
             // Shop UI Active 해주기
+
         }
     }
     #endregion

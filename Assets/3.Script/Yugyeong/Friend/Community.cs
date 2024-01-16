@@ -9,6 +9,7 @@ public class Community : NetworkBehaviour
     [SerializeField] private PlayerName target_name;
     [SerializeField] private TMP_Text notice_text;
 
+
     private void Start()
     {
         pannel.SetActive(false);
@@ -26,9 +27,12 @@ public class Community : NetworkBehaviour
         }
         pannel.SetActive(true);
     }
+
     public void Friend_Yes()
+
     {
         User_info my_info = SQLManager.instance.info;
+        //Debug.Log($"내 닉네임 :{my_info.User_NickName} / 친구 닉네임 {target_player.info.User_NickName}");
         Add_friend(my_info, target_player.info);
         Add_friend(target_player.info, my_info);
     }
