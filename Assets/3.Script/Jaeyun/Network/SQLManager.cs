@@ -1056,7 +1056,7 @@ public class SQLManager : MonoBehaviour
             2. Reader 상태가 읽고 있는 상황인지 확인(1quary 1reader)
             3. Data를 다 읽었으면 Reader의 상태를 확인 후 Close
          */
-        try
+        /*try*/
         {
             if (!ConnectionCheck(connection))
             {
@@ -1247,7 +1247,7 @@ public class SQLManager : MonoBehaviour
             }
             return false;
         }
-        catch (Exception e)
+       /* catch (Exception e)
         {
             Debug.Log(e.Message);
             if (!reader.IsClosed)
@@ -1255,7 +1255,7 @@ public class SQLManager : MonoBehaviour
                 reader.Close();
             }
             return false;
-        }
+        }*/
     }
 
     public bool SignUp(string user_id, string user_pw, string user_nick)
