@@ -35,7 +35,12 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
             {
                 goal = player.transform;
 
-                if (Vector3.Distance(trans.position, goal.position) >= 1f)
+                if (Vector3.Distance(trans.position, goal.position) >= 10f)
+                {
+                    trans.position = goal.position + 3 * Vector3.right;
+                }
+
+                else if (Vector3.Distance(trans.position, goal.position) >= 1f)
                 {
                     ani.SetBool("is_walk", true);
                     Vector3 tmprot = goal.position - transform.position;
