@@ -25,7 +25,7 @@ public abstract class NPC_YG : MonoBehaviour
         StartCoroutine(Set_position());
     }
 
-    private void Turn_canmove()
+    public void Turn_canmove()
     {
         can_move = !can_move;
     }
@@ -38,16 +38,5 @@ public abstract class NPC_YG : MonoBehaviour
     virtual public IEnumerator Set_position()
     {
         yield return null;
-    }
-}
-
-public class Shop_NPC : NPC_YG
-{
-    public Shopname shopname;
-
-    public void Openshop()
-    {
-        ShopManager.instance.shopname = shopname;
-        ShopManager.instance.Set_shop(shopname);
     }
 }

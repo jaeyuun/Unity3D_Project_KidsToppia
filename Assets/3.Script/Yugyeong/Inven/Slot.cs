@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
-    [SerializeField] private Sprite sprite;
+    [SerializeField] private Image slot_image;
     [SerializeField] Text none_text;
     [SerializeField] Text text;
 
+    private void Start()
+    {
+        slot_image = GetComponent<Image>();
+    }
     public void Slot_update(int num)
     {
         //Debug.Log("Slot_update");
@@ -17,12 +21,14 @@ public class Slot : MonoBehaviour
            //Debug.Log("num <= 0");
             none_text.enabled = true;
             text.enabled = false;
+            slot_image.enabled = false;
         }
         else
         {
             //Debug.Log("num > 0");
             none_text.enabled = false;
             text.enabled = true;
+            slot_image.enabled = true;
             text.text = $"{num}";
         }
     }

@@ -5,19 +5,25 @@ using UnityEngine.UI;
 
 public class Enable_btn : MonoBehaviour
 {
-    [SerializeField] Shopname shop;
+    [SerializeField] ShopInfo shop;
     [SerializeField] int index;
     [SerializeField] Button btn;
+    [SerializeField] Shop_data data;
     // Start is called before the first frame update
 
     private void OnEnable()
     {
         btn = GetComponent<Button>();
-        var data = SQLManager.instance.Shop();
+        data = SQLManager.instance.Shop();
+
+        if (data == null)
+        {
+            return;
+        }
 
         switch (shop)
         {
-            case Shopname.hair:
+            case ShopInfo.Hair:
                 if (index == 0)
                 {
                     Change_click(data.hair1);
@@ -27,7 +33,7 @@ public class Enable_btn : MonoBehaviour
                     Change_click(data.hair2);
                 }
                 break;
-            case Shopname.riding:
+            case ShopInfo.Riding:
                 if (index == 0)
                 {
                     Change_click(data.riding1);
@@ -37,7 +43,7 @@ public class Enable_btn : MonoBehaviour
                     Change_click(data.riding2);
                 }
                 break;
-            case Shopname.clothes:
+            case ShopInfo.Clothes:
                 if (index == 0)
                 {
                     Change_click(data.clothes1);
@@ -47,7 +53,7 @@ public class Enable_btn : MonoBehaviour
                     Change_click(data.clothes2);
                 }
                 break;
-            case Shopname.acc:
+            case ShopInfo.Acc:
                 if (index == 0)
                 {
                     Change_click(data.acc1);

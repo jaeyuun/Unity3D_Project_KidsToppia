@@ -40,6 +40,7 @@ public class TalkManager : MonoBehaviour
     [SerializeField] private Transform goppiTrans;
     [SerializeField] private NPCInfoSetting goppiInfo; // npc goppi
     [SerializeField] private NPCCameraController goppiCamera;
+    [SerializeField] private NPC_chaseplayer goppiMovescript;
 
     [SerializeField] private ChatGPT chatGPT; // npc에 따라 요청하는 response
     public string responseText = string.Empty; // gpt 결과 text
@@ -87,7 +88,7 @@ public class TalkManager : MonoBehaviour
         chatPanel.SetActive(false);
 
         micButton_panel.SetActive(false); // 맨 처음 talkpanel을 열었을 때는 micbutton 없음
-        
+
         // camera switch
         npcCamera.SetActive(true);
         mainCamera.SetActive(false);
@@ -119,6 +120,7 @@ public class TalkManager : MonoBehaviour
         }
         talk_pannel.SetActive(false);
         staticMenu.SetActive(true);
+        goppiMovescript.Turn_canmove();
 
         // camera switch, player setting
         npcCamera.SetActive(false);
@@ -140,6 +142,13 @@ public class TalkManager : MonoBehaviour
         yes_button.SetActive(false);
         micButton_panel.SetActive(false);
         micButton.SetActive(false);
+
+        //유경
+        //고삐일때 움직임 제어 해제하기
+        if (npcInfoSet == goppiInfo)
+        {
+            goppiMovescript.Turn_canmove();
+        }
     }
     #endregion
 
@@ -280,7 +289,7 @@ public class TalkManager : MonoBehaviour
             Close_dialog();
             // 나중에 상점으로 꼬옥 추가해주면돼,,, todo
             // Shop UI Active 해주기
-
+            ShopManager.instance.Set_shop(npcInfoSet.npcInfo.shopInfo);
         }
     }
     #endregion

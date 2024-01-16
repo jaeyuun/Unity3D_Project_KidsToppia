@@ -482,7 +482,7 @@ public class SQLManager : MonoBehaviour
         }
     }
 
-    public void Updateshop(Shopname shopname, int index, char val) //col_name = 열 이름, state = is_open,givefood,issolved, val = "T" or "F"
+    public void Updateshop(ShopInfo shopname, int index, char val) //col_name = 열 이름, state = is_open,givefood,issolved, val = "T" or "F"
     {
         try
         {
@@ -499,28 +499,28 @@ public class SQLManager : MonoBehaviour
             string col2 = null;
             switch (shopname)
             {
-                case Shopname.hair:
+                case ShopInfo.Hair:
                     tmp1 = tmpdata.hair1;
                     tmp2 = tmpdata.hair2;
                     tmpstr = "hair_shop";
                     col1 = "hair1";
                     col2 = "hair2";
                     break;
-                case Shopname.riding:
+                case ShopInfo.Riding:
                     tmp1 = tmpdata.riding1;
                     tmp2 = tmpdata.riding2;
                     tmpstr = "riding_shop";
                     col1 = "riding1";
                     col2 = "riding2";
                     break;
-                case Shopname.clothes:
+                case ShopInfo.Clothes:
                     tmp1 = tmpdata.clothes1;
                     tmp2 = tmpdata.clothes2;
                     tmpstr = "clothes_shop";
                     col1 = "clothes1";
                     col2 = "clothes2";
                     break;
-                case Shopname.acc:
+                case ShopInfo.Acc:
                     tmp1 = tmpdata.acc1;
                     tmp2 = tmpdata.acc2;
                     tmpstr = "acc_shop";
@@ -927,7 +927,7 @@ public class SQLManager : MonoBehaviour
     {
         try
         {
-            if (ConnectionCheck(connection))
+            if (ConnectionCheck(connection) && info != null)
             {
                 string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN shop B ON A.id = B.player_id WHERE A.id = '{0}';", info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
                 MySqlCommand cmd = new MySqlCommand(selectCommand, connection);

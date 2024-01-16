@@ -1,22 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
-
-public enum Shopname
-{
-    hair = 0,
-    riding,
-    clothes,
-    acc
-}
 
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance = null;
     [SerializeField] private Text name_text;
-
-    public Shopname shopname;//npc_info로 대체할예정
 
     [SerializeField] private GameObject shop_pannel;
     [SerializeField] private GameObject[] shop_obj;
@@ -26,7 +17,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private GameObject inapp_obj;
     [SerializeField] private GameObject can_inapp;
     [SerializeField] private GameObject go_inapp;
-    [SerializeField] private Text inapp_text;
+    [SerializeField] private TMP_Text inapp_text;
     [SerializeField] private GameObject inapp_textobj;
 
     [SerializeField] private GameObject buy_obj;
@@ -64,27 +55,21 @@ public class ShopManager : MonoBehaviour
         shop_pannel.SetActive(false);
     }
 
-    public void Taebbi_test() //태삐가 할 예정
-    {
-        shopname = Shopname.acc;
-        Set_shop(shopname);
-    }
-
-    public void Set_shop(Shopname shopname)
+    public void Set_shop(ShopInfo shopname)
     {
         //상점 이름 변경
         switch (shopname)
         {
-            case Shopname.hair:
+            case ShopInfo.Hair:
                 name_text.text = "헤어샵";
                 break;
-            case Shopname.riding:
+            case ShopInfo.Riding:
                 name_text.text = "라이딩가게";
                 break;
-            case Shopname.clothes:
+            case ShopInfo.Clothes:
                 name_text.text = "옷가게";
                 break;
-            case Shopname.acc:
+            case ShopInfo.Acc:
                 name_text.text = "악세서리 가게";
                 break;
             default:
@@ -147,7 +132,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    private IEnumerator text_setting(Text text, string str)
+    private IEnumerator text_setting(TMP_Text text, string str)
     {
         text.text = $"{str}";
         yield return new WaitForSeconds(3f);
