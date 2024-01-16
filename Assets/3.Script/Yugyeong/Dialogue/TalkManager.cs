@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TalkManager : MonoBehaviour
 {
     static public TalkManager instance = null;
 
     [Header("Talk Panel")]
+    [SerializeField] private GameObject staticMenu;
+    public GameObject chatPanel;
     [SerializeField] TextMeshProUGUI dialog_text;
     [SerializeField] GameObject talk_pannel;
     [SerializeField] TextMeshProUGUI name_text;
@@ -31,7 +34,11 @@ public class TalkManager : MonoBehaviour
 
     [Header("NPC")]
     public NPCInfoSetting npcInfoSet; // 클릭한 NPC 갖고오기 위한 선언, 재윤 24. 01. 05
-    
+    public Transform npc;
+    public GameObject mainCamera; // player를 비추는 카메라
+    public GameObject npcCamera; // npc와 대화할 때의 카메라
+    [SerializeField] private NPCInfoSetting goppiInfo; // npc goppi
+
     [SerializeField] private ChatGPT chatGPT; // npc에 따라 요청하는 response
     public string responseText = string.Empty; // gpt 결과 text
     public bool isGuide = false;
@@ -68,7 +75,15 @@ public class TalkManager : MonoBehaviour
     public void Open_dialog()
     {
         talk_pannel.SetActive(true);
+        staticMenu.SetActive(false);
+        chatPanel.SetActive(false);
+
         micButton_panel.SetActive(false); // 맨 처음 talkpanel을 열었을 때는 micbutton 없음
+        
+        // camera switch
+        npcCamera.SetActive(true);
+        mainCamera.SetActive(false);
+
         // npc info setting, button text
         no_button_text.text = $"{npcInfoSet.npcInfo.noButtonText}";
         yes_button_text.text = $"{npcInfoSet.npcInfo.yesButtonText}";
@@ -80,9 +95,28 @@ public class TalkManager : MonoBehaviour
         }
     }
 
+    public void NPC_GoppiButton()
+    {
+        // npc info setting
+        npcInfoSet = goppiInfo;
+    }
+
     public void Close_dialog()
     { // No_Button Click method
         talk_pannel.SetActive(false);
+        staticMenu.SetActive(true);
+
+        // camera switch, player setting
+        npcCamera.SetActive(false);
+        if (mainCamera != null)
+        {
+            mainCamera.SetActive(true);
+        }
+        if (chatPanel != null)
+        {
+            chatPanel.SetActive(true);
+        }
+
         if (event_talkend != null)
         {
             event_talkend();
@@ -116,11 +150,6 @@ public class TalkManager : MonoBehaviour
         dialog_text.text = array[Random.Range(0, array.Length)];
     }
 
-    public void Stop_talk()
-    {
-        Close_dialog();
-    }
-
     #region NPC 구분
     private void Input_touch()
     {
@@ -135,7 +164,6 @@ public class TalkManager : MonoBehaviour
                     {
                         touched_pos = Camera.main.ScreenToWorldPoint(touch.position);
                         Try_raycast(touch.position);
-                        StudyManager.instance.Try_raycast(touch.position);
                     }
                 }
             }
@@ -149,12 +177,11 @@ public class TalkManager : MonoBehaviour
                 {
                     mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Try_raycast(Input.mousePosition);
-                    StudyManager.instance.Try_raycast(Input.mousePosition);
                 }
             }
         }
     }
-    #region Dialog Panel Text
+    #region Dialog Panel Text Print
     public void InputNextText()
     { // panel click method
         if (isGuide)
@@ -187,8 +214,7 @@ public class TalkManager : MonoBehaviour
         // 1. name.text에 player nickname, dialog_text.text에 response text
         // 2. response gpt에 요청 후 출력
         // 3. 출력 후 panal click 시 micButton active
-        // name_text.text = SQLManager.instance.info.User_NickName; ... todo 이걸로 나주엥 바꿔주길
-        name_text.text = data_Dialog[dialog_index]["Character_name"].ToString();
+        name_text.text = SQLManager.instance.info.User_NickName;
         dialog_text.text = request;
         micButton_panel.SetActive(false);
         micButton.SetActive(false);
@@ -199,31 +225,40 @@ public class TalkManager : MonoBehaviour
 
     private void Try_raycast(Vector3 pos)
     { // NPC 찾는 raycast
+        if (!mainCamera.activeSelf) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         Ray ray = Camera.main.ScreenPointToRay(pos);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layer))
         {
             if (hit.collider.CompareTag("NPC"))
             { // npc일 때
+                npc = hit.collider.gameObject.transform;
                 npcInfoSet = hit.collider.gameObject.GetComponent<NPCInfoSetting>();
                 QuizManager.instance.npcInfoSet = npcInfoSet; // npc info Quiz manager에게 전달
                 DialogText_Print();
+            }
+            else if (hit.collider.CompareTag("Animal"))
+            {
+                StudyManager.instance.animal_data = hit.collider.gameObject.GetComponent<Nonplayer_YG>().data;
+                StudyManager.instance.Interactive_Nonplayer();
             }
         }
     }
 
     public void YesButton()
     {
-        if (npcInfoSet.npcInfo.npcName.Equals("유삐"))
+        if (npcInfoSet.npcInfo.npcSetting.Equals(NPCSetting.Animal))
         { // Quiz
             Close_dialog();
             QuizManager.instance.quizCanvas.SetActive(true);
             QuizManager.instance.mainMenu.SetActive(true);
             QuizManager.instance.AnimalsQuiz_Print();
         }
-        else if (npcInfoSet.npcInfo.npcName.Equals("태삐"))
+        else if (npcInfoSet.npcInfo.npcSetting.Equals(NPCSetting.Shop))
         { // Shop
             Close_dialog();
             // 나중에 상점으로 꼬옥 추가해주면돼,,, todo
+            // Shop UI Active 해주기
         }
     }
     #endregion

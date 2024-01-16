@@ -7358,6 +7358,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  chatPanel: {fileID: 472686437}
   playerName: {fileID: 8707077448692984476}
   ani_net: {fileID: 9112260389697758371}
   changeObject:
@@ -21858,7 +21859,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   cameraParent: {fileID: 0}
-  target: {fileID: 3869829890766790964}
+  target: {fileID: 3871637297312991269}
   playerControll: {fileID: 3869829890766790919}
 --- !u!1 &6852712526298191862
 GameObject:

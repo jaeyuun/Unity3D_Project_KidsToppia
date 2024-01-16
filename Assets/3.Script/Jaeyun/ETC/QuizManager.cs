@@ -137,67 +137,24 @@ public class QuizManager : MonoBehaviour
             rewardImage[i].SetActive(true);
         }
         rewardText.text = $"다시 도전 시 보상획득";
-        /*Nonplayer_data userQuizData = SQLManager.instance.Collection(SQLManager.instance.info.User_Id, "issolved"); // 문제 푼 것 확인
-        if (userQuizData.is_solved == 'T')
+        Nonplayer_data userQuizData = SQLManager.instance.Collection(SQLManager.instance.info.User_Id, "issolved"); // 문제 푼 것 확인
+        if (userQuizData.is_solved.Equals('T'))
         {
             rewardText.text = "이미 보상을 받았어요";
         }
         else
         {
-            if (rightCount == 3)
+            if (rightCount.Equals(3))
             {
                 SQLManager.instance.Updatecollection(animalData[dataIndex]["Animal_Id"].ToString(), "issolved", 'T'); // 문제를 전부 맞췄을 경우 T로 바꾸어줌
                 rewardText.text = $"+300개 보상";
                 SQLManager.instance.Updateitem("money", 300);
+                SQLManager.instance.Updateitem("food_num", 2);
             }
             else
             {
                 rewardText.text = $"다시 도전 시 보상획득";
             }
-        }*/
-    }
-
-    /*private void Input_touch()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.touchCount > 0)
-            {
-                touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Ended)
-                {
-                    if (!mainMenu.activeSelf && !plusMenu.activeSelf && !clearMenu.activeSelf)
-                    {
-                        Try_raycast(touch.position);
-                    }
-                }
-            }
-        }
-        else
-        { // Window
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (!mainMenu.activeSelf)
-                {
-                    Try_raycast(Input.mousePosition);
-                }
-            }
         }
     }
-
-    private void Try_raycast(Vector3 pos)
-    { // NPC 찾는 raycast
-        Ray ray = Camera.main.ScreenPointToRay(pos);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layer))
-        {
-            if (hit.collider.CompareTag("NPC"))
-            { // npc일 때
-                npcInfoSet = hit.collider.gameObject.GetComponent<NPCInfoSetting>();
-                if (npcInfoSet.npcInfo.animalNpc)
-                {
-                    AnimalsQuiz_Print();
-                }
-            }
-        }
-    }*/
 }
