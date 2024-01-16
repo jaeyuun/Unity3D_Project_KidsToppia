@@ -24,7 +24,6 @@ public class NPCCameraController : MonoBehaviour
         }
         if (npc != null)
         {
-            
             Vector3 npcPos = npc.position + new Vector3(0, offsetY, 0);
             Vector3 lookAt = npcPos - transform.position;
             lookAt = lookAt.normalized;

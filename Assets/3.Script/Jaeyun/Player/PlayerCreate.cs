@@ -38,6 +38,7 @@ public enum Ride
 
 public class PlayerCreate : NetworkBehaviour, IState_Select
 {
+    [SerializeField] private GameObject playerModel;
     [SerializeField] private GameObject chatPanel;
     private NPCLookAt[] npc;
     private NPC_chaseplayer npc_goppi;
@@ -113,6 +114,7 @@ public class PlayerCreate : NetworkBehaviour, IState_Select
             }
 
             TalkManager.instance.chatPanel = chatPanel;
+            TalkManager.instance.playerModel = playerModel;
         }
         else
         {

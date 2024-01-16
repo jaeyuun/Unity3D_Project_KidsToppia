@@ -64,6 +64,7 @@ public class PlayerControll : NetworkBehaviour
         }
         else
         { // window
+            if (TalkManager.instance.talk_pannel.activeSelf) return;
             PlayerMovement_Win();
             PlayerJump_Win();
         }
