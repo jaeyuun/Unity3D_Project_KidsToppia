@@ -21,17 +21,17 @@ public class Challenge_YG : ScriptableObject //도전과제 내용
         switch (type)
         {
             case "dailycount":
-                return SQL.challenge_data.dailycount;
+                return SQL.Challenge().dailycount;
             case "trash":
-                return SQL.challenge_data.trash;
+                return SQL.Challenge().trash;
             case "box":
-                return SQL.challenge_data.box;
+                return SQL.Challenge().box;
             case "open_count":
-                return SQL.challenge_data.open_count;
+                return SQL.Challenge().open_count;
             case "solved_count":
-                return SQL.challenge_data.solved_count;
+                return SQL.Challenge().solved_count;
             case "food_count":
-                return SQL.challenge_data.food_count;
+                return SQL.Challenge().food_count;
             default:
                 Debug.Log("오타났다 유경아 정신차리렴");
                 return 0;
