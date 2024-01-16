@@ -56,7 +56,6 @@ public class Nonplayer_YG : NetworkBehaviour
     private void Start()
     {
         goal = trans.parent.GetChild(0).transform.position;
-        Debug.Log(trans.parent.GetChild(0).name);
         StartCoroutine(Change());
         ani.SetBool("is_walk", true);
     }
@@ -75,12 +74,10 @@ public class Nonplayer_YG : NetworkBehaviour
             angle = Random.Range(0f, 270f);
             if (Vector3.Distance(trans.position, goal) <= max_distance)
             {
-                Debug.Log("true");
                 is_turn = true;
             }
             else
             {
-                Debug.Log("false");
                 is_turn = false;
             }
             yield return new WaitForSeconds(tmp);
@@ -92,7 +89,6 @@ public class Nonplayer_YG : NetworkBehaviour
 
         if (is_turn)
         {
-            Debug.Log("맘대로돌아다니는상태");
             trans.Translate(Vector3.forward * move_speed);
 
             Quaternion tmp = Quaternion.Euler(trans.rotation.x, trans.rotation.y + angle - 180, trans.rotation.z);
@@ -101,7 +97,6 @@ public class Nonplayer_YG : NetworkBehaviour
 
         else
         {
-            Debug.Log("떨어져서 다시 오는중");
             rigid.MovePosition(Vector3.Lerp(rigid.position, goal, Time.deltaTime / return_transpeed));
 
             Vector3 direction = (goal - trans.position).normalized;
@@ -115,10 +110,9 @@ public class Nonplayer_YG : NetworkBehaviour
     private void Try_raycast()
     {
         RaycastHit hit;
-        Debug.DrawRay(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0, 0.2f, 0) * 0.5f, Color.red);
+        //Debug.DrawRay(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0, 0.2f, 0) * 0.5f, Color.red);
         if (Physics.Raycast(transform.position + new Vector3(0, 0.2f, 0), transform.forward, out hit, 0.8f, layer))
         {
-            Debug.Log("Try_raycast()");
             is_turn = false;
         }
     }
