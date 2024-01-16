@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AudioController : MonoBehaviour
+public class SettingController : MonoBehaviour
 { // Cavase Audio Setting에 넣어주기
     public Slider bgmSlider, sfxSlider;
 
@@ -25,5 +25,20 @@ public class AudioController : MonoBehaviour
     public void SFXVolume()
     {
         AudioManager.instance.SFXVolume(sfxSlider.value);
+    }
+
+    public void LowQuality()
+    {
+        QualitySettings.SetQualityLevel(0);
+    }
+
+    public void MiddleQuality()
+    {
+        QualitySettings.SetQualityLevel(1);
+    }
+
+    public void HighQuality()
+    {
+        QualitySettings.SetQualityLevel(2);
     }
 }
