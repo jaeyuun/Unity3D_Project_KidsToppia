@@ -120,7 +120,6 @@ public class TalkManager : MonoBehaviour
         }
         talk_pannel.SetActive(false);
         staticMenu.SetActive(true);
-        goppiMovescript.Turn_canmove();
 
         // camera switch, player setting
         npcCamera.SetActive(false);
@@ -142,13 +141,6 @@ public class TalkManager : MonoBehaviour
         yes_button.SetActive(false);
         micButton_panel.SetActive(false);
         micButton.SetActive(false);
-
-        //유경
-        //고삐일때 움직임 제어 해제하기
-        if (npcInfoSet == goppiInfo)
-        {
-            goppiMovescript.Turn_canmove();
-        }
     }
     #endregion
 

@@ -12,6 +12,7 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
     {
         base.Awake();
         TryGetComponent(out rigid_);
+        can_move = false;
     }
 
     override public IEnumerator Find_posttion()
@@ -30,7 +31,6 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
     {
         while (true)
         {
-            //Debug.Log(Vector3.Distance(trans.position, goal.position));
             if (player != null)
             {
                 goal = player.transform;
@@ -39,8 +39,7 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
                 {
                     trans.position = goal.position + 3 * Vector3.right;
                 }
-
-                else if (Vector3.Distance(trans.position, goal.position) >= 1f)
+                if (Vector3.Distance(trans.position, goal.position) >= 1f)
                 {
                     ani.SetBool("is_walk", true);
                     Vector3 tmprot = goal.position - transform.position;
