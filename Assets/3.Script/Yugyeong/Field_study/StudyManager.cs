@@ -29,7 +29,7 @@ public class StudyManager : MonoBehaviour
     [SerializeField] private LayerMask layer;
 
     [Header("TTS")]
-    [SerializeField] private AudioSource audio_source;
+    [SerializeField] private AudioSource audio_source; //ì˜¤ë””ì˜¤ ì†ŒìŠ¤ SFX ë³€ê²½
     private string url;
 
     public delegate void del_col();
@@ -61,7 +61,7 @@ public class StudyManager : MonoBehaviour
         study_pannel.SetActive(true);
     }
 
-    public void Close()
+    public void Close() //ë„ëŠ”ê±° ì‹¹ë‹¤ ì–˜ë¡œ ë³€ê²½
     {
         study_pannel.SetActive(false);
 
@@ -92,22 +92,22 @@ public class StudyManager : MonoBehaviour
     {
         if (food_num <= 0)
         {
-            eatstate_text.text = "°¡Áø ¸ÔÀÌ°¡ ¾ø¾î¿ä.";
+            eatstate_text.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.";
             eatstate.SetActive(true);
         }
 
         else if (animal_data.data.give_food == 'F')
         {
-            //µ¿¹° ¸ÔÀÌÁÖ±â
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
             animal_data.set_data("is_open", 'T');
             animal_data.set_data("givefood", 'T');
-            eatstate_text.text = "µ¿¹°¿¡°Ô ¸ÔÀÌ¸¦ ÁÖ¾ú¾î¿ä.";
+            eatstate_text.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½.";
             eatstate.SetActive(true);
             Event_colupdate();
         }
         else
         {
-            eatstate_text.text = "ÀÌ¹Ì ¸ÔÀÌ¸¦ ÁÖ¾ú¾î¿ä.";
+            eatstate_text.text = "ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½.";
             eatstate.SetActive(true);
         }
         Invoke("Turn_eatstate", 3f);
@@ -120,7 +120,7 @@ public class StudyManager : MonoBehaviour
 
     IEnumerator Play_tts(string tts_info)
     {
-        //°³Çà ¹®ÀÚ Á¦°Å
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         tts_info = Regex.Replace(tts_info, "<br>", "");
         tts_info = Regex.Replace(tts_info, ",", "");
 

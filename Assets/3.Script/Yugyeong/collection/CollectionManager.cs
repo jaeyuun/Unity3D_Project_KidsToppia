@@ -21,7 +21,7 @@ public class CollectionManager : MonoBehaviour
     {
         for (int i = 0; i < collection_arr.Length; i++)
         {
-            //µ¿¹°,¹°°í±â ºÐ·ù
+            //ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð·ï¿½
             if (is_animaldata)
             {
                 collection_arr[i].study = animal_arr[i];
