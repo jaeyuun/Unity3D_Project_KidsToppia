@@ -24,20 +24,28 @@ MonoBehaviour:
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
-  m_UserSelectedRegistryName: 
+  - m_Id: scoped:com.DefaultCompany.Unity3D_Project_Kidstopia
+    m_Name: com.DefaultCompany.Unity3D_Project_Kidstopia
+    m_Url: https://play.google.com/apps/test/com.DefaultCompany.Unity3D_Project_Kidstopia/6
+    m_Scopes:
+    - '"Kidstoppia"'
+    m_IsDefault: 0
+    m_Capabilities: 0
+  m_UserSelectedRegistryName: com.DefaultCompany.Unity3D_Project_Kidstopia
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_ErrorMessage: 
     m_Original:
-      m_Id: 
-      m_Name: 
-      m_Url: 
-      m_Scopes: []
+      m_Id: scoped:com.DefaultCompany.Unity3D_Project_Kidstopia
+      m_Name: com.DefaultCompany.Unity3D_Project_Kidstopia
+      m_Url: https://play.google.com/apps/test/com.DefaultCompany.Unity3D_Project_Kidstopia/6
+      m_Scopes:
+      - '"Kidstoppia"'
       m_IsDefault: 0
       m_Capabilities: 0
     m_Modified: 0
-    m_Name: 
-    m_Url: 
+    m_Name: com.DefaultCompany.Unity3D_Project_Kidstopia
+    m_Url: https://play.google.com/apps/test/com.DefaultCompany.Unity3D_Project_Kidstopia/6
     m_Scopes:
-    - 
+    - '"Kidstoppia"'
     m_SelectedScopeIndex: 0

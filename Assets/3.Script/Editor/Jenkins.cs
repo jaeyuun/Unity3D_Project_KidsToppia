@@ -43,7 +43,28 @@ public class Jenkins
         // 빌드 타겟
         options.target = BuildTarget.Android;
 
+        //Publishing Settings
+        PlayerSettings.keyaliasPass = GetArg("-keyaliasPass");
+        PlayerSettings.keystorePass = GetArg("-keystorePass");
+
+        Debug.LogFormat("**** keyaliasPass : {0}", PlayerSettings.keyaliasPass);
+        Debug.LogFormat("**** keystorePass : {0}", PlayerSettings.keystorePass);
+
         // 빌드
         BuildPipeline.BuildPlayer(options);
+    }
+
+    private static string GetArg(string name)
+    {
+        var args = System.Environment.GetCommandLineArgs();
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == name && args.Length > i + 1)
+            {
+                return args[i + 1];
+            }
+        }
+        return null;
     }
 }

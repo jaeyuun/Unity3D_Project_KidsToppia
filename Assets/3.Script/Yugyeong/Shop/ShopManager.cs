@@ -15,7 +15,9 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance = null;
     [SerializeField] private Text name_text;
-    public Shopname shopname;
+
+    public Shopname shopname;//npc_info로 대체할예정
+
     [SerializeField] private GameObject shop_pannel;
     [SerializeField] private GameObject[] shop_obj;
     [SerializeField] private Shop_slot[] shop_Slots;
@@ -109,7 +111,6 @@ public class ShopManager : MonoBehaviour
         if (goods.price <= money)
         {
             SQLManager.instance.Updateitem("money", money - goods.price);
-            // 버튼 잠금해제 풀기(재윤아 해줘 넌 천재야)
             Debug.Log($"{goods.price} <= {money}라서 구매 성공");
             SQLManager.instance.Updateshop(goods.shop, goods.index, 'T');
             var shop = SQLManager.instance.Shop();
@@ -156,12 +157,14 @@ public class ShopManager : MonoBehaviour
     #region 인앱결제
     public void Complete_purchase()
     {
+        Debug.Log("Complete_purchase");
         text_setting(inapp_text, "충전에 성공했습니다.\n현재 골드 : {000}");
-        Invoke("Can_No", 3f);
+        Invoke("Can_Yes", 3f);
     }
 
     public void Failed_purchase()
     {
+        Debug.Log("Failed_purchase");
         text_setting(inapp_text, "결제가 취소되었습니다.");
         Invoke("Can_No", 3f);
     }
@@ -169,6 +172,7 @@ public class ShopManager : MonoBehaviour
     public void Buy_Gold(int num)
     {
         SQLManager.instance.Updateitem("money", money + num);
+        Debug.Log(SQLManager.instance.Item().money);
     }
 
     public void Update_moneytext()
