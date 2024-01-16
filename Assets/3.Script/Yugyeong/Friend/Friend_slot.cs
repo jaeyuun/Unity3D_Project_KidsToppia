@@ -18,7 +18,7 @@ public class Friend_slot : MonoBehaviour
 
     private void OnEnable()
     {
-        data = SQLManager.instance.Friend();
+        data = SQLManager.instance.Friend(SQLManager.instance.info.User_Id);
         friend_x = transform.GetChild(0).gameObject;
         friend_o = transform.GetChild(1).gameObject;
         Setting();
@@ -26,7 +26,7 @@ public class Friend_slot : MonoBehaviour
 
     private void Setting()
     {
-        data = SQLManager.instance.Friend();
+        data = SQLManager.instance.Friend(SQLManager.instance.info.User_Id);
 
         if (data.friends[index] == string.Empty)
         {

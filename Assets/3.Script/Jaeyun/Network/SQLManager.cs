@@ -556,7 +556,7 @@ public class SQLManager : MonoBehaviour
             }
         }
     }
-    public void UpdateFriend(string friendname)
+    public void UpdateFriend(User_info info, string friend_nickname)
     {
         try
         {
@@ -565,7 +565,7 @@ public class SQLManager : MonoBehaviour
                 return;
             }
 
-            Friend_data tmp = Friend();
+            Friend_data tmp = Friend(info.User_Id);
             string str = string.Empty;
 
             if (tmp.friend1 == string.Empty)
@@ -586,7 +586,7 @@ public class SQLManager : MonoBehaviour
                 return;
             }
 
-            string selectCommand = string.Format(@"UPDATE friend SET {0} = '{1}' WHERE player_id = '{2}';",str, friendname,info.User_Id);
+            string selectCommand = string.Format(@"UPDATE friend SET {0} = '{1}' WHERE player_id = '{2}';",str, friend_nickname, info.User_Id);
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed)
@@ -614,7 +614,7 @@ public class SQLManager : MonoBehaviour
                 return;
             }
 
-            Friend_data tmp = Friend();
+            Friend_data tmp = Friend(SQLManager.instance.info.User_Id);
             string str = string.Empty;
 
             switch (index)
@@ -991,13 +991,13 @@ public class SQLManager : MonoBehaviour
             return null;
         }
     }
-    public Friend_data Friend()
+    public Friend_data Friend(string user_id)
     {
         try
         {
             if (ConnectionCheck(connection))
             {
-                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN friend B ON A.id = B.player_id WHERE A.id = '{0}';", info.User_Id);
+                string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN friend B ON A.id = B.player_id WHERE A.id = '{0}';", user_id);
                 MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
