@@ -12,7 +12,7 @@ public class TalkManager : MonoBehaviour
     [SerializeField] private GameObject staticMenu;
     public GameObject chatPanel;
     [SerializeField] TextMeshProUGUI dialog_text;
-    [SerializeField] GameObject talk_pannel;
+    public GameObject talk_pannel;
     [SerializeField] TextMeshProUGUI name_text;
     private int dialog_index;
 
@@ -37,11 +37,15 @@ public class TalkManager : MonoBehaviour
     public Transform npc;
     public GameObject mainCamera; // player를 비추는 카메라
     public GameObject npcCamera; // npc와 대화할 때의 카메라
+    [SerializeField] private Transform goppiTrans;
     [SerializeField] private NPCInfoSetting goppiInfo; // npc goppi
+    [SerializeField] private NPCCameraController goppiCamera;
 
     [SerializeField] private ChatGPT chatGPT; // npc에 따라 요청하는 response
     public string responseText = string.Empty; // gpt 결과 text
     public bool isGuide = false;
+
+    public GameObject playerModel = null;
 
     // user touch position
     private Vector3 touched_pos;
@@ -74,6 +78,10 @@ public class TalkManager : MonoBehaviour
     #region Dialog Pannel Active
     public void Open_dialog()
     {
+        if (playerModel != null)
+        {
+            playerModel.SetActive(false);
+        }
         talk_pannel.SetActive(true);
         staticMenu.SetActive(false);
         chatPanel.SetActive(false);
@@ -99,10 +107,16 @@ public class TalkManager : MonoBehaviour
     {
         // npc info setting
         npcInfoSet = goppiInfo;
+        goppiCamera.npc = goppiTrans;
+        DialogText_Print();
     }
 
     public void Close_dialog()
     { // No_Button Click method
+        if (playerModel != null)
+        {
+            playerModel.SetActive(true);
+        }
         talk_pannel.SetActive(false);
         staticMenu.SetActive(true);
 
@@ -240,7 +254,6 @@ public class TalkManager : MonoBehaviour
             else if (hit.collider.CompareTag("Animal"))
             {
                 StudyManager.instance.animal_data = hit.collider.gameObject.GetComponent<Nonplayer_YG>().data;
-
                 if (SQLManager.instance.Collection(SQLManager.instance.info.User_Id, StudyManager.instance.animal_data.table_name).is_open == 'T')
                 {
                     StudyManager.instance.Interactive_Nonplayer();

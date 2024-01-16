@@ -7358,6 +7358,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  playerModel: {fileID: 3869356566062062081}
   chatPanel: {fileID: 472686437}
   playerName: {fileID: 8707077448692984476}
   ani_net: {fileID: 9112260389697758371}
