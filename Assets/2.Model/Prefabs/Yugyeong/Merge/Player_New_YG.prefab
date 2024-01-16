@@ -7335,6 +7335,7 @@ MonoBehaviour:
   ani_net: {fileID: 0}
   playerRigid: {fileID: 0}
   playerRotate: {fileID: 3871637297312991269}
+  ridingRotate: {fileID: 4799914393543760582}
   moveSpeed: 3
   jumpForce: 3
   isGround: 0
@@ -10438,7 +10439,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0495374bd28a0c848b8ab41b671ffc0d, type: 2}
+  - {fileID: 2100000, guid: c20880ba8d8b40e40a336a2509f3243b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

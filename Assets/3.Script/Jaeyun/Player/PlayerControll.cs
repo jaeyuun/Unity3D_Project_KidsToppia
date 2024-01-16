@@ -16,6 +16,7 @@ public class PlayerControll : NetworkBehaviour
     public Rigidbody playerRigid;
     private Transform playerTrans;
     [SerializeField] private Transform playerRotate;
+    [SerializeField] private Transform ridingRotate;
 
     [SerializeField] private float moveSpeed = 3f;
     public float jumpForce = 3f;
@@ -165,6 +166,7 @@ public class PlayerControll : NetworkBehaviour
     private void MoveRotate_RPC(Vector3 v3Direction)
     {
         playerRotate.rotation = Quaternion.LookRotation(v3Direction);
+        ridingRotate.rotation = Quaternion.LookRotation(v3Direction);
     }
     #endregion
 }
