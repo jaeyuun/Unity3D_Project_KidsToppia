@@ -86,13 +86,14 @@ public class QuizManager : MonoBehaviour
         if (quizIndex == 3)
         {
             mainMenu.SetActive(false);
-            plusMenu.SetActive(false);
-            Quiz_Reward();
             clearMenu.SetActive(true);
+            Quiz_Reward();
+            plusMenu.SetActive(false);
         }
         else
         {
             AnimalsQuiz_Print();
+            plusMenu.SetActive(false);
         }
     }
 
@@ -140,9 +141,7 @@ public class QuizManager : MonoBehaviour
             rewardImage[i].SetActive(true);
         }
         rewardText.text = $"다시 도전 시 보상획득";
-        Debug.Log(SQLManager.instance.info.User_Id);
-        Nonplayer_data userQuizData = SQLManager.instance.Collection(SQLManager.instance.info.User_Id, $"{StudyManager.instance.animal_data.table_name}"); // 문제 푼 것 확인
-        Debug.Log(userQuizData.is_solved);
+        Nonplayer_data userQuizData = SQLManager.instance.Collection(SQLManager.instance.info.User_Id, $"{TalkManager.instance.npcInfoSet.npcInfo.animal_id}"); // 문제 푼 것 확인
         if (userQuizData.is_solved.Equals('T'))
         {
             rewardText.text = "이미 보상을 받았어요";
