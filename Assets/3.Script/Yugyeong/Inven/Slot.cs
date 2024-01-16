@@ -9,10 +9,6 @@ public class Slot : MonoBehaviour
     [SerializeField] Text none_text;
     [SerializeField] Text text;
 
-    private void Start()
-    {
-        slot_image = GetComponent<Image>();
-    }
     public void Slot_update(int num)
     {
         //Debug.Log("Slot_update");
