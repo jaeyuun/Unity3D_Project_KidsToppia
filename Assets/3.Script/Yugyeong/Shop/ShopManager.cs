@@ -120,7 +120,6 @@ public class ShopManager : MonoBehaviour
             Debug.Log($"{goods.price} <= {money}라서 구매 성공");
             SQLManager.instance.Updateshop(goods.shop, goods.index, 'T');
             var shop = SQLManager.instance.Shop();
-            Debug.Log(shop.acc1);
             buy_text.text = $"구매에 성공했습니다.\n 현재골드 : {money}";
             cur_slot.UI_update();
         }
