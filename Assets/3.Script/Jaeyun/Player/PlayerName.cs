@@ -115,6 +115,7 @@ public class PlayerName : NetworkBehaviour
         }
         else
         {
+            nameText.gameObject.SetActive(true);
             nameText.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f, 0));
         }
     }

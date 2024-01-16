@@ -109,7 +109,6 @@ public class TalkManager : MonoBehaviour
         // npc info setting
         npcInfoSet = goppiInfo;
         goppiCamera.npc = goppiTrans;
-        goppiMovescript.can_move = false;
         DialogText_Print();
     }
 
@@ -121,7 +120,6 @@ public class TalkManager : MonoBehaviour
         }
         talk_pannel.SetActive(false);
         staticMenu.SetActive(true);
-        goppiMovescript.can_move = true;
 
         // camera switch, player setting
         npcCamera.SetActive(false);
