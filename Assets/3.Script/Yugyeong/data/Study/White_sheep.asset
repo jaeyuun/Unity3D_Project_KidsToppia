@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animal_name: "\uC591(\uD770\uC0C9)"
   table_name: white_sheep
-  sprite: {fileID: 21300000, guid: 5356497cd4de78b42a33c2377dda5bca, type: 3}
+  sprite: {fileID: 21300000, guid: 16ba873337c3d4b46be860ed2c0cc6cd, type: 3}
   info: "\uC591\uC740 \uC6B0\uC81C\uBAA9 \uC18C\uACFC\uC5D0 \uC18D\uD558\uB294 \uAC00\uCD95\uD654\uB41C
     \uD3EC\uC720\uB958\uC774\uB2E4.<br> \uC591\uC18D\uC5D0\uB294 \uC544\uB974\uAC08\uB9AC\uC640
     \uAC19\uC740 \uC57C\uC0DD\uC885\uB3C4 \uC788\uC73C\uB098 \uC77C\uBC18\uC801\uC73C\uB85C

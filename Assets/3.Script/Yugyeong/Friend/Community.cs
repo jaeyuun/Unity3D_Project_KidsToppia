@@ -9,6 +9,7 @@ public class Community : NetworkBehaviour
     [SerializeField] private PlayerName target_name;
     [SerializeField] private TMP_Text notice_text;
 
+
     private void Start()
     {
         pannel.SetActive(false);
@@ -26,17 +27,28 @@ public class Community : NetworkBehaviour
         }
         pannel.SetActive(true);
     }
+
     public void Friend_Yes()
+
     {
-        string[] tmp = SQLManager.instance.Friend().friends;
+        User_info my_info = SQLManager.instance.info;
+        //Debug.Log($"내 닉네임 :{my_info.User_NickName} / 친구 닉네임 {target_player.info.User_NickName}");
+        Add_friend(my_info, target_player.info);
+        Add_friend(target_player.info, my_info);
+    }
+
+    public void Add_friend(User_info my_info, User_info friend_info)
+    {
+        string[] tmp = SQLManager.instance.Friend(my_info.User_Id).friends;
+        //중복체크
         for (int i = 0; i < tmp.Length; i++)
         {
-            if (tmp[i] == target_player.info.User_NickName)
+            if (tmp[i] == friend_info.User_NickName)
             {
                 return;
             }
         }
-        SQLManager.instance.UpdateFriend(target_player.info.User_NickName);
+        SQLManager.instance.UpdateFriend(my_info, friend_info.User_NickName);
     }
 }
 

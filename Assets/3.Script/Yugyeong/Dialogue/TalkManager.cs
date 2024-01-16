@@ -240,7 +240,15 @@ public class TalkManager : MonoBehaviour
             else if (hit.collider.CompareTag("Animal"))
             {
                 StudyManager.instance.animal_data = hit.collider.gameObject.GetComponent<Nonplayer_YG>().data;
-                StudyManager.instance.Interactive_Nonplayer();
+
+                if (SQLManager.instance.Collection(SQLManager.instance.info.User_Id, StudyManager.instance.animal_data.table_name).is_open == 'T')
+                {
+                    StudyManager.instance.Interactive_Nonplayer();
+                }
+                else
+                {
+                    Debug.Log("도감이 열리지않아 상세정보 출력X");
+                }
             }
         }
     }
@@ -259,6 +267,7 @@ public class TalkManager : MonoBehaviour
             Close_dialog();
             // 나중에 상점으로 꼬옥 추가해주면돼,,, todo
             // Shop UI Active 해주기
+
         }
     }
     #endregion

@@ -34,7 +34,6 @@ public class collection : MonoBehaviour
 
     public void Set_image()
     {
-        Debug.Log("Set_image()");
         if (study.data.is_open == 'T')
         {
             non_text.enabled = false;
@@ -45,7 +44,6 @@ public class collection : MonoBehaviour
 
         else
         {
-            Debug.Log(study.data.is_open == 'F');
             non_text.enabled = true;
             image.sprite = non_sprite;
             star_num.text = "?";

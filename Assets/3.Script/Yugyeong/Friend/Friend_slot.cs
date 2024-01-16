@@ -15,10 +15,12 @@ public class Friend_slot : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private Sprite[] sprites; //O,X
     [SerializeField] private Button chase_btn;
+    [SerializeField] private GameObject friend_obj;
+    [SerializeField] private GameObject my_obj;
 
     private void OnEnable()
     {
-        data = SQLManager.instance.Friend();
+        data = SQLManager.instance.Friend(SQLManager.instance.info.User_Id);
         friend_x = transform.GetChild(0).gameObject;
         friend_o = transform.GetChild(1).gameObject;
         Setting();
@@ -26,7 +28,7 @@ public class Friend_slot : MonoBehaviour
 
     private void Setting()
     {
-        data = SQLManager.instance.Friend();
+        data = SQLManager.instance.Friend(SQLManager.instance.info.User_Id);
 
         if (data.friends[index] == string.Empty)
         {
@@ -41,6 +43,7 @@ public class Friend_slot : MonoBehaviour
             O_setting();
         }
     }
+
     private void O_setting()
     {
         name.text = data.friends[index];
@@ -66,15 +69,29 @@ public class Friend_slot : MonoBehaviour
         Setting();
     }
 
-    public void Chase()
+    public void Chase(int index) //0116 merge후 각 따라가기 버튼에 달고 인덱스 0,1,2 
     {
-        if (chase_btn.interactable)
+        //친구 플레이어, 본인 플레이어 찾기
+        var players = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < players.Length; i++)
         {
-            //친구 위치로 이동
+            if (players[i].GetComponent<PlayerCreate>().info.User_NickName == SQLManager.instance.info.User_NickName)
+            {
+                my_obj = players[i];
+                //Debug.Log($"내 닉네임 : {players[i].GetComponent<PlayerCreate>().info.User_NickName}");
+            }
+
+            //친구 닉네임 = 내 데이터에 저장된 닉네임
+            if (players[i].GetComponent<PlayerCreate>().info.User_NickName == SQLManager.instance.Friend(SQLManager.instance.info.User_Id).friends[index])
+            {
+                friend_obj = players[i];
+                //Debug.Log($"친구 닉네임 : {players[i].GetComponent<PlayerCreate>().info.User_NickName}");
+            }
         }
-        else
-        {
-            return;
-        }
+
+        //위치 이동
+        my_obj.transform.position = friend_obj.transform.position + Vector3.up;
+
     }
 }

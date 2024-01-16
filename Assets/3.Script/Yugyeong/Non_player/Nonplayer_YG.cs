@@ -103,8 +103,6 @@ public class Nonplayer_YG : NetworkBehaviour
             Quaternion rot = Quaternion.LookRotation(direction);
             trans.rotation = Quaternion.Lerp(trans.rotation, rot, Time.deltaTime / return_rotspeed);
         }
-
-
     }
 
     private void Try_raycast()

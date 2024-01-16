@@ -10,7 +10,7 @@ public class Friend : MonoBehaviour
     //친구 정보 불러오기
     private void OnEnable()
     {
-        data = SQLManager.instance.Friend();
+        data = SQLManager.instance.Friend(SQLManager.instance.info.User_Id);
     }
     //따라가기
     //온라인 오프라인 출력하기

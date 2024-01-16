@@ -44,7 +44,7 @@ public partial class NPC_chaseplayer : NPC_YG //플레이어 따라다니는 NPC
                     transform.rotation = Quaternion.LookRotation(tmprot);
                     if (can_move)
                     {
-                        transform.position = Vector3.MoveTowards(transform.position, goal.position, Time.deltaTime * move_speed);
+                        rigid_.MovePosition(Vector3.Lerp(rigid_.position, goal.position, Time.deltaTime * move_speed));
                     }
                 }
                 else
