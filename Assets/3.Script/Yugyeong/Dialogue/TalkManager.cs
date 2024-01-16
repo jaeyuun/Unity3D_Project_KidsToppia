@@ -240,7 +240,15 @@ public class TalkManager : MonoBehaviour
             else if (hit.collider.CompareTag("Animal"))
             {
                 StudyManager.instance.animal_data = hit.collider.gameObject.GetComponent<Nonplayer_YG>().data;
-                StudyManager.instance.Interactive_Nonplayer();
+
+                if (SQLManager.instance.Collection(SQLManager.instance.info.User_Id, StudyManager.instance.animal_data.table_name).is_open == 'T')
+                {
+                    StudyManager.instance.Interactive_Nonplayer();
+                }
+                else
+                {
+                    Debug.Log("도감이 열리지않아 상세정보 출력X");
+                }
             }
         }
     }

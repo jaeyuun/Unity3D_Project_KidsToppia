@@ -85,7 +85,7 @@ public class StudyManager : MonoBehaviour
         animal_name.text = animal_data.animal_name;
         animal_info.text = animal_data.info;
         animal_image.sprite = animal_data.sprite;
-        //StartCoroutine(Play_tts());
+        StartCoroutine(Play_tts(animal_data.info));
     }
 
     public void Eat_btn()
