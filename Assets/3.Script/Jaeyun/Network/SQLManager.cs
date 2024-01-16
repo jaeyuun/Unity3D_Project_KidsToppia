@@ -208,6 +208,34 @@ public class SQLManager : MonoBehaviour
     }
     #endregion
     #region Player Info Alter (UPDATE)
+    public void UpdateUserInfo_Server()
+    {
+        try
+        {
+            if (!ConnectionCheck(connection))
+            {
+                return;
+            }
+            string selectCommand = string.Format(@"UPDATE user_info SET connecting = 'F';");
+            MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+            reader = cmd.ExecuteReader();
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            if (!reader.IsClosed)
+            {
+                reader.Close();
+                return;
+            }
+        }
+    }
+
     public void UpdateUserInfo(string column, char content, string userId)
     {
         try
