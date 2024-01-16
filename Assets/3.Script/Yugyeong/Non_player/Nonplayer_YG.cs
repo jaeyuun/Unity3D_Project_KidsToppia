@@ -26,17 +26,23 @@ public class Nonplayer_YG : NetworkBehaviour
     [SerializeField] private Transform trans;
     [SerializeField] private Animator ani;
 
-    [SerializeField] private float horizontal;
-    [SerializeField] private float vertical;
     [SerializeField] private float angle;
 
     [SerializeField] private float max_range = 1f;
     [SerializeField] private float min_range = 0f;
-    [SerializeField] private float move_speed = 1f;
-    [SerializeField] private float max_distance = 2f;
+
+    [SerializeField] private float move_speed = 0.5f;
+    [SerializeField] private float max_distance = 7f;
+
+    [SerializeField] private float return_transpeed = 5f; //커질수록 늦게
+    [SerializeField] private float return_rotspeed = 5f; //커질수록 늦게
+
     [SerializeField] private LayerMask layer;
     [SerializeField] private Vector3 goal;
-    [SerializeField] private bool is_stop;
+
+    [SerializeField] private bool is_turn;
+    [SerializeField] private bool is_whale;
+
     [SerializeField] public Study_YG data;
 
     private void Awake()
@@ -51,152 +57,69 @@ public class Nonplayer_YG : NetworkBehaviour
     {
         goal = trans.parent.GetChild(0).transform.position;
         Debug.Log(trans.parent.GetChild(0).name);
-        StartCoroutine(Input_change());
-        is_stop = true;
+        StartCoroutine(Change());
+        ani.SetBool("is_walk", true);
     }
 
     private void FixedUpdate()
     {
-        Test();
+        Move();
         Try_raycast();
     }
 
-    IEnumerator Input_change()
+    IEnumerator Change()
     {
-        float tmp = Random.Range(1, 6);
+        float tmp = Random.Range(1, 3);
         while (true)
         {
-            horizontal = Random.Range(0.5f, 1f);
-            vertical = Random.Range(0.5f, 1f);
             angle = Random.Range(0f, 270f);
-
+            if (Vector3.Distance(trans.position, goal) <= max_distance)
+            {
+                Debug.Log("true");
+                is_turn = true;
+            }
+            else
+            {
+                Debug.Log("false");
+                is_turn = false;
+            }
             yield return new WaitForSeconds(tmp);
-
-            horizontal = 0f;
-            vertical = 0f;
-
-            yield return new WaitForSeconds(1f);
         }
     }
 
-    private void Test()
+    private void Move()
     {
-        if (Vector3.Distance(trans.position, goal) <= max_distance)
+
+        if (is_turn)
         {
-            Debug.Log("목표지점과 가까움");
-            rigid.velocity = new Vector3(horizontal * move_speed, rigid.velocity.y, vertical * move_speed);
+            Debug.Log("맘대로돌아다니는상태");
+            trans.Translate(Vector3.forward * move_speed);
 
-            if (horizontal != 0 || vertical != 0)
-            {
-                ani.SetBool("is_walk", true);
-                trans.rotation = Quaternion.Euler(trans.rotation.x, trans.rotation.y + angle, trans.rotation.z);
-                //trans.rotation = Quaternion.LookRotation(new Vector3(rigid.velocity.x, rigid.velocity.y, rigid.velocity.z));
-            }
-
-            else
-            {
-                ani.SetBool("is_walk", false);
-            }
+            Quaternion tmp = Quaternion.Euler(trans.rotation.x, trans.rotation.y + angle - 180, trans.rotation.z);
+            rigid.MoveRotation(Quaternion.Lerp(rigid.rotation, tmp, Time.deltaTime / return_transpeed));
         }
+
         else
         {
             Debug.Log("떨어져서 다시 오는중");
-            rigid.MovePosition(Vector3.Lerp(rigid.position, goal, Time.deltaTime / 2));
+            rigid.MovePosition(Vector3.Lerp(rigid.position, goal, Time.deltaTime / return_transpeed));
+
+            Vector3 direction = (goal - trans.position).normalized;
+            Quaternion rot = Quaternion.LookRotation(direction);
+            trans.rotation = Quaternion.Lerp(trans.rotation, rot, Time.deltaTime / return_rotspeed);
         }
 
+
     }
-
-
 
     private void Try_raycast()
     {
         RaycastHit hit;
         Debug.DrawRay(transform.position + new Vector3(0, 0.2f, 0), transform.forward + new Vector3(0, 0.2f, 0) * 0.5f, Color.red);
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.2f, 0), transform.forward, out hit, 0.5f,layer))
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.2f, 0), transform.forward, out hit, 0.8f, layer))
         {
-            if (is_stop)
-            {
-                is_stop = false;
-
-                horizontal = 0;
-                vertical = 0;
-
-                //랜덤 애니메이션 출력
-
-                Invoke("Reset_Input", 1f);
-                float tmp = Random.Range(45,180);
-                trans.rotation = Quaternion.Euler(trans.rotation.x, trans.rotation.y + tmp, trans.rotation.z);
-
-            }
-        }
-    }
-
-    private void Reset_Input()
-    {
-        is_stop = true;
-        Debug.Log("Reset_Input");
-        horizontal = Random.Range(-1f, 1f);
-        vertical = Random.Range(-1f, 1f);
-    }
-
-    IEnumerator Find_posttion()
-    {
-        float goal_x = Random.Range(min_range, max_range);
-        float goal_z = Random.Range(min_range, max_range);
-        float tmp = Random.Range(0, 2);
-
-        if (tmp == 0)
-        {
-            goal = new Vector3(transform.position.x + goal_x, transform.position.y, transform.position.z + goal_z);
-        }
-
-        else
-        {
-            goal = new Vector3(transform.position.x - goal_x, transform.position.y, transform.position.z - goal_z);
-        }
-
-        yield return null;
-    }
-
-    IEnumerator Set_position()
-    {
-        while (true)
-        {
-            //Debug.Log(Vector3.Distance(trans.position, goal));
-            if (Vector3.Distance(trans.position, goal) >= 0.5f)
-            {
-                ani.SetBool("is_walk", true);
-                Vector3 tmprot = goal - transform.position;
-                tmprot.y = 0;
-                tmprot.Normalize();
-                horizontal =0;
-                transform.rotation = Quaternion.LookRotation(tmprot);
-                transform.position = Vector3.MoveTowards(transform.position, goal, Time.deltaTime);
-            }
-
-            else
-            {
-
-                //Play_ani();
-                yield return new WaitForSeconds(3f);
-                StartCoroutine(Find_posttion());
-                break;
-            }
-            yield return null;
-        }
-        StartCoroutine(Set_position());
-    }
-
-    private void Play_ani()
-    {
-        int ran = Random.Range(1, 2);
-        if (ran == 1)
-        {
-            ani.SetTrigger("State1");
-        }
-        else
-        {
-            return;
+            Debug.Log("Try_raycast()");
+            is_turn = false;
         }
     }
 }
