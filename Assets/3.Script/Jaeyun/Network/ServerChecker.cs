@@ -183,6 +183,7 @@ public class ServerChecker : MonoBehaviour
         }
         if (NetworkServer.active)
         {
+            SQLManager.instance.UpdateUserInfo_Server();
             manager.StopServer();
         }
     }

@@ -258,14 +258,20 @@ public class TalkManager : MonoBehaviour
                 npc = hit.collider.gameObject.transform;
                 npcInfoSet = hit.collider.gameObject.GetComponent<NPCInfoSetting>();
                 QuizManager.instance.npcInfoSet = npcInfoSet; // npc info Quiz manager에게 전달
-                DialogText_Print();
+                if (Vector3.Distance(playerModel.transform.position, hit.collider.transform.position) < 5f)
+                {
+                    DialogText_Print();
+                }
             }
             else if (hit.collider.CompareTag("Animal"))
             {
                 StudyManager.instance.animal_data = hit.collider.gameObject.GetComponent<Nonplayer_YG>().data;
                 if (SQLManager.instance.Collection(SQLManager.instance.info.User_Id, StudyManager.instance.animal_data.table_name).is_open == 'T')
                 {
-                    StudyManager.instance.Interactive_Nonplayer();
+                    if (Vector3.Distance(playerModel.transform.position, hit.collider.transform.position) < 5f)
+                    {
+                        StudyManager.instance.Interactive_Nonplayer();
+                    }
                 }
                 else
                 {
