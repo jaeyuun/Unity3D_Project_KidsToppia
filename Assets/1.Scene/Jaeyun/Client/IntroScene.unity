@@ -3417,12 +3417,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgm:
   - name: Main
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 43eca1f462fd2de43bcd7caeac33951c, type: 3}
   sfx:
   - name: Jump
-    clip: {fileID: 0}
-  - name: Click
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 565cf2cb9db2a8e4daad6cade0068a68, type: 3}
+  - name: Yeah
+    clip: {fileID: 8300000, guid: 565cf2cb9db2a8e4daad6cade0068a68, type: 3}
   bgmSource: {fileID: 773308667}
   sfxSource: {fileID: 725768436}
 --- !u!1 &884767118

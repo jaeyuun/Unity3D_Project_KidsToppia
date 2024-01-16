@@ -8,7 +8,7 @@ public class Enable_btn : MonoBehaviour
     [SerializeField] ShopInfo shop;
     [SerializeField] int index;
     [SerializeField] Button btn;
-    [SerializeField] Shop_data data;
+    Shop_data data;
     // Start is called before the first frame update
 
     private void OnEnable()
@@ -16,10 +16,7 @@ public class Enable_btn : MonoBehaviour
         btn = GetComponent<Button>();
         data = SQLManager.instance.Shop();
 
-        if (data == null)
-        {
-            return;
-        }
+        if (data == null) return;
 
         switch (shop)
         {

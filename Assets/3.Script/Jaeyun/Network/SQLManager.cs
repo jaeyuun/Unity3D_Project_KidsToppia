@@ -955,7 +955,8 @@ public class SQLManager : MonoBehaviour
     {
         try
         {
-            if (ConnectionCheck(connection) && info != null)
+            if (info == null) return null;
+            if (ConnectionCheck(connection))
             {
                 string selectCommand = string.Format(@"SELECT * FROM user_info A JOIN shop B ON A.id = B.player_id WHERE A.id = '{0}';", info.User_Id); // @: 줄바꿈이 있어도 한줄로 인식한다는 의미
                 MySqlCommand cmd = new MySqlCommand(selectCommand, connection);

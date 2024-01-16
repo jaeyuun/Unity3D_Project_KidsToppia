@@ -7,6 +7,11 @@ public class SettingController : MonoBehaviour
 { // Cavase Audio Setting에 넣어주기
     public Slider bgmSlider, sfxSlider;
 
+    private void Awake()
+    {
+        // json file settign load
+    }
+
     public void MuteBGM()
     {
         AudioManager.instance.MuteBGM();

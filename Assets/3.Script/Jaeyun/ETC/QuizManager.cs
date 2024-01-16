@@ -86,8 +86,9 @@ public class QuizManager : MonoBehaviour
         if (quizIndex == 3)
         {
             mainMenu.SetActive(false);
-            clearMenu.SetActive(true);
+            plusMenu.SetActive(false);
             Quiz_Reward();
+            clearMenu.SetActive(true);
         }
         else
         {
@@ -108,8 +109,10 @@ public class QuizManager : MonoBehaviour
             rewardImage[i].SetActive(false);
         }
 
-        mainMenu.SetActive(true);
+        // setting
+        plusMenu.SetActive(false);
         clearMenu.SetActive(false);
+        quizCanvas.SetActive(false);
     }
 
     public void Quiz_Result_Button(string answer)
@@ -137,7 +140,9 @@ public class QuizManager : MonoBehaviour
             rewardImage[i].SetActive(true);
         }
         rewardText.text = $"다시 도전 시 보상획득";
-        Nonplayer_data userQuizData = SQLManager.instance.Collection(SQLManager.instance.info.User_Id, "issolved"); // 문제 푼 것 확인
+        Debug.Log(SQLManager.instance.info.User_Id);
+        Nonplayer_data userQuizData = SQLManager.instance.Collection(SQLManager.instance.info.User_Id, $"{StudyManager.instance.animal_data.table_name}"); // 문제 푼 것 확인
+        Debug.Log(userQuizData.is_solved);
         if (userQuizData.is_solved.Equals('T'))
         {
             rewardText.text = "이미 보상을 받았어요";
@@ -147,8 +152,8 @@ public class QuizManager : MonoBehaviour
             if (rightCount.Equals(3))
             {
                 SQLManager.instance.Updatecollection(animalData[dataIndex]["Animal_Id"].ToString(), "issolved", 'T'); // 문제를 전부 맞췄을 경우 T로 바꾸어줌
-                rewardText.text = $"+300개 보상";
-                SQLManager.instance.Updateitem("money", 300);
+                rewardText.text = $"+100개 보상";
+                SQLManager.instance.Updateitem("money", 100);
                 SQLManager.instance.Updateitem("food_num", 2);
             }
             else
