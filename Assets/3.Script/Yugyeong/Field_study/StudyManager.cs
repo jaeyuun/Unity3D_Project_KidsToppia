@@ -90,24 +90,25 @@ public class StudyManager : MonoBehaviour
 
     public void Eat_btn()
     {
-        if (food_num <= 0)
+        if (SQLManager.instance.Item().food_num <= 0)
         {
-            eatstate_text.text = "���� ���̰� �����.";
+            eatstate_text.text = "가진 먹이가 없어요.";
             eatstate.SetActive(true);
         }
 
         else if (animal_data.data.give_food == 'F')
         {
-            //���� �����ֱ�
+            //먹이 주기
             animal_data.set_data("is_open", 'T');
             animal_data.set_data("givefood", 'T');
-            eatstate_text.text = "�������� ���̸� �־����.";
+            eatstate_text.text = "동물에게 먹이를 주었어요.";
             eatstate.SetActive(true);
             Event_colupdate();
         }
+
         else
         {
-            eatstate_text.text = "�̹� ���̸� �־����.";
+            eatstate_text.text = "이미 먹이를 주었어요.";
             eatstate.SetActive(true);
         }
         Invoke("Turn_eatstate", 3f);
