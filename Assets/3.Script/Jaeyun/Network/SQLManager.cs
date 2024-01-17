@@ -1085,7 +1085,7 @@ public class SQLManager : MonoBehaviour
             2. Reader 상태가 읽고 있는 상황인지 확인(1quary 1reader)
             3. Data를 다 읽었으면 Reader의 상태를 확인 후 Close
          */
-        /*try*/
+        try
         {
             if (!ConnectionCheck(connection))
             {
@@ -1276,7 +1276,7 @@ public class SQLManager : MonoBehaviour
             }
             return false;
         }
-       /* catch (Exception e)
+        catch (Exception e)
         {
             Debug.Log(e.Message);
             if (!reader.IsClosed)
@@ -1284,7 +1284,7 @@ public class SQLManager : MonoBehaviour
                 reader.Close();
             }
             return false;
-        }*/
+        }
     }
 
     public bool SignUp(string user_id, string user_pw, string user_nick)
@@ -1402,14 +1402,13 @@ public class SQLManager : MonoBehaviour
                                                    WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw);
             MySqlCommand cmd = new MySqlCommand(sqlCommand, connection);
             reader = cmd.ExecuteReader();
-            Debug.Log(reader.HasRows);
-
-            if (reader.HasRows) // reader 읽은 데이터 1개 이상 존재하는지?
-            { // 회원탈퇴 실패
+            if (reader.HasRows)
+            { // 회원이 있다면
                 if (!reader.IsClosed)
                 {
                     reader.Close();
                 }
+                // 삭제
                 string insertCommand = string.Format(@"DELETE FROM user_info WHERE id = '{0}';
                                                        DELETE FROM user_character_info WHERE user_id = '{0}';
                                                        DELETE FROM item WHERE player_id = '{0}';
@@ -1423,9 +1422,20 @@ public class SQLManager : MonoBehaviour
                 {
                     reader.Close();
                 }
+                // userInfo json delete
+                string userInfoPath = string.Empty;
+                if (Application.platform == RuntimePlatform.Android)
+                {
+                    userInfoPath = Application.persistentDataPath + "/Database";
+                }
+                else
+                { // window
+                    userInfoPath = Application.dataPath + "/Database";
+                }
+                File.Delete(userInfoPath + "/UserInfo.json");
+
                 return true;
             }
-
             else
             {
                 if (!reader.IsClosed)

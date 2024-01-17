@@ -126,6 +126,7 @@ public class PlayerControll : NetworkBehaviour
         if (!isLocalPlayer) return;
         if (isGround)
         {
+            AudioManager.instance.PlaySFX("Jump");
             playerRigid.AddForce(new Vector3(0f, 2f, 0f) * jumpForce, ForceMode.Impulse);
         }
     }
@@ -135,6 +136,7 @@ public class PlayerControll : NetworkBehaviour
         if (!isLocalPlayer) return;
         if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
+            AudioManager.instance.PlaySFX("Jump");
             playerRigid.AddForce(new Vector3(0f, 2f, 0f) * jumpForce, ForceMode.Impulse);
         }
     }
