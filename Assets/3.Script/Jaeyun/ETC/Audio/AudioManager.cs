@@ -15,8 +15,8 @@ public class AudioManager : MonoBehaviour
     public UserSettingData userSetting;
     public string settingPath = string.Empty;
 
-    public int bgmValue = 100;
-    public int sfxValue = 100;
+    public float bgmValue = 1;
+    public float sfxValue = 1;
     public int qualitySet = 0;
 
     private void Awake()
@@ -124,11 +124,11 @@ public class AudioManager : MonoBehaviour
 
         string jsonString = File.ReadAllText(settingPath + "/UserSetting.json"); // json file을 string으로 받아옴
         JsonData jsonData = JsonMapper.ToObject(jsonString); // string 형태를 json 형태로 바꿔줌
+
         float bVal = float.Parse(jsonData[0]["bgmValue"].ToString(), CultureInfo.InvariantCulture);
         float sVal = float.Parse(jsonData[0]["sfxValue"].ToString(), CultureInfo.InvariantCulture);
-        
-        bgmValue = (int)bVal;
-        sfxValue = (int)sVal;
+        bgmValue = bVal;
+        sfxValue = sVal;
         qualitySet = int.Parse(jsonData[0]["qualitySet"].ToString(), CultureInfo.InvariantCulture);
 
         // intro setting
@@ -140,12 +140,12 @@ public class AudioManager : MonoBehaviour
     private void DefaultData(string path)
     {
         List<UserSettingData> items = new List<UserSettingData>();
-        items.Add(new UserSettingData(100, 100, 0)); // bgm, sfx, qaulity
+        items.Add(new UserSettingData("1", "1", 0)); // bgm, sfx, qaulity
         JsonData data = JsonMapper.ToJson(items);
         File.WriteAllText(path + "/UserSetting.json", data.ToString());
     }
 
-    public void UpdateData(int bgm, int sfx, int quality)
+    public void UpdateData(string bgm, string sfx, int quality)
     {
         List<UserSettingData> items = new List<UserSettingData>();
         items.Add(new UserSettingData(bgm, sfx, quality)); // bgm, sfx, qaulity

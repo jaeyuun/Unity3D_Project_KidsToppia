@@ -1255,7 +1255,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 8
+  m_Text: X
 --- !u!222 &648946016
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1521,7 +1521,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 796116616}
   m_OnClick:
     m_PersistentCalls:
@@ -9046,7 +9046,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 8
+  m_Text: X
 --- !u!224 &4435011789236161353
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9438,7 +9438,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 8
+  m_Text: X
 --- !u!224 &4435011789344987473
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9868,7 +9868,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4435011789387911607}
   m_OnClick:
     m_PersistentCalls:
@@ -10696,7 +10696,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 8
+  m_Text: X
 --- !u!224 &4435011789565898125
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12347,7 +12347,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 8
+  m_Text: X
 --- !u!224 &4435011789934865398
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14620,7 +14620,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4435011790222159853}
   m_OnClick:
     m_PersistentCalls:
@@ -14899,7 +14899,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 7
+  m_Text: X
 --- !u!224 &4435011790244026430
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17599,7 +17599,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4435011790525716015}
   m_OnClick:
     m_PersistentCalls:
@@ -20962,7 +20962,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4435011791012811203}
   m_OnClick:
     m_PersistentCalls:
@@ -22826,7 +22826,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4435011791332418820}
   m_OnClick:
     m_PersistentCalls:

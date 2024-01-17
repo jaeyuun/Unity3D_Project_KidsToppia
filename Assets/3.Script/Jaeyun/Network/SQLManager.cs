@@ -1384,7 +1384,7 @@ public class SQLManager : MonoBehaviour
         }
     }
 
-    public bool SignOut(string user_id, string user_pw)
+    public bool SignOut(string user_id)
     { // È¸¿øÅ»Åð
         try
         {
@@ -1399,7 +1399,7 @@ public class SQLManager : MonoBehaviour
                                                    JOIN challenge E ON A.id = E.player_id
                                                    JOIN shop F ON A.id = F.player_id
                                                    JOIN friend G ON A.id = G.player_id
-                                                   WHERE A.id = '{0}' AND A.pw = '{1}';", user_id, user_pw);
+                                                   WHERE A.id = '{0}';", user_id);
             MySqlCommand cmd = new MySqlCommand(sqlCommand, connection);
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
