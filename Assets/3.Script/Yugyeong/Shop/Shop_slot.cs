@@ -21,7 +21,6 @@ public class Shop_slot : MonoBehaviour
 
     public void UI_update()
     {
-
         if (goods.is_purchase == 'T')
         {
             purchase_text.text = "구매 완료";

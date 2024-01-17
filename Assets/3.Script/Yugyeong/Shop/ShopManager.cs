@@ -61,16 +61,16 @@ public class ShopManager : MonoBehaviour
         switch (shopname)
         {
             case ShopInfo.Hair:
-                name_text.text = "��";
+                name_text.text = "헤어샵";
                 break;
             case ShopInfo.Riding:
-                name_text.text = "���̵�����";
+                name_text.text = "라이딩 가게";
                 break;
             case ShopInfo.Clothes:
-                name_text.text = "�ʰ���";
+                name_text.text = "옷가게";
                 break;
             case ShopInfo.Acc:
-                name_text.text = "�Ǽ����� ����";
+                name_text.text = "악세사리 가게";
                 break;
             default:
                 name_text.text = "???";
@@ -162,11 +162,12 @@ public class ShopManager : MonoBehaviour
     }
     #endregion
 
-    #region �ξ۰���
-    public void Complete_purchase()
+    #region 인앱결제
+    public void Complete_purchase(int add)
     {
         Debug.Log("Complete_purchase");
-        text_setting(inapp_text, "������ �����߽��ϴ�.\n���� ��� : {000}");
+        SQLManager.instance.Updateitem("money", money + add);
+        text_setting(inapp_text, $"골드가 충전되었습니다.\n 현재 골드 : {SQLManager.instance.Item().money}");
         inapp_textobj.SetActive(true);
         Invoke("Can_Yes", 3f);
     }
@@ -174,7 +175,7 @@ public class ShopManager : MonoBehaviour
     public void Failed_purchase()
     {
         Debug.Log("Failed_purchase");
-        text_setting(inapp_text, "������ ��ҵǾ����ϴ�.");
+        text_setting(inapp_text, "충전에 실패했습니다.");
         inapp_textobj.SetActive(true);
         Invoke("Can_No", 3f);
     }

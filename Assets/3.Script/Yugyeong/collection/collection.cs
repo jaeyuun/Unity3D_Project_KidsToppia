@@ -24,16 +24,6 @@ public class collection : MonoBehaviour
         Set_image();
     }
 
-    /*
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Open_study();
-        }
-    }
-    */
-
     public void Set_image()
     {
         if (study.data.is_open == 'T')
@@ -53,9 +43,10 @@ public class collection : MonoBehaviour
         }
     }
 
-    public void Open_study() //얘 버튼으로 달아놓기
+    public void Open_study()
     {
-        if ( study.data.is_open == 'T')
+
+        if (study.data.is_open == 'T')
         {
             StudyManager.instance.animal_data = study;
             StudyManager.instance.Interactive_Nonplayer();
