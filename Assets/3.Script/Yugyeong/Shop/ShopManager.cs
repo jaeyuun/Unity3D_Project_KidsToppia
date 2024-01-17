@@ -57,31 +57,31 @@ public class ShopManager : MonoBehaviour
 
     public void Set_shop(ShopInfo shopname)
     {
-        //»óÁ¡ ÀÌ¸§ º¯°æ
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         switch (shopname)
         {
             case ShopInfo.Hair:
-                name_text.text = "Çì¾î¼¥";
+                name_text.text = "ï¿½ï¿½î¼¥";
                 break;
             case ShopInfo.Riding:
-                name_text.text = "¶óÀÌµù°¡°Ô";
+                name_text.text = "ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½";
                 break;
             case ShopInfo.Clothes:
-                name_text.text = "¿Ê°¡°Ô";
+                name_text.text = "ï¿½Ê°ï¿½ï¿½ï¿½";
                 break;
             case ShopInfo.Acc:
-                name_text.text = "¾Ç¼¼¼­¸® °¡°Ô";
+                name_text.text = "ï¿½Ç¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
                 break;
             default:
                 name_text.text = "???";
                 break;
         }
 
-        //active »óÅÂ Ã¼Å©
+        //active ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
         shop_pannel.SetActive(true);
         inapp_obj.SetActive(false);
 
-        //shop_obj ÄÑ±â
+        //shop_obj ï¿½Ñ±ï¿½
         for (int i = 0; i < shop_obj.Length; i++)
         {
             if (i == (int)shopname)
@@ -101,7 +101,7 @@ public class ShopManager : MonoBehaviour
         //    shop_Slots[i].UI_update();
         //}
 
-        //°ñµå ¾÷µ¥ÀÌÆ®
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         Update_moneytext();
     }
 
@@ -117,16 +117,17 @@ public class ShopManager : MonoBehaviour
         if (goods.price <= money)
         {
             SQLManager.instance.Updateitem("money", money - goods.price);
-            Debug.Log($"{goods.price} <= {money}¶ó¼­ ±¸¸Å ¼º°ø");
+            Update_moneytext();
+            Debug.Log($"{goods.price} <= {money}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             SQLManager.instance.Updateshop(goods.shop, goods.index, 'T');
             var shop = SQLManager.instance.Shop();
-            buy_text.text = $"±¸¸Å¿¡ ¼º°øÇß½À´Ï´Ù.\n ÇöÀç°ñµå : {money}";
+            buy_text.text = $"ï¿½ï¿½ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.\n ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : {money}";
             cur_slot.UI_update();
         }
 
         else
         {
-            Debug.Log($"{goods.price} < {money}¶ó¼­ ±¸¸Å ½ÇÆÐ");
+            Debug.Log($"{goods.price} < {money}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             CanPurchase();
         }
     }
@@ -140,7 +141,7 @@ public class ShopManager : MonoBehaviour
 
 
     #region btn
-    public void CanPurchase()//ÇöÁúÀ¯µµ
+    public void CanPurchase()//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         inapp_obj.SetActive(true);
         can_inapp.SetActive(true);
@@ -161,11 +162,11 @@ public class ShopManager : MonoBehaviour
     }
     #endregion
 
-    #region ÀÎ¾Û°áÁ¦
+    #region ï¿½Î¾Û°ï¿½ï¿½ï¿½
     public void Complete_purchase()
     {
         Debug.Log("Complete_purchase");
-        text_setting(inapp_text, "ÃæÀü¿¡ ¼º°øÇß½À´Ï´Ù.\nÇöÀç °ñµå : {000}");
+        text_setting(inapp_text, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.\nï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : {000}");
         inapp_textobj.SetActive(true);
         Invoke("Can_Yes", 3f);
     }
@@ -173,7 +174,7 @@ public class ShopManager : MonoBehaviour
     public void Failed_purchase()
     {
         Debug.Log("Failed_purchase");
-        text_setting(inapp_text, "°áÁ¦°¡ Ãë¼ÒµÇ¾ú½À´Ï´Ù.");
+        text_setting(inapp_text, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ÒµÇ¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         inapp_textobj.SetActive(true);
         Invoke("Can_No", 3f);
     }
@@ -186,7 +187,7 @@ public class ShopManager : MonoBehaviour
 
     public void Update_moneytext()
     {
-        money_text.text = $"°ñµå : {money}";
+        money_text.text = $"ê³¨ë“œ : {money}";
     }
     #endregion
 }
