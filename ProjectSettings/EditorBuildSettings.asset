@@ -6,48 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/1.Scene/Jaeyun/Client/IntroScene.unity
+    path: Assets/1.Scene/Client/IntroScene.unity
     guid: 31c4ac2051a851143a41c35a578f4e17
   - enabled: 1
-    path: Assets/1.Scene/Jaeyun/Client/CreateScene.unity
+    path: Assets/1.Scene/Client/CreateScene.unity
     guid: 7c783cc911e64c64283e728652f00a34
   - enabled: 1
     path: Assets/1.Scene/MainGame.unity
     guid: 852f7b591057e0f49b192fe6fc4895a5
   - enabled: 1
-    path: Assets/1.Scene/Jaeyun/Client/OfflineScene.unity
+    path: Assets/1.Scene/Client/OfflineScene.unity
     guid: c80cfd2de69a7a24ab2ea878ebc694ec
   - enabled: 1
-    path: Assets/1.Scene/Yugyeong/New Scene.unity
-    guid: f58bc21e4d1a8cf439b649b88930e2f9
-  - enabled: 1
-    path: Assets/1.Scene/Jaeyun/Server/IntroScene_Server.unity
+    path: Assets/1.Scene/Server/IntroScene_Server.unity
     guid: ad9362b58c19d5446a536fb52c753892
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/Server_YG/Nonplayer_Server.unity
-    guid: c2edbe3b6e858fd4bb14ac186f686cf9
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/Client_YG/NPCScene_YG.unity
-    guid: d37280fc19f1afa49909a05db4f46acf
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/J_test/Client/CreateScene 1.unity
-    guid: f868a67cc3b4dfc42b676b46530da4dd
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/J_test/Client/IntroScene 1.unity
-    guid: 00da89995bb52024d9d7c35b27262c51
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/J_test/Client/MainGame_J 1.unity
-    guid: 989f7c6949acccb4a9466a07e4a1e5b2
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/J_test/Client/OfflineScene 1.unity
-    guid: da7f23d8237957a4fb778d10f569b2ea
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/J_test/Server/IntroScene_Server 1.unity
-    guid: c9b7b9e0d9b993c4b862b41855b5fd1a
-  - enabled: 1
-    path: Assets/1.Scene/Jaeyun/Client/NPCScene_J.unity
-    guid: a5fca7cbb9b5a414eae6b41e0dd2b19d
-  - enabled: 1
-    path: Assets/1.Scene/Yugyeong/CompleteTown 1.unity
-    guid: b7e8204febc55e74f97dad95958a782e
   m_configObjects: {}
