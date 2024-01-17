@@ -19,6 +19,7 @@ public class UserSettingData
 public class SettingController : MonoBehaviour
 { // Cavase Audio Setting에 넣어주기
     public Slider bgmSlider, sfxSlider;
+    public AudioSource ttsSource;
     public int quality;
 
     private void Start()
@@ -32,6 +33,7 @@ public class SettingController : MonoBehaviour
         if (AudioManager.instance == null) return;
         bgmSlider.value = AudioManager.instance.bgmValue;
         sfxSlider.value = AudioManager.instance.sfxValue;
+        ttsSource.volume = sfxSlider.value;
         quality = AudioManager.instance.qualitySet;
 
         // quality setting
@@ -70,6 +72,7 @@ public class SettingController : MonoBehaviour
 
     public void SFXVolume()
     {
+        ttsSource.volume = sfxSlider.value;
         AudioManager.instance.SFXVolume(sfxSlider.value);
         AudioManager.instance.UpdateData((int)bgmSlider.value, (int)sfxSlider.value, quality);
     }
