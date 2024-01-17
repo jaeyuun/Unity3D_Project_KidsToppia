@@ -198,27 +198,4 @@ public class LoginChecker : MonoBehaviour
             signInPanel.SetActive(true);
         }
     }
-
-    public void DeleteAccount()
-    {
-        if (idInput_delete.text.Equals(string.Empty) || pwInput_delete.text.Equals(string.Empty) || nickName_delete.text.Equals(string.Empty))
-        {
-            checkButton.SetActive(true);
-            log.text = "빈칸을 입력해 주세요.";
-            return;
-        }
-
-        if (SQLManager.instance.SignOut(idInput_delete.text, pwInput_delete.text))
-        {
-            // 회원탈퇴 성공
-            deleteaccountPannel.SetActive(false);
-        }
-        else
-        {
-            // 회원탈퇴 실패
-            checkButton.SetActive(true);
-            log.text = "해당하는 아이디가 없습니다.";
-            return;
-        }
-    }
 }

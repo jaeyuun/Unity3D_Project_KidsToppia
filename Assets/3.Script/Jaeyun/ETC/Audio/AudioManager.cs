@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using LitJson;
 using System.IO;
+using System.Globalization;
 
 public class AudioManager : MonoBehaviour
 {
@@ -11,12 +12,11 @@ public class AudioManager : MonoBehaviour
 
     public Sound[] bgm, sfx;
     public AudioSource bgmSource, sfxSource;
-
-    private UserSettingData userSetting;
+    public UserSettingData userSetting;
     public string settingPath = string.Empty;
 
-    public float bgmValue = 1;
-    public float sfxValue = 1;
+    public int bgmValue = 100;
+    public int sfxValue = 100;
     public int qualitySet = 0;
 
     private void Awake()
@@ -31,6 +31,7 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         UserSet();
     }
 
@@ -54,7 +55,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayerSFX(string name)
+    public void PlaySFX(string name)
     {
         Sound sound = Array.Find(sfx, x => x.name == name);
 
@@ -97,11 +98,11 @@ public class AudioManager : MonoBehaviour
                 settingPath = Application.persistentDataPath + "/Database";
             }
             if (!File.Exists(settingPath)) // 해당 경로에 파일이 없다면
-            { // folder 검사
+            {
                 Directory.CreateDirectory(settingPath); // Directory 생성
             }
             if (!File.Exists(settingPath + "/UserSetting.json"))
-            { // file 검사
+            {
                 DefaultData(settingPath);
             }
         }
@@ -112,23 +113,25 @@ public class AudioManager : MonoBehaviour
                 settingPath = Application.dataPath + "/Database";
             }
             if (!File.Exists(settingPath)) // 해당 경로에 파일이 없다면
-            { // folder 검사
+            {
                 Directory.CreateDirectory(settingPath); // Directory 생성
             }
             if (!File.Exists(settingPath + "/UserSetting.json"))
-            { // file 검사
+            {
                 DefaultData(settingPath);
             }
         }
 
         string jsonString = File.ReadAllText(settingPath + "/UserSetting.json"); // json file을 string으로 받아옴
-        JsonData ItemData = JsonMapper.ToObject(jsonString); // string 형태를 json 형태로 바꿔줌
+        JsonData jsonData = JsonMapper.ToObject(jsonString); // string 형태를 json 형태로 바꿔줌
+        float bVal = float.Parse(jsonData[0]["bgmValue"].ToString(), CultureInfo.InvariantCulture);
+        float sVal = float.Parse(jsonData[0]["sfxValue"].ToString(), CultureInfo.InvariantCulture);
+        
+        bgmValue = (int)bVal;
+        sfxValue = (int)sVal;
+        qualitySet = int.Parse(jsonData[0]["qualitySet"].ToString(), CultureInfo.InvariantCulture);
 
-        Debug.Log(float.Parse(ItemData[0]["bgmValue"].ToString()));
-        bgmValue = float.Parse(ItemData[0]["bgmValue"].ToString());
-        sfxValue = float.Parse(ItemData[0]["sfxValue"].ToString());
-        qualitySet = ItemData[0]["qualitySet"].ToString()[0] - '0';
-
+        // intro setting
         BGMVolume(bgmValue);
         SFXVolume(sfxValue);
         QualitySettings.SetQualityLevel(qualitySet);
@@ -137,16 +140,16 @@ public class AudioManager : MonoBehaviour
     private void DefaultData(string path)
     {
         List<UserSettingData> items = new List<UserSettingData>();
-        items.Add(new UserSettingData(1, 1, 0)); // bgm, sfx, qaulity
+        items.Add(new UserSettingData(100, 100, 0)); // bgm, sfx, qaulity
         JsonData data = JsonMapper.ToJson(items);
         File.WriteAllText(path + "/UserSetting.json", data.ToString());
     }
 
-    public void UpdateData(string path, double bgm, double sfx, int quality)
+    public void UpdateData(int bgm, int sfx, int quality)
     {
         List<UserSettingData> items = new List<UserSettingData>();
         items.Add(new UserSettingData(bgm, sfx, quality)); // bgm, sfx, qaulity
         JsonData data = JsonMapper.ToJson(items);
-        File.WriteAllText(path + "/UserSetting.json", data.ToString());
+        File.WriteAllText(settingPath + "/UserSetting.json", data.ToString());
     }
 }
