@@ -7708,7 +7708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   manager: {fileID: 0}
-  myIp: 127.0.0.1
+  myIp: 13.124.181.154
   stringType: 2
 --- !u!114 &1910155977245220815
 MonoBehaviour:
@@ -7729,7 +7729,7 @@ MonoBehaviour:
   sendRate: 60
   autoStartServerBuild: 0
   autoConnectClientBuild: 0
-  offlineScene: Assets/1.Scene/Jaeyun/Client/OfflineScene.unity
+  offlineScene: 
   onlineScene: Assets/1.Scene/MainGame.unity
   transport: {fileID: 1910155977245220812}
   networkAddress: localhost
