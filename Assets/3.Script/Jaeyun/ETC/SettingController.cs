@@ -105,13 +105,6 @@ public class SettingController : MonoBehaviour
     public void SignOut()
     { // È¸¿øÅ»Åð method
         SQLManager.instance.SignOut(SQLManager.instance.info.User_Id);
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-        }
-        else
-        { // widow
-            Application.Quit();
-        }
+        Application.Quit();
     }
 }
