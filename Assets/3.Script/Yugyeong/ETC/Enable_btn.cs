@@ -14,6 +14,7 @@ public class Enable_btn : MonoBehaviour
     private void OnEnable()
     {
         btn = GetComponent<Button>();
+        if (SQLManager.instance == null) return;
         data = SQLManager.instance.Shop();
 
         if (data == null) return;
