@@ -158,7 +158,6 @@ public class SpeechToText : MonoBehaviour
         string jsonText = JsonUtility.ToJson(text);
         ClovaResponse clovaText = new ClovaResponse(); // json to text
         clovaText = JsonMapper.ToObject<ClovaResponse>(text);
-        Debug.Log(clovaText.text);
         TalkManager.instance.PlayerRequestText(clovaText.text);
     }
     #endregion

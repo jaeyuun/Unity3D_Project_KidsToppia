@@ -110,6 +110,7 @@ public class TalkManager : MonoBehaviour
         npcInfoSet = goppiInfo;
         goppiCamera.npc = goppiTrans;
         DialogText_Print();
+        chatGPT.FirstResponse();
     }
 
     public void Close_dialog()

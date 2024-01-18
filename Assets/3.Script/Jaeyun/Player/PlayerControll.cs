@@ -143,7 +143,7 @@ public class PlayerControll : NetworkBehaviour
 
     private void GroundCheck()
     {
-        Vector3 checkPosition = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+        Vector3 checkPosition = new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z);
         Vector3 boxSize = new Vector3(0.5f, 0.2f, 0.5f);
         isGround = Physics.CheckBox(checkPosition, boxSize, Quaternion.identity, groundLayer);
     }
@@ -151,7 +151,7 @@ public class PlayerControll : NetworkBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Vector3 checkPosition = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+        Vector3 checkPosition = new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z);
         Vector3 boxSize = new Vector3(0.5f, 0.2f, 0.5f);
         Gizmos.DrawWireCube(checkPosition, boxSize);
     }
