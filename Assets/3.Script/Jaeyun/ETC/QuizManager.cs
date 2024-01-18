@@ -152,8 +152,8 @@ public class QuizManager : MonoBehaviour
             {
                 SQLManager.instance.Updatecollection(animalData[dataIndex]["Animal_Id"].ToString(), "issolved", 'T'); // 문제를 전부 맞췄을 경우 T로 바꾸어줌
                 rewardText.text = $"+100개 보상";
-                SQLManager.instance.Updateitem("money", 100);
-                SQLManager.instance.Updateitem("food_num", 2);
+                SQLManager.instance.Updateitem("money", SQLManager.instance.Item().money + 100);
+                SQLManager.instance.Updateitem("food_num", SQLManager.instance.Item().food_num + 2);
             }
             else
             {

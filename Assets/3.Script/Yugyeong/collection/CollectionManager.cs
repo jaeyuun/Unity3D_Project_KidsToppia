@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class CollectionManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] Study_YG[] fish_arr;
 
     [SerializeField] GameObject info_pannel;
+    [SerializeField] TMP_Text btn_text;
 
     [SerializeField] bool is_animaldata = true;
     //playerid = SQLManager.instance.info.User_Id;
@@ -21,7 +23,6 @@ public class CollectionManager : MonoBehaviour
     {
         for (int i = 0; i < collection_arr.Length; i++)
         {
-            //����,������ �з�
             if (is_animaldata)
             {
                 collection_arr[i].study = animal_arr[i];
@@ -32,6 +33,15 @@ public class CollectionManager : MonoBehaviour
             }
             collection_arr[i].gameObject.SetActive(true);
             collection_arr[i].Set_image();
+        }
+
+        if (is_animaldata)
+        {
+            btn_text.text = "동물 도감";
+        }
+        else
+        {
+            btn_text.text = "물고기 도감";
         }
     }
 
