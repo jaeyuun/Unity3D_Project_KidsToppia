@@ -7,7 +7,6 @@ using TMPro;
 public class ChatGPT : MonoBehaviour
 {
     string npcPrompt = string.Empty; // npc info
-    private string playerRequest = string.Empty; // player audio
 
     [SerializeField] private TMP_Text dialogText;
     [SerializeField] private TMP_Text nameText;
@@ -24,7 +23,6 @@ public class ChatGPT : MonoBehaviour
 
         // npc info
         npcPrompt = $"{TalkManager.instance.npcInfoSet.npcInfo.prompt}";
-        Debug.Log(npcPrompt);
         chatRequest = new ChatRequest(); // message list ¿˙¿Â
         chatRequest.messages.Add(new ChatMessage() { role = $"{role.system}", content = $"{npcPrompt}" }); // npc prompt
     }
@@ -32,7 +30,7 @@ public class ChatGPT : MonoBehaviour
     public async void NpcResponse(string message)
     { // response
         // npc info
-        chatRequest.messages.Add(new ChatMessage() { role = $"{role.user}", content = $"{playerRequest}" }); // player stt
+        chatRequest.messages.Add(new ChatMessage() { role = $"{role.user}", content = $"{message}" }); // player stt
         List<ChatChoice> data = ((await (api.ClientResponseChat(chatRequest))).choices);
         foreach (ChatChoice choice in data)
         {
@@ -41,7 +39,6 @@ public class ChatGPT : MonoBehaviour
         TalkManager.instance.responseText = npcResponse;
         nameText.text = TalkManager.instance.npcInfoSet.npcInfo.npcName;
         dialogText.text = npcResponse;
-
         chatRequest.messages.Add(new ChatMessage() { role = $"{role.assistant}", content = $"{npcResponse}" }); // npc response
     }
 }
