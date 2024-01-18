@@ -95,13 +95,6 @@ public class ShopManager : MonoBehaviour
             }
         }
 
-        //slot UI update
-        //for (int i = 0; i < shop_Slots.Length; i++)
-        //{
-        //    shop_Slots[i].UI_update();
-        //}
-
-        //��� ������Ʈ
         Update_moneytext();
     }
 
@@ -120,9 +113,10 @@ public class ShopManager : MonoBehaviour
             Update_moneytext();
             Debug.Log($"{goods.price} <= {money}�� ���� ����");
             SQLManager.instance.Updateshop(goods.shop, goods.index, 'T');
-            var shop = SQLManager.instance.Shop();
+            Shop_data shop = SQLManager.instance.Shop();
             buy_text.text = $"���ſ� �����߽��ϴ�.\n ������ : {money}";
             cur_slot.UI_update();
+            Update_moneytext();
         }
 
         else
@@ -168,6 +162,7 @@ public class ShopManager : MonoBehaviour
         Debug.Log("Complete_purchase");
         SQLManager.instance.Updateitem("money", money + add);
         text_setting(inapp_text, $"골드가 충전되었습니다.\n 현재 골드 : {SQLManager.instance.Item().money}");
+        Update_moneytext();
         inapp_textobj.SetActive(true);
         Invoke("Can_Yes", 3f);
     }
@@ -176,6 +171,7 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log("Failed_purchase");
         text_setting(inapp_text, "충전에 실패했습니다.");
+        Update_moneytext();
         inapp_textobj.SetActive(true);
         Invoke("Can_No", 3f);
     }
@@ -183,6 +179,7 @@ public class ShopManager : MonoBehaviour
     public void Buy_Gold(int num)
     {
         SQLManager.instance.Updateitem("money", money + num);
+        Update_moneytext();
         Debug.Log(SQLManager.instance.Item().money);
     }
 

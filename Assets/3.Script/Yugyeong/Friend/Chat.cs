@@ -13,10 +13,10 @@ public class Chat : NetworkBehaviour
     [SerializeField] private Image image;
     [SerializeField] private GameObject xbutton;
     [SerializeField] private GameObject scrollview;
+    [SerializeField] private int count=0;
 
     private static event Action<string> onMessage;
 
-    //client�� server�� connect �Ǿ��� �� �ݹ��Լ�
     public override void OnStartAuthority()
     {
         if(isLocalPlayer)
@@ -65,6 +65,19 @@ public class Chat : NetworkBehaviour
     private void RPCHandleMessage(string nickname, string message)
     {
         onMessage?.Invoke($"[{nickname}] : {message}\n");
+        Check_count();
+    }
+
+    [Client]
+    private void Check_count()
+    {
+        count++;
+        if (count > 8)
+        {
+            chatText.text = string.Empty;
+            count = 0;
+            return;
+        }
     }
 
     public void Set_size()
