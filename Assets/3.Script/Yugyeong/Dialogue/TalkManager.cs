@@ -253,6 +253,7 @@ public class TalkManager : MonoBehaviour
                 QuizManager.instance.npcInfoSet = npcInfoSet; // npc info Quiz manager에게 전달
                 if (Vector3.Distance(playerModel.transform.position, hit.collider.transform.position) < 5f)
                 {
+                    chatGPT.FirstResponse();
                     DialogText_Print();
                 }
             }
