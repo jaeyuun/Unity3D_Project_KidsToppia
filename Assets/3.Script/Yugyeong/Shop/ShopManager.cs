@@ -110,13 +110,11 @@ public class ShopManager : MonoBehaviour
         if (goods.price <= money)
         {
             SQLManager.instance.Updateitem("money", money - goods.price);
-            Update_moneytext();
-            Debug.Log($"{goods.price} <= {money}�� ���� ����");
             SQLManager.instance.Updateshop(goods.shop, goods.index, 'T');
-            Shop_data shop = SQLManager.instance.Shop();
-            buy_text.text = $"���ſ� �����߽��ϴ�.\n ������ : {money}";
+
+            //Shop_data shop = SQLManager.instance.Shop();
+            buy_text.text = $"구매했습니다.\n 현재 골드 : {money}";
             cur_slot.UI_update();
-            Update_moneytext();
         }
 
         else
