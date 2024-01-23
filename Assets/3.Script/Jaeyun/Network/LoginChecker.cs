@@ -55,33 +55,16 @@ public class LoginChecker : MonoBehaviour
 
     public void InfoButtonActive()
     { // 플레이어 로그인 시 유저 정보 버튼 활성화 및 아이디 닉네임 띄우기
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            dbPath = Application.persistentDataPath + "/Database"; // 경로를 string에 저장
-            if (!File.Exists(dbPath + "/UserInfo.json"))
-            { // file 검사
-                isLogin = false;
-                return;
-            }
-            else
-            {
-                playerLogButton.SetActive(true);
-                isLogin = true;
-            }
+        dbPath = Application.persistentDataPath + "/Database"; // 경로를 string에 저장
+        if (!File.Exists(dbPath + "/UserInfo.json"))
+        { // file 검사
+            isLogin = false;
+            return;
         }
         else
-        { // window
-            dbPath = Application.dataPath + "/Database"; // 경로를 string에 저장
-            if (!File.Exists(dbPath + "/UserInfo.json"))
-            { // file 검사
-                isLogin = false;
-                return;
-            }
-            else
-            {
-                playerLogButton.SetActive(true);
-                isLogin = true;
-            }
+        {
+            playerLogButton.SetActive(true);
+            isLogin = true;
         }
 
         // user info text
@@ -166,15 +149,7 @@ public class LoginChecker : MonoBehaviour
 
     public void SignOutButton()
     { // 로그아웃 버튼
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            dbPath = Application.persistentDataPath + "/Database";
-        }
-        else
-        { // window
-            dbPath = Application.dataPath + "/Database";
-        }
-
+        dbPath = Application.persistentDataPath + "/Database";
         File.Delete(dbPath + "/UserInfo.json");
         isLogin = false;
     }

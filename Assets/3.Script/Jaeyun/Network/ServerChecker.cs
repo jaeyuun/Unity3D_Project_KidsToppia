@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-/* Network namespace */
-using Mirror;
 using kcp2k;
 using LitJson;
+/* Network namespace */
+using Mirror;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public enum ServerType
 {
@@ -68,35 +66,17 @@ public class ServerChecker : MonoBehaviour
     #region FileSetting
     private void FileSetting()
     {
-        if (Application.platform == RuntimePlatform.Android)
+        if (path.Equals(string.Empty))
         {
-            if (path.Equals(string.Empty))
-            {
-                path = Application.persistentDataPath + "/License";
-            }
-            if (!File.Exists(path))
-            { // folder 검사
-                Directory.CreateDirectory(path);
-            }
-            if (!File.Exists(path + "/License.json"))
-            { // file 검사
-                DefaultData(path);
-            }
+            path = Application.persistentDataPath + "/License";
         }
-        else
-        { // Window
-            if (path.Equals(string.Empty))
-            {
-                path = Application.dataPath + "/License";
-            }
-            if (!File.Exists(path))
-            { // folder 검사
-                Directory.CreateDirectory(path);
-            }
-            if (!File.Exists(path + "/License.json"))
-            { // file 검사
-                DefaultData(path);
-            }
+        if (!File.Exists(path))
+        { // folder 검사
+            Directory.CreateDirectory(path);
+        }
+        if (!File.Exists(path + "/License.json"))
+        { // file 검사
+            DefaultData(path);
         }
     }
 
@@ -155,7 +135,7 @@ public class ServerChecker : MonoBehaviour
         {
             Debug.Log($"{manager.networkAddress} StartServer...");
             manager.StartServer();
-            
+
             NetworkServer.OnConnectedEvent += (NetworkConnectionToClient) =>
             {
                 Debug.Log($"New Client Connect : {NetworkConnectionToClient.address}");

@@ -138,35 +138,17 @@ public class SQLManager : MonoBehaviour
     #region SQL Server Connect
     private string ServerSet()
     {
-        if (Application.platform == RuntimePlatform.Android)
+        if (dbPath.Equals(string.Empty))
         {
-            if (dbPath.Equals(string.Empty))
-            {
-                dbPath = Application.persistentDataPath + "/Database"; // 경로를 string에 저장
-            }
-            if (!File.Exists(dbPath)) // 해당 경로에 파일이 없다면
-            { // folder 검사
-                Directory.CreateDirectory(dbPath); // Directory 생성
-            }
-            if (!File.Exists(dbPath + "/config.json"))
-            { // file 검사
-                DefaultData(dbPath);
-            }
+            dbPath = Application.persistentDataPath + "/Database"; // 경로를 string에 저장
         }
-        else
-        { // window
-            if (dbPath.Equals(string.Empty))
-            {
-                dbPath = Application.dataPath + "/Database"; // 경로를 string에 저장
-            }
-            if (!File.Exists(dbPath)) // 해당 경로에 파일이 없다면
-            { // folder 검사
-                Directory.CreateDirectory(dbPath); // Directory 생성
-            }
-            if (!File.Exists(dbPath + "/config.json"))
-            { // file 검사
-                DefaultData(dbPath);
-            }
+        if (!File.Exists(dbPath)) // 해당 경로에 파일이 없다면
+        { // folder 검사
+            Directory.CreateDirectory(dbPath); // Directory 생성
+        }
+        if (!File.Exists(dbPath + "/config.json"))
+        { // file 검사
+            DefaultData(dbPath);
         }
 
         string jsonString = File.ReadAllText(dbPath + "/config.json"); // json file을 string으로 받아옴
@@ -614,7 +596,7 @@ public class SQLManager : MonoBehaviour
                 return;
             }
 
-            string selectCommand = string.Format(@"UPDATE friend SET {0} = '{1}' WHERE player_id = '{2}';",str, friend_nickname, info.User_Id);
+            string selectCommand = string.Format(@"UPDATE friend SET {0} = '{1}' WHERE player_id = '{2}';", str, friend_nickname, info.User_Id);
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed)
@@ -661,7 +643,7 @@ public class SQLManager : MonoBehaviour
                     break;
             }
 
-            string selectCommand = string.Format(@"UPDATE friend SET {0} = '' WHERE player_id = '{1}';", str,info.User_Id);
+            string selectCommand = string.Format(@"UPDATE friend SET {0} = '' WHERE player_id = '{1}';", str, info.User_Id);
             MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed)
@@ -1049,7 +1031,7 @@ public class SQLManager : MonoBehaviour
                             return friend_Data;
                         }
                         else
-                        { 
+                        {
                             break;
                         }
                     }
@@ -1423,15 +1405,7 @@ public class SQLManager : MonoBehaviour
                     reader.Close();
                 }
                 // userInfo json delete
-                string userInfoPath = string.Empty;
-                if (Application.platform == RuntimePlatform.Android)
-                {
-                    userInfoPath = Application.persistentDataPath + "/Database";
-                }
-                else
-                { // window
-                    userInfoPath = Application.dataPath + "/Database";
-                }
+                string userInfoPath = Application.persistentDataPath + "/Database";
                 File.Delete(userInfoPath + "/UserInfo.json");
 
                 return true;

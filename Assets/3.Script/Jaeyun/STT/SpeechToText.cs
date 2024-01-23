@@ -21,15 +21,7 @@ public class SpeechToText : MonoBehaviour
     private void Start()
     {
         microphoneId = Microphone.devices[0]; // 마이크 디바이스 설정
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            filePath = Application.persistentDataPath + "/Clova";
-        }
-        else
-        { // window
-
-            filePath = Application.dataPath + "/Clova";
-        }
+        filePath = Application.persistentDataPath + "/Clova";
         if (!File.Exists(filePath)) // 해당 경로에 파일이 없다면
         { // folder 검사
             Directory.CreateDirectory(filePath); // Directory 생성

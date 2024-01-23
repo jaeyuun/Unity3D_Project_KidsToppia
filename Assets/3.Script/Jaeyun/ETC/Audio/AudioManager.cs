@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
 using LitJson;
-using System.IO;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
@@ -91,35 +90,17 @@ public class AudioManager : MonoBehaviour
 
     private void UserSet()
     {
-        if (Application.platform == RuntimePlatform.Android)
+        if (settingPath.Equals(string.Empty))
         {
-            if (settingPath.Equals(string.Empty))
-            {
-                settingPath = Application.persistentDataPath + "/Database";
-            }
-            if (!File.Exists(settingPath)) // 해당 경로에 파일이 없다면
-            {
-                Directory.CreateDirectory(settingPath); // Directory 생성
-            }
-            if (!File.Exists(settingPath + "/UserSetting.json"))
-            {
-                DefaultData(settingPath);
-            }
+            settingPath = Application.persistentDataPath + "/Database";
         }
-        else
-        { // window
-            if (settingPath.Equals(string.Empty))
-            {
-                settingPath = Application.dataPath + "/Database";
-            }
-            if (!File.Exists(settingPath)) // 해당 경로에 파일이 없다면
-            {
-                Directory.CreateDirectory(settingPath); // Directory 생성
-            }
-            if (!File.Exists(settingPath + "/UserSetting.json"))
-            {
-                DefaultData(settingPath);
-            }
+        if (!File.Exists(settingPath)) // 해당 경로에 파일이 없다면
+        {
+            Directory.CreateDirectory(settingPath); // Directory 생성
+        }
+        if (!File.Exists(settingPath + "/UserSetting.json"))
+        {
+            DefaultData(settingPath);
         }
 
         string jsonString = File.ReadAllText(settingPath + "/UserSetting.json"); // json file을 string으로 받아옴
