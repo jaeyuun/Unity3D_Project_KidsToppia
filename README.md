@@ -1,14 +1,17 @@
-# Kidstopia
+# Kidstoppia
 > LG유플러스 - 키즈토피아 모작입니다.   
-> AI 친구들과 함께하며 메타버스 세계에서 생생하게 체험하고 즐겁게 학습하는 키즈 메타버스입니다.
+> AI 친구들과 함께하며 메타버스 세계에서 생생하게 체험하고 즐겁게 학습하는 키즈 메타버스입니다.   
+> ⭐ 아이들 나라 고삐별의 세계관을 친구들과 함께 경험해 보아요!
 ## Project
-### Unity 3D TeamProject   
-Cross Platform(Android & Window), Metaverse
+### Unity 3D TeamProject
+Cross Platform(Android & Window), Metaverse, Education
 #### 1. 제작 기간
 2023.12.19 ~ 2024.01.17
 #### 2. 참여 인원 (2인)
-- 성유경 ([Hansiban](https://github.com/Hansiban))   
+- 성유경 ([Hansiban](https://github.com/Hansiban))
+  > 회원 관리, 커뮤니티, 퀴즈 및 도감, 도전 과제
 - 이재윤 ([jaeyuun](https://github.com/jaeyuun))
+  > 회원 관리, 아바타, NPC, 길안내, 설정
 ## Function
 - `회원 관리` : 로그인, 회원 가입, 탈퇴
 - `아바타` : 아바타 외형 변경
