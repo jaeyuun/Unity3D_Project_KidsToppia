@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/1.Scene/Server/IntroScene_Server.unity
+    guid: ad9362b58c19d5446a536fb52c753892
   - enabled: 1
     path: Assets/1.Scene/Client/IntroScene.unity
     guid: 31c4ac2051a851143a41c35a578f4e17
@@ -17,7 +20,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/Client/OfflineScene.unity
     guid: c80cfd2de69a7a24ab2ea878ebc694ec
-  - enabled: 0
-    path: Assets/1.Scene/Server/IntroScene_Server.unity
-    guid: ad9362b58c19d5446a536fb52c753892
   m_configObjects: {}
