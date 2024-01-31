@@ -18,7 +18,7 @@ public class ChatGPT : MonoBehaviour
     public void FirstResponse()
     { // NPC click 할 때마다 Method 불러오기
         api = new OpenAIRequest();
-        api.openAi_key = "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";
+        api.openAi_key = "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";
         api.Init();
 
         // npc info
