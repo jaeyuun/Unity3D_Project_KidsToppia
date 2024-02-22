@@ -35,4 +35,4 @@ Cross Platform(Android & Window), Metaverse, Education
 3. Naver Cloud Platform -  CLOVA Speech Recognition : https://www.ncloud.com/
 4. Google Play Console
 ## Assets
-[BGM] Oneul - ([엽떡 마라로제 냠냠 (Creamy Mala Rose) | 귀여운음악, 브이로그음악, 무료브금, Royalty Free Music](https://www.youtube.com/watch?v=-gu-arIVZ0k&t=475s))
+[BGM] Oneul - [엽떡 마라로제 냠냠 (Creamy Mala Rose) | 귀여운음악, 브이로그음악, 무료브금, Royalty Free Music](https://www.youtube.com/watch?v=-gu-arIVZ0k&t=475s)
